@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink-950: #0a0a0b;
+  --color-ink-900: #111113;
+  --color-ink-850: #17171a;
+  --color-ink-800: #1e1e22;
+  --color-ink-700: #2a2a30;
+  --color-ink-600: #3a3a42;
+  --color-ink-400: #71717a;
+  --color-ink-300: #a1a1aa;
+  --color-ink-200: #d4d4d8;
+  --color-ink-50: #fafafa;
+
+  --color-accent: #e8b44a;
+  --color-accent-dim: #8a6a26;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html,
+body {
+  background: var(--color-ink-950);
+  color: var(--color-ink-200);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Field styling is repeated across every form in the app. */
+@utility field {
+  width: 100%;
+  border-radius: 0.375rem;
+  border: 1px solid var(--color-ink-700);
+  background: var(--color-ink-900);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-ink-50);
+  outline: none;
+}
+
+.field:focus {
+  border-color: var(--color-ink-400);
+}
+
+.field::placeholder {
+  color: var(--color-ink-600);
+}
