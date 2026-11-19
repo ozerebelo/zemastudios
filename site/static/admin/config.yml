@@ -9,9 +9,9 @@ backend:
   branch: main
   # The site lives in site/ inside the repository; all paths below are relative to it.
   root_dir: site
-  # OAuth sign-in needs a small authenticator (see site/README.md). Until it is set
-  # up, sign in with a GitHub personal access token instead (option on the login page).
-  # base_url: https://zema-cms-auth.<your-account>.workers.dev
+  # "Sign in with GitHub" goes through Netlify's OAuth provider (the default
+  # base_url, api.netlify.com) once a GitHub OAuth app is installed in Netlify;
+  # see site/README.md. Until then, use "Sign in using access token".
   commit_messages:
     create: "Novo projeto: {{slug}}"
     update: "Atualizar {{collection}}: {{slug}}"
@@ -19,7 +19,7 @@ backend:
     uploadMedia: "Imagem: {{path}}"
     deleteMedia: "Apagar imagem: {{path}}"
 
-app_title: Zema Studios
+app_title: zema studios
 site_url: https://zemastudios.com
 logo:
   src: /favicon.svg
@@ -56,7 +56,7 @@ collections:
     delete: true
     identifier_field: titulo
     slug: "{{titulo}}"
-    summary: "{{ano}} · {{titulo}}"
+    summary: "{{ano}} · {{titulo}} {{subtitulo}}"
     thumbnail: capa
     sortable_fields:
       fields: [ano, titulo, formato]
@@ -80,7 +80,12 @@ collections:
       - name: titulo
         label: Título
         widget: string
-        hint: "Para episódios ou temporadas: *Série — Episódio* ou *Série — T2*."
+        hint: O nome principal. A série, temporada ou artista vai no Subtítulo.
+      - name: subtitulo
+        label: Subtítulo
+        widget: string
+        required: false
+        hint: "Série, temporada, artista ou complemento do título. Ex.: *Temporada 2*, *Novas Narrativas de Caça*, *Pedro Abrunhosa*."
       - name: ano
         label: Ano
         widget: number
@@ -174,6 +179,7 @@ singletons:
       - name: nome
         label: Nome
         widget: string
+        hint: Sempre em minúsculas, "zema studios".
       - name: url
         label: Endereço do site
         widget: string

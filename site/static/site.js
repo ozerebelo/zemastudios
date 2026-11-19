@@ -7,79 +7,44 @@
     get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
     set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
   };
-  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // ---------------------------------------------------------- hero slides
-  var hero = document.querySelector(".hero");
-  if (hero) {
-    var slides = Array.prototype.slice.call(hero.querySelectorAll(".slide"));
-    var counter = hero.querySelector(".slide-n");
-    var current = 0;
-    var timer = null;
-    var userTook = false;
-    slides.forEach(function (s, i) {
-      s.hidden = false;
-      s.classList.toggle("on", i === 0);
-      if (i !== 0) s.setAttribute("aria-hidden", "true");
-    });
-    var warm = function (i) {
-      var img = slides[i] && slides[i].querySelector("img");
-      if (img) img.loading = "eager";
-    };
-    var show = function (i) {
-      i = (i + slides.length) % slides.length;
-      slides[current].classList.remove("on");
-      slides[current].setAttribute("aria-hidden", "true");
-      slides[i].classList.add("on");
-      slides[i].removeAttribute("aria-hidden");
-      current = i;
-      if (counter) counter.textContent = i + 1 + " / " + slides.length;
-      warm(i + 1);
-    };
-    var start = function () {
-      if (reduceMotion || userTook || slides.length < 2 || timer) return;
-      timer = setInterval(function () { show(current + 1); }, 6500);
-    };
-    var stop = function () { clearInterval(timer); timer = null; };
-    warm(1);
-    hero.addEventListener("click", function (e) {
-      var b = e.target.closest("[data-slide]");
-      if (!b) return;
-      userTook = true; // once someone navigates manually, stop auto-advancing
-      stop();
-      show(current + (b.dataset.slide === "next" ? 1 : -1));
-    });
-    hero.addEventListener("mouseenter", stop);
-    hero.addEventListener("mouseleave", start);
-    hero.addEventListener("focusin", stop);
-    document.addEventListener("visibilitychange", function () { document.hidden ? stop() : start(); });
-    start();
-  }
+  // ---------------------------------------------------------- programme: filter + view
+  var body = document.body;
+  if (body.classList.contains("home")) {
+    var filterBtns = document.querySelectorAll("[data-filter]");
+    var viewBtns = document.querySelectorAll("[data-view]");
+    var items = document.querySelectorAll("[data-cat]");
+    var years = document.querySelectorAll(".year");
+    var empty = document.querySelector(".empty");
+    var current = "all";
 
-  // ---------------------------------------------------------- work: filter + view
-  var work = document.getElementById("trabalho");
-  if (work) {
-    var filterBtns = work.querySelectorAll("[data-filter]");
-    var viewBtns = work.querySelectorAll("[data-view]");
-    var items = work.querySelectorAll("[data-cat]");
     var applyFilter = function (f) {
+      current = f;
       filterBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.filter === f)); });
+      var shown = 0;
       items.forEach(function (el) {
-        if (f === "all" || el.dataset.cat === f) el.removeAttribute("data-hide");
+        var on = f === "all" || el.dataset.cat === f;
+        if (on) { el.removeAttribute("data-hide"); if (el.tagName === "LI") shown++; }
         else el.setAttribute("data-hide", "");
       });
+      // A year with nothing left in it disappears from the programme.
+      years.forEach(function (y) {
+        var any = y.querySelector(".entry:not([data-hide])");
+        if (any) y.removeAttribute("data-hide"); else y.setAttribute("data-hide", "");
+      });
+      if (empty) empty.hidden = shown > 0;
     };
     var applyView = function (v) {
       viewBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.view === v)); });
-      work.querySelectorAll("[data-pane]").forEach(function (p) { p.hidden = p.dataset.pane !== v; });
+      document.querySelectorAll("[data-pane]").forEach(function (p) { p.hidden = p.dataset.pane !== v; });
     };
-    work.addEventListener("click", function (e) {
+    document.addEventListener("click", function (e) {
       var f = e.target.closest("[data-filter]");
       if (f) applyFilter(f.dataset.filter);
       var v = e.target.closest("[data-view]");
       if (v) { applyView(v.dataset.view); store.set("zema-view", v.dataset.view); }
     });
-    if (store.get("zema-view") === "list") applyView("list");
+    if (store.get("zema-view") === "indice") applyView("indice");
   }
 
   // ---------------------------------------------------------- video (click to load)
@@ -102,11 +67,13 @@
   var dialog = document.querySelector(".lightbox");
   if (gallery && dialog && typeof dialog.showModal === "function") {
     var links = Array.prototype.slice.call(gallery.querySelectorAll(".still"));
-    var lbImg = dialog.querySelector("img");
+    // Created on first open, so the page never carries an <img> without a source.
+    var lbImg = null;
     var lbN = dialog.querySelector(".lb-n");
     var idx = 0;
     var open = function (i) {
       idx = (i + links.length) % links.length;
+      if (!lbImg) { lbImg = document.createElement("img"); dialog.insertBefore(lbImg, dialog.firstChild); }
       var thumb = links[idx].querySelector("img");
       lbImg.src = links[idx].getAttribute("href");
       lbImg.alt = thumb ? thumb.alt : "";
@@ -133,7 +100,7 @@
   }
 
   // ---------------------------------------------------------- contact form
-  var form = document.querySelector(".form");
+  var form = document.querySelector(".coupon");
   if (form && window.fetch) {
     var status = form.querySelector(".form-status");
     var submit = form.querySelector("button[type=submit]");
@@ -145,10 +112,10 @@
         .then(function (r) {
           if (!r.ok) throw new Error(String(r.status));
           form.reset();
-          status.textContent = "Mensagem enviada. Respondemos por email.";
+          status.textContent = "Pedido enviado. Respondemos por email.";
         })
         .catch(function () {
-          status.textContent = "Não foi possível enviar. Escreva diretamente para o email acima.";
+          status.textContent = "Não foi possível enviar. Escreva diretamente para o email ao lado.";
         })
         .then(function () { submit.disabled = false; });
     });

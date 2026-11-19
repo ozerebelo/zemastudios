@@ -61,38 +61,46 @@ O site fica em http://localhost:8080.
 O painel é o [Sveltia CMS](https://sveltiacms.app), que guarda o conteúdo no
 próprio repositório do GitHub. Não há base de dados nem mensalidade.
 
-## Alojamento
+## Alojamento (Netlify)
 
-Recomendado: **Cloudflare Pages** (gratuito, sem custos de tráfego). Netlify
-e Vercel também servem. As definições são as mesmas em qualquer um:
+O domínio já está na Netlify. Não há base de dados: o conteúdo vive no
+repositório e a Netlify reconstrói o site a cada commit.
 
-| Definição | Valor |
-|---|---|
-| Diretório raiz | `site` |
-| Comando de build | `npm run build` |
-| Pasta de saída | `dist` |
-| Node | 20 ou mais recente |
+1. **Ligar o repositório:** *Add new project → Import from Git → GitHub →*
+   `ozerebelo/zemastudios`, no ramo que for publicado (ver `branch` em
+   `static/admin/config.yml`).
+2. **Definições de build** (o `netlify.toml` já as traz, basta o diretório base):
 
-O ficheiro `static/_headers` define a cache das imagens no Cloudflare Pages e
-no Netlify.
+   | Definição | Valor |
+   |---|---|
+   | Base directory | `site` |
+   | Build command | `npm run build` |
+   | Publish directory | `site/dist` |
 
-### Login no painel
+3. **Login no painel `/admin/` com GitHub** (uma vez):
+   - No GitHub: *Settings → Developer settings → OAuth Apps → New OAuth App*.
+     Homepage `https://zemastudios.com`, callback
+     `https://api.netlify.com/auth/done`. Guardar o Client ID e gerar um Client secret.
+   - Na Netlify: *Project configuration → Access & security → OAuth →
+     Install provider → GitHub*, colar os dois valores.
+   - O CMS já está configurado para usar a Netlify como intermediário (não é
+     preciso `base_url`).
 
-O GitHub só deixa uma página estática fazer login com a ajuda de um pequeno
-serviço intermediário. Há duas opções:
+Até isto estar feito, também se pode entrar com um token pessoal do GitHub
+(*Sign in using access token*).
 
-- **Já, sem configurar nada:** no ecrã de entrada escolher *Sign in using
-  access token* e colar um
-  [token pessoal do GitHub](https://github.com/settings/personal-access-tokens/new)
-  com acesso apenas a este repositório (Contents: read & write). Serve bem se
-  só vocês os dois editarem.
-- **Botão "Entrar com GitHub":** publicar o
-  [Sveltia CMS Authenticator](https://github.com/sveltia/sveltia-cms-auth) num
-  Cloudflare Worker gratuito (cerca de 10 minutos) e pôr o endereço em
-  `base_url` no ficheiro `static/admin/config.yml`.
+### Custos
 
-Em `static/admin/config.yml`, `branch` tem de ser o ramo que o alojamento
-publica.
+A Netlify cobra em créditos. Cada publicação gasta 15 e cada GB de tráfego
+cerca de 10; o plano gratuito tem 300 por mês. Uma visita completa ao site
+(página inicial inteira e um projeto) pesa cerca de 1,6 MB no computador e
+0,7 MB no telemóvel, por isso o tráfego pesa pouco. **O que gasta créditos são
+as publicações: cada "guardar" no painel é uma.** Com o plano gratuito contem
+com uns 15 guardados por mês; acima disso, o plano Personal (9 USD/mês, 1000
+créditos) chega com folga. Alternativa sem custos de publicação: Cloudflare
+Pages, mantendo o domínio.
+
+`static/_headers` define a cache das imagens (a Netlify lê-o).
 
 ## Links antigos
 
