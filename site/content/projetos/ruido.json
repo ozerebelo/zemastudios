@@ -1,0 +1,25 @@
+{
+  "titulo": "Ruído",
+  "ano": 2025,
+  "formato": "Série",
+  "cliente": "",
+  "realizacao": "Ricardo Freitas, Tiago Guedes",
+  "fotografia": "André Szankowski",
+  "producao": "REED",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=fpQxGq3kpPQ",
+  "capa": "/media/projetos/ruido-01.jpg",
+  "fotogramas": [
+    "/media/projetos/ruido-01.jpg",
+    "/media/projetos/ruido-02.jpg",
+    "/media/projetos/ruido-03.jpg",
+    "/media/projetos/ruido-04.jpg",
+    "/media/projetos/ruido-05.jpg",
+    "/media/projetos/ruido-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 9,
+  "publicado": true
+}

@@ -1,0 +1,25 @@
+{
+  "titulo": "Lisbon Noir — T1",
+  "ano": 2026,
+  "formato": "Série",
+  "cliente": "Prime Video",
+  "realizacao": "Artur Ribeiro",
+  "fotografia": "Miguel Manso",
+  "producao": "See My Dreams",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=bUpLCYsxpGI",
+  "capa": "/media/projetos/lisbon-noir-t1-01.jpg",
+  "fotogramas": [
+    "/media/projetos/lisbon-noir-t1-01.jpg",
+    "/media/projetos/lisbon-noir-t1-02.jpg",
+    "/media/projetos/lisbon-noir-t1-03.jpg",
+    "/media/projetos/lisbon-noir-t1-04.jpg",
+    "/media/projetos/lisbon-noir-t1-05.jpg",
+    "/media/projetos/lisbon-noir-t1-06.jpg"
+  ],
+  "notas": "",
+  "destaque": true,
+  "ordem": 3,
+  "publicado": true
+}

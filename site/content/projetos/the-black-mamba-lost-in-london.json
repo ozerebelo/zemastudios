@@ -1,0 +1,25 @@
+{
+  "titulo": "The Black Mamba — Lost in London",
+  "ano": 2025,
+  "formato": "Documentário",
+  "cliente": "",
+  "realizacao": "Victor Castro",
+  "fotografia": "Arlindo Camacho & William Sossai",
+  "producao": "Aquele Abraço",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=tgRHcwn58dE",
+  "capa": "/media/projetos/the-black-mamba-lost-in-london-01.jpg",
+  "fotogramas": [
+    "/media/projetos/the-black-mamba-lost-in-london-01.jpg",
+    "/media/projetos/the-black-mamba-lost-in-london-02.jpg",
+    "/media/projetos/the-black-mamba-lost-in-london-03.jpg",
+    "/media/projetos/the-black-mamba-lost-in-london-04.jpg",
+    "/media/projetos/the-black-mamba-lost-in-london-05.jpg",
+    "/media/projetos/the-black-mamba-lost-in-london-06.jpg"
+  ],
+  "notas": "",
+  "destaque": true,
+  "ordem": 4,
+  "publicado": true
+}

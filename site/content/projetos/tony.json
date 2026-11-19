@@ -1,0 +1,25 @@
+{
+  "titulo": "Tony",
+  "ano": 2024,
+  "formato": "Série",
+  "cliente": "Prime Video",
+  "realizacao": "Carlos Dante",
+  "fotografia": "João Brazão",
+  "producao": "See My Dreams",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=tWAlWbK0bK0",
+  "capa": "/media/projetos/tony-01.jpg",
+  "fotogramas": [
+    "/media/projetos/tony-01.jpg",
+    "/media/projetos/tony-02.jpg",
+    "/media/projetos/tony-03.jpg",
+    "/media/projetos/tony-04.jpg",
+    "/media/projetos/tony-05.jpg",
+    "/media/projetos/tony-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 17,
+  "publicado": true
+}

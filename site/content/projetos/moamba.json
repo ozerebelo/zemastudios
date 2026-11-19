@@ -1,0 +1,25 @@
+{
+  "titulo": "Novas Narrativas de Caça — Moamba",
+  "ano": 2026,
+  "formato": "Série",
+  "cliente": "RTP",
+  "realizacao": "Luis Almeida",
+  "fotografia": "Marco Bento",
+  "producao": "Many Takes & Galo Bravo",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=WSGoYnOC2tE",
+  "capa": "/media/projetos/moamba-01.jpg",
+  "fotogramas": [
+    "/media/projetos/moamba-01.jpg",
+    "/media/projetos/moamba-02.jpg",
+    "/media/projetos/moamba-03.jpg",
+    "/media/projetos/moamba-04.jpg",
+    "/media/projetos/moamba-05.jpg",
+    "/media/projetos/moamba-06.jpg"
+  ],
+  "notas": "",
+  "destaque": true,
+  "ordem": 2,
+  "publicado": true
+}

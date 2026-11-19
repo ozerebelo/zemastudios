@@ -1,0 +1,25 @@
+{
+  "titulo": "Jacinta",
+  "ano": 2021,
+  "formato": "Série",
+  "cliente": "",
+  "realizacao": "Jorge Paixão da Costa",
+  "fotografia": "José António Loureiro",
+  "producao": "Coral Europa",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=LzIEZYsc5Ls",
+  "capa": "/media/projetos/jacinta-01.jpg",
+  "fotogramas": [
+    "/media/projetos/jacinta-01.jpg",
+    "/media/projetos/jacinta-02.jpg",
+    "/media/projetos/jacinta-03.jpg",
+    "/media/projetos/jacinta-04.jpg",
+    "/media/projetos/jacinta-05.jpg",
+    "/media/projetos/jacinta-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 26,
+  "publicado": true
+}

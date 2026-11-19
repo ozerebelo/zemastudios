@@ -1,0 +1,25 @@
+{
+  "titulo": "Ninguém Como Tu",
+  "ano": 2025,
+  "formato": "Série",
+  "cliente": "Prime Video",
+  "realizacao": "João Gomes",
+  "fotografia": "William Sossai & Cristiano Santos",
+  "producao": "See My Dreams",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=8UPaWdyixFk",
+  "capa": "/media/projetos/ninguem-como-tu-01.jpg",
+  "fotogramas": [
+    "/media/projetos/ninguem-como-tu-01.jpg",
+    "/media/projetos/ninguem-como-tu-02.jpg",
+    "/media/projetos/ninguem-como-tu-03.jpg",
+    "/media/projetos/ninguem-como-tu-04.jpg",
+    "/media/projetos/ninguem-como-tu-05.jpg",
+    "/media/projetos/ninguem-como-tu-06.jpg"
+  ],
+  "notas": "",
+  "destaque": true,
+  "ordem": 5,
+  "publicado": true
+}

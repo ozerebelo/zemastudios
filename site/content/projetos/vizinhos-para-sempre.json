@@ -1,0 +1,25 @@
+{
+  "titulo": "Vizinhos Para Sempre",
+  "ano": 2024,
+  "formato": "Série",
+  "cliente": "Prime Video",
+  "realizacao": "Carlos Dante",
+  "fotografia": "João Brazão",
+  "producao": "See My Dreams",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=b4o3OE-v63w",
+  "capa": "/media/projetos/vizinhos-para-sempre-01.jpg",
+  "fotogramas": [
+    "/media/projetos/vizinhos-para-sempre-01.jpg",
+    "/media/projetos/vizinhos-para-sempre-02.jpg",
+    "/media/projetos/vizinhos-para-sempre-03.jpg",
+    "/media/projetos/vizinhos-para-sempre-04.jpg",
+    "/media/projetos/vizinhos-para-sempre-05.jpg",
+    "/media/projetos/vizinhos-para-sempre-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 18,
+  "publicado": true
+}

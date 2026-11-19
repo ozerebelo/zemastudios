@@ -1,0 +1,25 @@
+{
+  "titulo": "Morangos com Açúcar — T1 e T2",
+  "ano": 2022,
+  "formato": "Série",
+  "cliente": "Prime Video",
+  "realizacao": "Francisco Antunez",
+  "fotografia": "Miguel Manso",
+  "producao": "See My Dreams",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=KakC02CJ4-I",
+  "capa": "/media/projetos/morangos-com-acucar-t1-t2-01.jpg",
+  "fotogramas": [
+    "/media/projetos/morangos-com-acucar-t1-t2-01.jpg",
+    "/media/projetos/morangos-com-acucar-t1-t2-02.jpg",
+    "/media/projetos/morangos-com-acucar-t1-t2-03.jpg",
+    "/media/projetos/morangos-com-acucar-t1-t2-04.jpg",
+    "/media/projetos/morangos-com-acucar-t1-t2-05.jpg",
+    "/media/projetos/morangos-com-acucar-t1-t2-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 25,
+  "publicado": true
+}

@@ -1,0 +1,25 @@
+{
+  "titulo": "Kris Maes — 20 Anos de Cirurgia Robótica",
+  "ano": 2025,
+  "formato": "Documentário",
+  "cliente": "Hospital da Luz",
+  "realizacao": "Luis Almeida",
+  "fotografia": "Marco Bento",
+  "producao": "Many Takes",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=-98W5ajHc4E",
+  "capa": "/media/projetos/kris-maes-01.jpg",
+  "fotogramas": [
+    "/media/projetos/kris-maes-01.jpg",
+    "/media/projetos/kris-maes-02.jpg",
+    "/media/projetos/kris-maes-03.jpg",
+    "/media/projetos/kris-maes-04.jpg",
+    "/media/projetos/kris-maes-05.jpg",
+    "/media/projetos/kris-maes-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 7,
+  "publicado": true
+}

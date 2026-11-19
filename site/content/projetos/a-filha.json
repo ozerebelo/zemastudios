@@ -1,0 +1,25 @@
+{
+  "titulo": "A Filha",
+  "ano": 2024,
+  "formato": "Série",
+  "cliente": "",
+  "realizacao": "António Borges Correia",
+  "fotografia": "Aline Belfort",
+  "producao": "Plural Entertainment",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=WZb5lggx8UI",
+  "capa": "/media/projetos/a-filha-01.jpg",
+  "fotogramas": [
+    "/media/projetos/a-filha-01.jpg",
+    "/media/projetos/a-filha-02.jpg",
+    "/media/projetos/a-filha-03.jpg",
+    "/media/projetos/a-filha-04.jpg",
+    "/media/projetos/a-filha-05.jpg",
+    "/media/projetos/a-filha-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 19,
+  "publicado": true
+}

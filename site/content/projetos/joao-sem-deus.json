@@ -1,0 +1,24 @@
+{
+  "titulo": "João Sem Deus",
+  "ano": 2023,
+  "formato": "Série",
+  "cliente": "Canal Brasil",
+  "realizacao": "Marina Person",
+  "fotografia": "Janice D'Avila",
+  "producao": "Canal Brasil & Coral Europa",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=ULM4W17Tv2s",
+  "capa": "/media/projetos/joao-sem-deus-01.jpg",
+  "fotogramas": [
+    "/media/projetos/joao-sem-deus-01.jpg",
+    "/media/projetos/joao-sem-deus-02.jpg",
+    "/media/projetos/joao-sem-deus-03.jpg",
+    "/media/projetos/joao-sem-deus-04.jpg",
+    "/media/projetos/joao-sem-deus-05.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 23,
+  "publicado": true
+}

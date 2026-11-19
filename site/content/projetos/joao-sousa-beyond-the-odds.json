@@ -1,0 +1,25 @@
+{
+  "titulo": "João Sousa — Beyond the Odds",
+  "ano": 2025,
+  "formato": "Documentário",
+  "cliente": "Betclic",
+  "realizacao": "Rodrigo Zanchini",
+  "fotografia": "Luis Sobreiro",
+  "producao": "Galo Bravo",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=H7Ihxcvu_hY",
+  "capa": "/media/projetos/joao-sousa-beyond-the-odds-01.jpg",
+  "fotogramas": [
+    "/media/projetos/joao-sousa-beyond-the-odds-01.jpg",
+    "/media/projetos/joao-sousa-beyond-the-odds-02.jpg",
+    "/media/projetos/joao-sousa-beyond-the-odds-03.jpg",
+    "/media/projetos/joao-sousa-beyond-the-odds-04.jpg",
+    "/media/projetos/joao-sousa-beyond-the-odds-05.jpg",
+    "/media/projetos/joao-sousa-beyond-the-odds-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 8,
+  "publicado": true
+}

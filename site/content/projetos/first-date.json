@@ -1,0 +1,25 @@
+{
+  "titulo": "First Date",
+  "ano": 2025,
+  "formato": "Curta-metragem",
+  "cliente": "",
+  "realizacao": "Luis Filipe Borges",
+  "fotografia": "Diogo Rola",
+  "producao": "Advogado do Diabo & Miratecarts",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=Xgg6tIoO61I",
+  "capa": "/media/projetos/first-date-01.jpg",
+  "fotogramas": [
+    "/media/projetos/first-date-01.jpg",
+    "/media/projetos/first-date-02.jpg",
+    "/media/projetos/first-date-03.jpg",
+    "/media/projetos/first-date-04.jpg",
+    "/media/projetos/first-date-05.jpg",
+    "/media/projetos/first-date-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 13,
+  "publicado": true
+}

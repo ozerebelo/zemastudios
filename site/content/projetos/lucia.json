@@ -1,0 +1,25 @@
+{
+  "titulo": "Lúcia",
+  "ano": 2023,
+  "formato": "Série",
+  "cliente": "",
+  "realizacao": "Jorge Paixão da Costa",
+  "fotografia": "José António Loureiro",
+  "producao": "Coral Europa",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=-K5mTpZ_nMQ",
+  "capa": "/media/projetos/lucia-01.jpg",
+  "fotogramas": [
+    "/media/projetos/lucia-01.jpg",
+    "/media/projetos/lucia-02.jpg",
+    "/media/projetos/lucia-03.jpg",
+    "/media/projetos/lucia-04.jpg",
+    "/media/projetos/lucia-05.jpg",
+    "/media/projetos/lucia-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 22,
+  "publicado": true
+}

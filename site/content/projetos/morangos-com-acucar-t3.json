@@ -1,0 +1,25 @@
+{
+  "titulo": "Morangos com Açúcar — T3",
+  "ano": 2023,
+  "formato": "Série",
+  "cliente": "Prime Video",
+  "realizacao": "Francisco Antunez",
+  "fotografia": "William Sossai",
+  "producao": "See My Dreams",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=_kSLnBv50_8",
+  "capa": "/media/projetos/morangos-com-acucar-t3-01.jpg",
+  "fotogramas": [
+    "/media/projetos/morangos-com-acucar-t3-01.jpg",
+    "/media/projetos/morangos-com-acucar-t3-02.jpg",
+    "/media/projetos/morangos-com-acucar-t3-03.jpg",
+    "/media/projetos/morangos-com-acucar-t3-04.jpg",
+    "/media/projetos/morangos-com-acucar-t3-05.jpg",
+    "/media/projetos/morangos-com-acucar-t3-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 21,
+  "publicado": true
+}

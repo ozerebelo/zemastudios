@@ -1,0 +1,25 @@
+{
+  "titulo": "Morangos com Açúcar — T4 e T5",
+  "ano": 2024,
+  "formato": "Série",
+  "cliente": "Prime Video",
+  "realizacao": "Francisco Antunez",
+  "fotografia": "Miguel Manso",
+  "producao": "See My Dreams",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=1KAztI43okc",
+  "capa": "/media/projetos/morangos-com-acucar-t4-t5-01.jpg",
+  "fotogramas": [
+    "/media/projetos/morangos-com-acucar-t4-t5-01.jpg",
+    "/media/projetos/morangos-com-acucar-t4-t5-02.jpg",
+    "/media/projetos/morangos-com-acucar-t4-t5-03.jpg",
+    "/media/projetos/morangos-com-acucar-t4-t5-04.jpg",
+    "/media/projetos/morangos-com-acucar-t4-t5-05.jpg",
+    "/media/projetos/morangos-com-acucar-t4-t5-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 15,
+  "publicado": true
+}

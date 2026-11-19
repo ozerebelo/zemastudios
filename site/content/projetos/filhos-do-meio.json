@@ -1,0 +1,25 @@
+{
+  "titulo": "Filhos do Meio",
+  "ano": 2024,
+  "formato": "Documentário",
+  "cliente": "",
+  "realizacao": "Luis Almeida",
+  "fotografia": "Marco Bento",
+  "producao": "Many Takes",
+  "agencia": "",
+  "cor": "",
+  "video": "https://www.youtube.com/watch?v=U81qPHPPV8g",
+  "capa": "/media/projetos/filhos-do-meio-01.jpg",
+  "fotogramas": [
+    "/media/projetos/filhos-do-meio-01.jpg",
+    "/media/projetos/filhos-do-meio-02.jpg",
+    "/media/projetos/filhos-do-meio-03.jpg",
+    "/media/projetos/filhos-do-meio-04.jpg",
+    "/media/projetos/filhos-do-meio-05.jpg",
+    "/media/projetos/filhos-do-meio-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 14,
+  "publicado": true
+}

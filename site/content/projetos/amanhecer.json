@@ -1,0 +1,25 @@
+{
+  "titulo": "Amanhecer",
+  "ano": 2025,
+  "formato": "Publicidade",
+  "cliente": "Amanhecer",
+  "realizacao": "Steven Ferreira",
+  "fotografia": "Miguel Faustino",
+  "producao": "Shot and Cut Films",
+  "agencia": "",
+  "cor": "",
+  "video": "",
+  "capa": "/media/projetos/amanhecer-01.jpg",
+  "fotogramas": [
+    "/media/projetos/amanhecer-01.jpg",
+    "/media/projetos/amanhecer-02.jpg",
+    "/media/projetos/amanhecer-03.jpg",
+    "/media/projetos/amanhecer-04.jpg",
+    "/media/projetos/amanhecer-05.jpg",
+    "/media/projetos/amanhecer-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": 6,
+  "publicado": true
+}

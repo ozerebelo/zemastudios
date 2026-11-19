@@ -1,0 +1,245 @@
+# Sveltia CMS — https://sveltiacms.app/en/docs
+# The editor at /admin/ writes straight to the GitHub repository. Each save is
+# a commit; the host rebuilds and publishes the site from that commit.
+
+backend:
+  name: github
+  repo: ozerebelo/zemastudios
+  # Must be the branch your host deploys from.
+  branch: main
+  # The site lives in site/ inside the repository; all paths below are relative to it.
+  root_dir: site
+  # OAuth sign-in needs a small authenticator (see site/README.md). Until it is set
+  # up, sign in with a GitHub personal access token instead (option on the login page).
+  # base_url: https://zema-cms-auth.<your-account>.workers.dev
+  commit_messages:
+    create: "Novo projeto: {{slug}}"
+    update: "Atualizar {{collection}}: {{slug}}"
+    delete: "Apagar {{collection}}: {{slug}}"
+    uploadMedia: "Imagem: {{path}}"
+    deleteMedia: "Apagar imagem: {{path}}"
+
+app_title: Zema Studios
+site_url: https://zemastudios.com
+logo:
+  src: /favicon.svg
+
+media_folder: media/projetos
+public_folder: /media/projetos
+
+media_libraries:
+  default:
+    config:
+      # Resizing for the web happens in the build, so upload the full-quality still.
+      # This only stops accidental 4K PNG exports (24 MB each) from landing in the repo.
+      max_file_size: 15000000
+      slugify_filename: true
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+output:
+  json:
+    indent_style: space
+    indent_size: 2
+
+collections:
+  - name: projetos
+    label: Projetos
+    label_singular: Projeto
+    description: Cada projeto tem a sua página em /trabalho/nome-do-projeto/.
+    folder: content/projetos
+    extension: json
+    format: json
+    create: true
+    delete: true
+    identifier_field: titulo
+    slug: "{{titulo}}"
+    summary: "{{ano}} · {{titulo}}"
+    thumbnail: capa
+    sortable_fields:
+      fields: [ano, titulo, formato]
+      default:
+        field: ano
+        direction: descending
+    view_filters:
+      - label: Em destaque
+        field: destaque
+        pattern: true
+      - label: Escondidos
+        field: publicado
+        pattern: false
+    view_groups:
+      - label: Formato
+        field: formato
+      - label: Ano
+        field: ano
+    preview_path: /trabalho/{{slug}}/
+    fields:
+      - name: titulo
+        label: Título
+        widget: string
+        hint: "Para episódios ou temporadas: *Série — Episódio* ou *Série — T2*."
+      - name: ano
+        label: Ano
+        widget: number
+        value_type: int
+        min: 2000
+        max: 2100
+      - name: formato
+        label: Formato
+        widget: select
+        options:
+          - Série
+          - Longa-metragem
+          - Curta-metragem
+          - Documentário
+          - Videoclip
+          - Publicidade
+          - Conteúdo de marca
+      - name: cliente
+        label: Cliente / exibição
+        widget: string
+        required: false
+        hint: Plataforma, canal ou marca. Ex. Prime Video, RTP, Betclic.
+      - name: realizacao
+        label: Realização
+        widget: string
+        required: false
+      - name: fotografia
+        label: Direção de fotografia
+        widget: string
+        required: false
+      - name: producao
+        label: Produção
+        widget: string
+        required: false
+      - name: agencia
+        label: Agência
+        widget: string
+        required: false
+      - name: cor
+        label: Cor
+        widget: string
+        required: false
+        hint: Quem de vocês fez a cor deste projeto. Fica vazio se não quiserem mostrar.
+      - name: capa
+        label: Imagem de capa
+        widget: image
+        hint: Aparece na grelha e no carrossel. Exporte JPEG de qualidade máxima, até 4K.
+      - name: fotogramas
+        label: Fotogramas
+        widget: image
+        multiple: true
+        required: false
+        hint: Arraste para mudar a ordem. São mostrados na proporção original, sem corte.
+      - name: video
+        label: Trailer ou vídeo
+        widget: string
+        required: false
+        hint: Link do YouTube ou do Vimeo.
+        pattern:
+          - "^$|^https://(www\\.)?(youtube\\.com|youtu\\.be|vimeo\\.com|player\\.vimeo\\.com)/"
+          - Tem de ser um link do YouTube ou do Vimeo
+      - name: notas
+        label: Notas
+        widget: text
+        required: false
+        hint: Opcional. Factos curtos sobre o trabalho de cor (ex. entrega HDR, pipeline ACES).
+      - name: destaque
+        label: Em destaque
+        widget: boolean
+        default: false
+        hint: Aparece no carrossel no topo da página inicial.
+      - name: ordem
+        label: Ordem dentro do ano
+        widget: number
+        value_type: int
+        default: 0
+        required: false
+        hint: Números mais baixos aparecem primeiro entre projetos do mesmo ano.
+      - name: publicado
+        label: Publicado
+        widget: boolean
+        default: true
+        hint: Desligue para esconder o projeto sem o apagar.
+
+singletons:
+  - name: site
+    label: Estúdio e textos
+    file: content/site.json
+    format: json
+    fields:
+      - name: nome
+        label: Nome
+        widget: string
+      - name: url
+        label: Endereço do site
+        widget: string
+        hint: Usado nos links de partilha e no sitemap.
+      - name: descricao
+        label: Descrição para o Google e partilhas
+        widget: string
+        maxlength: 160
+      - name: intro
+        label: Frase de apresentação
+        widget: text
+        hint: O texto grande logo a seguir às imagens do topo.
+      - name: showreel
+        label: Showreel
+        widget: string
+        required: false
+        hint: Link do YouTube ou do Vimeo. Fica vazio se não houver.
+      - name: sobre
+        label: Sobre
+        widget: object
+        fields:
+          - name: texto
+            label: Texto
+            widget: text
+            hint: Deixe uma linha em branco entre parágrafos.
+          - name: foto
+            label: Foto
+            widget: image
+            required: false
+            media_folder: /media
+            public_folder: /media
+          - name: equipa
+            label: Equipa
+            label_singular: Pessoa
+            widget: list
+            required: false
+            summary: "{{nome}}"
+            fields:
+              - { name: nome, label: Nome, widget: string }
+              - { name: funcao, label: Função, widget: string, required: false }
+              - { name: bio, label: Bio curta, widget: text, required: false }
+              - name: foto
+                label: Foto
+                widget: image
+                required: false
+                media_folder: /media
+                public_folder: /media
+      - name: tecnico
+        label: Ficha técnica
+        label_singular: Linha
+        widget: list
+        summary: "{{rotulo}}: {{valor}}"
+        fields:
+          - { name: rotulo, label: Rótulo, widget: string }
+          - { name: valor, label: Valor, widget: string }
+      - name: contacto
+        label: Contacto
+        widget: object
+        fields:
+          - { name: texto, label: Texto, widget: text }
+          - { name: email, label: Email, widget: string }
+          - { name: telefone, label: Telefone, widget: string, required: false }
+          - { name: instagram, label: Instagram (link), widget: string, required: false }
+          - { name: vimeo, label: Vimeo (link), widget: string, required: false }
+          - name: formspree
+            label: Formulário (ID do Formspree)
+            widget: string
+            required: false
+            hint: Vazio = sem formulário, só o email.

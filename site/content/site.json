@@ -1,0 +1,26 @@
+{
+  "nome": "Zema Studios",
+  "url": "https://zemastudios.com",
+  "descricao": "Estúdio de color grading em Lisboa. Séries, cinema, documentário, videoclips e publicidade.",
+  "intro": "Zema Studios é um estúdio de color grading em Lisboa. Fazemos a cor de séries, cinema, documentário, videoclips e publicidade, para plataformas como a Prime Video e a RTP.",
+  "showreel": "",
+  "sobre": {
+    "texto": "Somos dois coloristas, com mais de dez anos de trabalho em cor.\n\nTrabalhamos em DaVinci Resolve Studio, numa sala calibrada em Lisboa. Quando o realizador ou o diretor de fotografia não pode estar presente, fazemos as sessões à distância.",
+    "foto": "/media/sobre.jpg",
+    "equipa": []
+  },
+  "tecnico": [
+    { "rotulo": "Software", "valor": "DaVinci Resolve Studio" },
+    { "rotulo": "Gestão de cor", "valor": "ACES, DaVinci Wide Gamut ou o espaço nativo da câmara" },
+    { "rotulo": "Origem", "valor": "Qualquer câmara e formato" },
+    { "rotulo": "Entregas", "valor": "SDR (Rec.709), HDR e DCP" }
+  ],
+  "contacto": {
+    "texto": "Para orçamentos e disponibilidade, escreva-nos. Ajuda se disser logo o formato, a duração, a câmara e a data de entrega.",
+    "email": "info@zemastudios.com",
+    "telefone": "+351 915 118 676",
+    "instagram": "https://www.instagram.com/zemastudios.grading/",
+    "vimeo": "",
+    "formspree": "mredgzjy"
+  }
+}
