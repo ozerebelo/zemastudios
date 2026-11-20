@@ -142,12 +142,15 @@ async function build() {
   const resolved = new Map(await Promise.all([...all].map(async (src) => [src, await image(src)])));
   const img = (src) => resolved.get(src);
 
-  // Session numbers follow programme order; the palette is measured from every still.
+  // Session order, and the palette and ratios measured from every still.
   projects.forEach((p, i) => {
     p.sessao = i + 1;
     const frames = (p.fotogramas.length ? p.fotogramas : [p.capa]).map(img).filter(Boolean);
     p.paleta = palette(frames.map((f) => f.sample).filter(Boolean), 6);
-    p.proporcao = img(p.capa)?.ratio || frames[0]?.ratio || "";
+    // Every distinct ratio among the stills, most common first ("16:9 · 9:16").
+    const counts = new Map();
+    for (const f of frames) if (f.ratio) counts.set(f.ratio, (counts.get(f.ratio) || 0) + 1);
+    p.proporcao = [...counts].sort((a, b) => b[1] - a[1]).map(([r]) => r).join(" · ");
   });
   const ctx = { site, projects, img, redirects };
   await write("index.html", renderHome(ctx));

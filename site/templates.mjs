@@ -90,7 +90,7 @@ function variant(im, w = 640) {
 /** Escaped text where hyphenated words (G-SHOCK) never break at the hyphen. */
 const keep = (t) => esc(t).replace(/(\S+-\S+)/g, '<span class="nw">$1</span>');
 
-const fmtLine = (p) => [p.formato, p.cliente].filter(Boolean).map(esc).join(" · ");
+const fmtLine = (p) => [p.formato, p.cliente].filter(Boolean).map((x) => keep(x)).join(" · ");
 const fullTitle = (p) => (p.subtitulo ? `${p.titulo}, ${p.subtitulo}` : p.titulo);
 const frames = (p, img) => (p.fotogramas.length ? p.fotogramas : [p.capa]).map(img).filter(Boolean);
 const people = (p) => [p.realizacao && `Realização ${esc(p.realizacao)}`, p.fotografia && `Fotografia ${esc(p.fotografia)}`].filter(Boolean).join(" · ");
@@ -107,7 +107,7 @@ function palette(p) {
   const list = p.paleta.map((c) => `${c.hex} ${Math.round(c.share * 100)}%`).join(", ");
   return `<figure class="palette">
         <div class="bar" role="img" aria-label="Paleta da grade: ${list}">${p.paleta.map((c) => `<span style="flex:${c.share.toFixed(4)} 1 0;background:${c.hex}"></span>`).join("")}</div>
-        <figcaption><span>Paleta da grade, medida em ${n} ${n === 1 ? "fotograma" : "fotogramas"}</span><span class="hexes">${p.paleta.map((c) => `<i style="--c:${c.hex}"></i>${c.hex}`).join(" ")}</span></figcaption>
+        <figcaption><span>Paleta da grade, medida em ${n} ${n === 1 ? "fotograma" : "fotogramas"}</span><span class="hexes">${p.paleta.map((c) => `<span class="hx"><i style="--c:${c.hex}"></i>${c.hex}</span>`).join(" ")}</span></figcaption>
       </figure>`;
 }
 
@@ -234,7 +234,7 @@ function work(ctx) {
     .map(
       (p) => `<tr data-cat="${FORMATOS[p.formato]}">
           <th scope="row"><a href="/trabalho/${esc(p.slug)}/">${esc(p.titulo)}</a>${p.subtitulo ? ` <span>${esc(p.subtitulo)}</span>` : ""}</th>
-          <td>${esc(p.formato)}</td>
+          <td>${keep(p.formato)}</td>
           <td class="c-opt">${esc(p.realizacao)}</td>
           <td class="c-opt">${esc(p.fotografia)}</td>
           <td class="c-ano">${p.ano}</td>
@@ -271,7 +271,7 @@ function studio(ctx) {
   const { site } = ctx;
   const tech = (site.tecnico || []).filter((t) => t?.rotulo && t?.valor);
   return `<section id="estudio" class="studio" aria-labelledby="h-estudio">
-    <h2 id="h-estudio" class="sect">Estúdio</h2>
+    <h2 id="h-estudio" class="vh">Estúdio</h2>
     <div class="studio-grid">
       <div class="studio-text">${paragraphs(site.sobre?.texto)}</div>
       ${ficha(tech.map((t) => [esc(t.rotulo), esc(t.valor)]), "ficha-rows")}
@@ -294,7 +294,7 @@ function contact(ctx) {
       </form>`
     : "";
   return `<section id="contacto" class="contact" aria-labelledby="h-contacto">
-    <h2 id="h-contacto" class="sect">Contacto</h2>
+    <h2 id="h-contacto" class="vh">Contacto</h2>
     <div class="contact-grid">
       <div class="contact-main">
         ${c.email ? `<p class="mail"><a href="mailto:${esc(c.email)}">${esc(c.email).replace("@", "@<wbr>")}</a></p>` : ""}
@@ -406,8 +406,8 @@ export function renderProject(ctx, p, prev, next) {
     ${p.notas ? `<div class="notes">${paragraphs(p.notas)}</div>` : ""}
     ${
       rest.length
-        ? `<div class="stills" data-gallery>
-      ${packStills(rest)
+        ? `<div class="stills${rest.every((im) => im.height > im.width) ? ` stills-tall" style="--cols:${Math.min(rest.length, 5)}` : ""}" data-gallery>
+      ${(rest.every((im) => im.height > im.width) ? rest.map((im) => ({ im, span: 1 })) : packStills(rest))
         .map(({ im, span }, i) => `<div class="cell span-${span}">${still(im, i + 1, span === 4 ? "100vw" : span === 2 ? "(max-width: 760px) 100vw, 50vw" : "(max-width: 760px) 50vw, 25vw")}</div>`)
         .join("\n      ")}
     </div>`
@@ -417,7 +417,7 @@ export function renderProject(ctx, p, prev, next) {
       ${
         next
           ? `<a class="next-link" href="/trabalho/${esc(next.slug)}/">
-        <span class="next-frame">${picture(nextIm, { alt: "", sizes: "(max-width: 900px) 100vw, 60vw" })}</span>
+        <span class="next-frame" style="aspect-ratio:${nextIm.width || 16} / ${nextIm.height || 9}">${picture(nextIm, { alt: "", sizes: "(max-width: 900px) 100vw, 60vw" })}</span>
         <span class="next-text"><span class="next-label">Seguinte ${ARROW_RIGHT}</span><b>${keep(next.titulo)}</b><span>${fmtLine(next)} · ${next.ano}</span></span>
       </a>`
           : ""
