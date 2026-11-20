@@ -1,293 +1,278 @@
 ---
 name: zema studios
-description: Portfolio of a Lisbon colour grading studio, set as a cinematheque programme.
+description: Portfolio of a Lisbon colour grading studio; the graded frames, large and true, on a neutral dark ground.
 colors:
-  paper: "#eeeeeb"
-  ink: "#141414"
-  navy: "#102d4f"
-  red: "#e35443"
-  muted: "#5a5a55"
-  screen: "#101010"
-  screen-ink: "#c9c9c6"
-  screen-muted: "#9a9a96"
+  ground: "#0b0b0b"
+  frame-black: "#000000"
+  lightbox-black: "#050505"
+  hairline: "#262626"
+  pill-line: "#3a3a3a"
+  text: "#ecebe7"
+  text-soft: "#d7d6d2"
+  muted: "#8f8e8a"
+  logo-red: "#e35443"
+  logo-cream: "#e6e3d4"
 typography:
   display:
-    fontFamily: "Archivo, Arial Narrow, sans-serif"
-    fontSize: "clamp(64px, 10.4vw, 168px)"
-    fontWeight: 800
-    lineHeight: 0.8
-    letterSpacing: "-0.02em"
-    fontVariation: "'wdth' 62"
-  headline:
-    fontFamily: "Archivo, Arial Narrow, sans-serif"
-    fontSize: "clamp(56px, 8vw, 96px)"
-    fontWeight: 800
-    lineHeight: 0.86
-    letterSpacing: "-0.01em"
-    fontVariation: "'wdth' 62"
-  headline-catalogue:
-    fontFamily: "Archivo, Arial Narrow, sans-serif"
-    fontSize: "clamp(42px, 6.4vw, 96px)"
-    fontWeight: 800
-    lineHeight: 0.86
-    letterSpacing: "-0.01em"
-    fontVariation: "'wdth' 68"
-  headline-mail:
-    fontFamily: "Archivo, Arial Narrow, sans-serif"
-    fontSize: "clamp(34px, 4.7vw, 76px)"
-    fontWeight: 800
-    lineHeight: 0.92
-    letterSpacing: "-0.01em"
-    fontVariation: "'wdth' 68"
-  title:
-    fontFamily: "Archivo, Arial Narrow, sans-serif"
-    fontSize: "clamp(30px, 3.1vw, 50px)"
-    fontWeight: 800
-    lineHeight: 0.92
-    letterSpacing: "-0.01em"
-    fontVariation: "'wdth' 68"
-  lead:
-    fontFamily: "Archivo, Arial Narrow, sans-serif"
-    fontSize: "clamp(19px, 1.6vw, 23px)"
-    fontWeight: 450
-    lineHeight: 1.3
-  subtitle:
-    fontFamily: "Archivo, Arial Narrow, sans-serif"
-    fontSize: "18px"
+    fontFamily: "Host Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "clamp(44px, 6.6vw, 104px)"
     fontWeight: 500
-    lineHeight: 1.32
-  body:
-    fontFamily: "Archivo, Arial Narrow, sans-serif"
-    fontSize: "17px"
+    lineHeight: 0.95
+    letterSpacing: "-0.05em"
+  headline:
+    fontFamily: "Host Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "clamp(28px, 3.6vw, 56px)"
+    fontWeight: 450
+    lineHeight: 1.12
+    letterSpacing: "-0.03em"
+  mail:
+    fontFamily: "Host Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "clamp(34px, 5.4vw, 88px)"
+    fontWeight: 450
+    lineHeight: 1
+    letterSpacing: "-0.045em"
+  lede:
+    fontFamily: "Host Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "clamp(22px, 2.1vw, 32px)"
     fontWeight: 400
+    lineHeight: 1.28
+    letterSpacing: "-0.02em"
+  title:
+    fontFamily: "Host Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "20px"
+    fontWeight: 500
     lineHeight: 1.5
-    fontFeature: "'lnum'"
-    fontVariation: "'wdth' 100"
-  credit:
-    fontFamily: "Archivo, Arial Narrow, sans-serif"
+    letterSpacing: "-0.01em"
+  body:
+    fontFamily: "Host Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
     fontSize: "16px"
     fontWeight: 400
-    lineHeight: 1.35
+    lineHeight: 1.5
+  ui:
+    fontFamily: "Host Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "15px"
+    fontWeight: 400
+    lineHeight: 1.5
   label:
-    fontFamily: "Archivo, Arial Narrow, sans-serif"
-    fontSize: "14px"
-    fontWeight: 500
-    lineHeight: 1.35
+    fontFamily: "Host Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "13px"
+    fontWeight: 400
+    lineHeight: 1.4
+    fontFeature: "tnum"
 rounded:
   none: "0px"
+  dot: "50%"
+  pill: "999px"
 spacing:
-  still-gap: "14px"
-  pad: "clamp(16px, 3.5vw, 48px)"
-  gap: "clamp(20px, 2.6vw, 40px)"
-  year-column: "clamp(150px, 16vw, 250px)"
-  section-end: "clamp(56px, 8vw, 112px)"
-  max: "1680px"
+  pad: "clamp(16px, 3vw, 44px)"
+  gutter: "16px"
+  row-gap: "40px"
+  mast: "76px"
+  mast-phone: "64px"
+  max: "1760px"
 components:
-  nav-link:
-    textColor: "{colors.ink}"
-    typography: "{typography.body}"
-  filter:
+  button-pill-solid:
+    backgroundColor: "{colors.text}"
+    textColor: "{colors.ground}"
+    typography: "{typography.ui}"
+    rounded: "{rounded.pill}"
+    padding: "14px 22px"
+  button-pill-solid-disabled:
+    backgroundColor: "{colors.muted}"
+    textColor: "{colors.ground}"
+    rounded: "{rounded.pill}"
+  button-pill-outline:
+    backgroundColor: "transparent"
+    textColor: "{colors.text}"
+    typography: "{typography.ui}"
+    rounded: "{rounded.pill}"
+    padding: "11px 20px"
+  filter-toggle:
+    backgroundColor: "transparent"
     textColor: "{colors.muted}"
-    padding: "4px 0"
-  filter-active:
-    textColor: "{colors.ink}"
-  year-numeral:
-    textColor: "{colors.navy}"
-    typography: "{typography.display}"
-  entry-title:
-    textColor: "{colors.ink}"
-    typography: "{typography.title}"
-  ficha-label:
-    textColor: "{colors.muted}"
-    typography: "{typography.label}"
-  ficha-value:
-    textColor: "{colors.ink}"
-    typography: "{typography.credit}"
-  button-primary:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
+    typography: "{typography.ui}"
+    padding: "3px 0"
+  filter-toggle-active:
+    backgroundColor: "transparent"
+    textColor: "{colors.text}"
+  active-dot:
+    backgroundColor: "{colors.logo-red}"
+    rounded: "{rounded.dot}"
+    size: "5px"
+  input-hairline:
+    backgroundColor: "transparent"
+    textColor: "{colors.text}"
     rounded: "{rounded.none}"
-    padding: "12px 22px 11px"
-  button-primary-hover:
-    backgroundColor: "{colors.navy}"
-  button-outline:
-    backgroundColor: "{colors.paper}"
-    textColor: "{colors.ink}"
+    padding: "9px 0"
+  tile-frame:
+    backgroundColor: "{colors.frame-black}"
     rounded: "{rounded.none}"
-    padding: "12px 20px 11px"
-  button-outline-hover:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
-  input-field:
-    textColor: "{colors.ink}"
-    rounded: "{rounded.none}"
-    padding: "7px 0"
-  coupon:
-    backgroundColor: "{colors.paper}"
-    rounded: "{rounded.none}"
-    padding: "22px 24px 24px"
-  lightbox:
-    backgroundColor: "{colors.screen}"
-    textColor: "{colors.screen-ink}"
+  masthead:
+    backgroundColor: "rgb(11 11 11 / 0.88)"
+    textColor: "{colors.text-soft}"
+    height: "{spacing.mast}"
 ---
 
 # Design System: zema studios
 
 ## Overview
 
-**Creative North Star: "The Cinematheque Programme"**
+**Creative North Star: "The Work, Large and True"**
 
-The site is a printed screening programme on uncoated, neutral stock. Every project is an entry: a large frame at its native ratio, a condensed heavy title in caps, and a ficha técnica naming who directed, shot and produced it. Projects run under giant navy year numerals that hold their place while the reader scrolls through that year. Hierarchy comes from width and weight inside one type family and from solid black rules, never from colour fields, cards or shadows.
+The site is a neutral dark room for graded pictures. A full-width featured frame changes on its own, then a dense grid of every project, then project pages where the stills run big. There is no metaphor and no costume: the craft lives in proportion, one well-tuned grotesk, hairlines, and the discipline of never touching a frame. The register is the category standard of dark post-production portfolios (Blacksmith, Electric Theatre Collective, Lol Crawley, Studio Fifteen, Okay), executed with care rather than reinvented.
 
-The frames carry all the colour. The paper is neutral so it cannot tint how a grade reads; black ink and logo navy carry text and structure; logo red appears only as a thin underline mark. Density is generous but not airy: credits are always visible, the frame is the largest thing in every row, and nothing hides behind a hover.
+Density is high where the work is (a 4-up grid of 27 projects, stills packed edge to edge in a 4-column grid) and generous everywhere else (section padding of 72 to 170px, a single statement line, one very large email address). Colour is withheld from the interface so it belongs entirely to the frames: the ground is an exactly neutral near-black, the only hue the chrome ever shows is the logo's red, and that only as a 5px dot.
+
+Rejected on record by the owner: a light "cinematheque programme" world, ColorChecker / one-sheet / ikebana conceits, and generic dark portfolio templates. Stills only; no video loops.
 
 **Key Characteristics:**
-- Neutral off-white paper, black ink, navy as the second ink, red only as a mark.
-- One variable family, Archivo: condensed 800 caps for display, normal-width 400 for reading, 500 for labels.
-- Solid 1px and 2px black rules divide everything; zero radius, zero shadow.
-- Frames sit directly on the paper, uncropped and unfiltered.
-- Lowercase "zema studios", Portuguese labels, plain factual copy.
+- Exactly neutral near-black ground; pure black only inside frame boxes.
+- Frames shown whole: letterboxed on black, never cropped, filtered, dimmed or overlaid.
+- One family, Host Grotesk, tight negative tracking on display sizes, tabular numerals for counts, years and hex codes.
+- Hairline rows (1px #262626) do all structural work; no shadows, no cards, no rounding except pills and the active dot.
+- Brand always lowercase: "zema studios". No eyebrows, taglines or invented claims.
 
 ## Colors
 
-Two inks on neutral paper, with a red mark and one dark viewing room.
+A colourless chrome: neutral greys stepped from black to warm-white, with the logo red held back to a single dot.
 
 ### Primary
-- **Logo Navy** (`navy`): the second ink. Year numerals (home and catalogue page), the contact email at display size, text selection, focus outlines, the focused-field underline and the hover fill of the submit button.
-
-### Secondary
-- **Logo Red** (`red`): a mark, never a fill and never body text. The 2–4px underline under the active filter or view, and under links and titles on hover.
+- **Logo Red** (logo-red): the only accent. Appears solely as the 5px round dot marking the active filter and view in the work bar, and as the caret colour in fields. It never fills a surface, a button or text.
 
 ### Neutral
-- **Programme Paper** (`paper`): every page background, and the browser theme colour. Off-white with R, G and B within 3 of each other, never cream.
-- **Press Black** (`ink`): text, every rule, the coupon border and the submit button fill.
-- **Grey Credit** (`muted`): ficha and table labels, the format line, inactive filters, the folio and pager labels, placeholder text, the disabled button.
-- **Viewing Room** (`screen`): the lightbox surface and backdrop, with `screen-ink` for its controls and `screen-muted` for the frame counter. Video embeds sit on pure black (#000) while they load.
+- **Neutral Ground** (ground): page background, masthead (at 88% opacity), sticky work bar, `theme-color`. R, G and B are equal on purpose: a tinted surround would shift how the grades read.
+- **Frame Black** (frame-black): the box behind every letterboxed frame (hero slide, grid tile, next-project teaser, video embed). The only place pure black appears, so a frame's own blacks read against true black like a masked print.
+- **Lightbox Black** (lightbox-black): the full-screen lightbox ground and backdrop, one step below the page so a still in isolation sits in near-darkness.
+- **Hairline** (hairline): every rule: work-bar underline, ficha rows, list rows, field underlines, section tops, footer top, hero progress track.
+- **Pill Line** (pill-line): the outline of the play pill (showreel, trailer) and the scrollbar thumb.
+- **Warm White** (text): primary text, active controls, focus outline, solid pill fill, hero progress fill, selection background.
+- **Soft White** (text-soft): masthead nav and footer links at rest, one step under full text so hover can brighten them.
+- **Muted Grey** (muted): secondary voice: subtitles, credits, counters, years, labels, ficha terms, the second sentence of the statement, inactive filters, disabled submit.
+- **Logo Cream** (logo-cream): lives only inside `logo.svg`; it is never used as an interface colour.
 
 ### Named Rules
-**The Neutral Surround Rule.** Any surface a frame sits on stays neutral: `paper` on the page, `screen` in the lightbox. No cream, no tint and no brand colour behind a still.
+**The Neutral Surround Rule.** The ground and every grey are R = G = B (or within one warm step for text). Never tint the ground, a frame surround or a surface toward any hue; the grade must read against neutral.
 
-**The Red Mark Rule.** Red appears only as an underline mark: active filter/view, or hover. It never fills a shape, never sets a word and never appears near a frame as decoration.
+**The One Dot Rule.** Red appears in the interface only as the 5px active dot (and the text caret). Its rarity is the point; it is the logo's i-dot, not a brand fill.
+
+**The Black Box Rule.** Pure black is reserved for the box behind a frame. Interface surfaces use the ground, never #000.
 
 ## Typography
 
-**Display Font:** Archivo variable (self-hosted woff2, `wdth` 62–125, `wght` 100–900), with Arial Narrow as the fallback
-**Body Font:** Archivo at normal width (`wdth` 100), with lining numerals
-**Label/Mono Font:** none; labels are Archivo 500
+**Display Font:** Host Grotesk, self-hosted variable (300 to 800), with system-ui fallback
+**Body Font:** Host Grotesk
+**Label Font:** Host Grotesk with tabular numerals
 
-**Character:** One family set two ways, like a programme printed with a single typeface: condensed extra-bold caps that call the screenings, and a plain grotesque that lists the credits.
+**Character:** a single contemporary grotesk carries everything; hierarchy comes from size, weight steps of 400 / 450 / 500 and progressively tighter tracking as size grows, never from a second family.
 
 ### Hierarchy
-- **Display** (800, `wdth` 62, clamp 64–168px, lh 0.8, navy): the year numeral, sticky at the top of its year on the home page. The same style is used for the year at the head of the catalogue page and for "404".
-- **Headline** (800, `wdth` 62, clamp 56–96px, lh 0.86, caps): section heads, Estúdio and Contacto.
-- **Headline, catalogue** (800, `wdth` 68, clamp 42–96px, lh 0.86, caps, balanced): the project title on its own page, and the 404 heading (40–88px).
-- **Headline, mail** (800, `wdth` 68, clamp 34–76px, navy): the contact email address, breaking at the @.
-- **Title** (800, `wdth` 68, clamp 30–50px, lh 0.92, caps, balanced): entry titles. The same voice at smaller sizes sets the credits-index head (28–38px), the coupon title (30px), the pager titles (26–40px), the index-table titles (22px) and the button labels (20–22px).
-- **Lead** (450, clamp 19–23px, lh 1.3, max 46ch): the single programme line under the masthead. Studio paragraphs use the same weight at 20–25px, max 36ch.
-- **Subtitle** (500, 18px, lh 1.32): episode or work subtitle under a title.
-- **Body** (400, 17px, lh 1.5): running text, nav, notes (18px, max 62ch).
-- **Credit** (400, 16px, lh 1.35): ficha values and collaborator names.
-- **Label** (500, 14px, muted, sentence case): ficha labels (Realização, Fotografia, Produção…), table heads (13px), form labels. The format line is 15px muted at 400.
+- **Display** (500, clamp(44px, 6.6vw, 104px), 0.95, -0.05em): project title on the project page; the 404 heading at clamp(40px, 6vw, 90px); the next-project title at clamp(34px, 4.6vw, 72px), -0.045em.
+- **Mail** (450, clamp(34px, 5.4vw, 88px), 1, -0.045em): the contact email address, the largest call to action on the site.
+- **Headline** (450, clamp(28px, 3.6vw, 56px), 1.12, -0.03em, max 23ch, balanced): the single studio statement under the hero; first sentence in full white, the rest muted.
+- **Lede** (400, clamp(22px, 2.1vw, 32px), 1.28, -0.02em, max 26ch): studio paragraphs; second and later paragraphs muted. Project subtitles sit near here at clamp(19px, 1.6vw, 24px).
+- **Title** (500, 20px, -0.01em): hero slide title (subtitle inline in muted 400). Tile titles 500 at 15.5px; list-view titles 500 at clamp(18px, 1.6vw, 24px).
+- **Body** (400, 16px, 1.5): base; form fields and contact text at 17px; project notes at 18px, max 62ch.
+- **UI** (400, 15px): nav, filters, views, buttons, ficha values, footer (14px).
+- **Label** (400, 12.5 to 14px, tabular): counters (01 / 06), years, ficha terms, still captions (number and ratio), palette hex codes, field labels. Never uppercase, never letterspaced.
 
 ### Named Rules
-**The Two Widths Rule.** Display text is condensed (`wdth` 62–68) heavy caps; everything read in sentences is normal width. Nothing is set in between, and no second family is introduced.
+**The One Family Rule.** Host Grotesk is the only face. Do not introduce a serif, mono or display face; reach for weight 450/500 and negative tracking instead.
 
-**The Sentence-Case Label Rule.** Labels are short, muted, 500 weight and in sentence case. There are no tracked-out uppercase kickers above titles.
+**The Tighter As Larger Rule.** Tracking goes from 0 at UI sizes to -0.01em at titles, -0.03em at the statement and -0.045 to -0.05em at display sizes.
+
+**The Lowercase Brand Rule.** "zema studios" is lowercase in every string, title, alt text and metadata, and nav labels are lowercase (trabalho, estúdio, contacto).
 
 ## Layout
 
-A centred column (max 1680px, side padding `pad`) on a two-track programme grid: a `year-column` track (150–250px) holding the sticky numeral, then the content track, separated by `gap`. The programme line (intro and controls) aligns to the content track so the year column reads as a margin.
-
-Each entry is its own grid: frame (1.55fr) and ficha (min 250px, 1fr). The frame is the widest element in the row and takes full track width at its native ratio; vertical frames are capped at 78vh tall and keep their width. Entries are separated by a 1px black rule; years by a 2px rule. The catalogue page header uses three tracks (year, title 1.5fr, ficha 1fr); notes indent to the content track.
-
-Project stills: the lead still at full width, then a 4-column grid with a 14px gap where a landscape frame spans 2 columns and a vertical one spans 1. A landscape frame left alone on the last row spans all 4, so there are no holes and no frames are cropped. Studio and contact use a 1.35fr / 1fr split. Sections end with `section-end` space.
-
-Responsive behaviour:
-- **≤1180px:** the credits index goes to 2 columns; the catalogue ficha drops under the title.
-- **≤900px:** everything is one column. The year numeral becomes a 60px sticky band on paper with a 1px bottom rule, sitting above its entries. Studio and contact stack.
-- **≤760px:** the stills grid goes to 2 columns (landscape frames full width); optional index columns hide; the pager stacks; the lightbox arrows move below the frame beside the counter.
-- **≤560px:** a smaller logo (38px); the credits index goes to 1 column; ficha labels stack over their values.
+- **Container:** content max 1760px, centred; side padding `pad` = clamp(16px, 3vw, 44px). Masthead is sticky, 76px (64px on phones), full bleed.
+- **Hero:** one 16:9 frame box at full content width, capped at the viewport height minus masthead and caption; a caption row under it (74px counter column, title, credits right-aligned), prev/next arrows at bottom right, and a 1px progress line spanning the content width at the bottom.
+- **Work grid:** 4 columns, 16px column gap, 40px row gap; 3 columns at 1280px, 2 at 960px (32px / 12px gaps), 1 at 600px.
+- **Two-column bands:** studio, contact and project head use a 1.3 : 1 (project 1.25 : 1) split with a clamp(40px, 7vw, 120px) gap, collapsing to one column at 960px.
+- **Project stills:** a 4-column packing grid with 16px / 40px gaps: landscape stills span 2, verticals span 1, and a landscape left alone on the last row spans all 4. An all-vertical set lays out in as many equal columns as stills (max 5); on phones it wraps two per row with an odd last still centred.
+- **Rhythm:** section padding steps by clamp: roughly 72 to 150px above the statement, 80 to 170px below sections, 100 to 180px above the next-project teaser.
+- **Phones (760px and below):** hero and project lead run edge to edge (no side padding, still uncropped); the hero subtitle hides; the work bar stops being sticky; stills go to 2 columns with landscape frames full width; list view drops the director and DOP columns; lightbox arrows move to the bottom.
 
 ## Elevation & Depth
 
-The system is flat. There are no shadows, gradients or blurs anywhere. Depth exists only in two places: the sticky year numeral, which stays at the top of its year while the entries scroll under it (on paper with a rule on narrow screens), and the lightbox, which replaces the page with a neutral dark room.
+The system is flat. There are no shadows anywhere. Depth comes from three tonal planes (lightbox #050505 below, frame black inside boxes, the ground around them), from hairlines, and from the frames themselves. The one translucent surface is the masthead: the ground at 88% opacity with a 14px backdrop blur (saturation held at 1), so chrome passing over a frame during scroll softens it without tinting it.
 
 ### Named Rules
-**The Letterpress Rule.** Structure is drawn with solid black rules: 2px between major blocks (masthead, years, sections, catalogue head, pager, footer) and 1px between entries, ficha rows and table rows. There are no hairline greys and no boxes, except the coupon's 2px border.
+**The No Shadow Rule.** No box-shadow, glow or drop shadow on any element. Separate with a 1px hairline or with space.
 
 ## Shapes
 
-Every shape is square: 0px radius on frames, buttons, inputs and the coupon. Frames are never clipped, masked, cropped by `object-fit` or given a border. The only icons are three inline stroke SVGs drawn at text size (left arrow, right arrow, filled play triangle). The logo is the supplied navy/red wordmark SVG, at 46px tall (38px on phones).
+Square by default: frame boxes, tiles, fields, the palette bar and its swatches all have 0 radius. Two exceptions only: pill buttons (999px) and the 5px active dot (50%). Borders are 1px hairlines, almost always a single bottom or top edge rather than a full outline. Arrows are drawn line SVGs (1.3 stroke, 24 by 12 viewbox), and the play icon is a small filled triangle.
 
 ## Components
 
-### Masthead
-- **Style:** the logo on the left and the nav on the right (trabalho, estúdio, contacto: lowercase, 500, no underline), with 20px/18px vertical padding. A 2px rule follows.
-- **Hover:** a 2px red underline offset 0.3em. The footer links behave the same way.
+### Buttons
+Two pills, used sparingly.
+- **Solid pill** (form submit): warm-white fill, ground text, 500 weight, 14px 22px, with a trailing arrow. Hover widens the gap between label and arrow from 14 to 20px over 0.35s on the house ease. Disabled turns muted with a progress cursor.
+- **Outline pill** (Ver showreel, Ver trailer): transparent, 1px pill-line border, play triangle leading, 11px 20px. Hover brightens the border to warm white. Clicking replaces the pill in place with a 16:9 black embed box; nothing autoloads.
+- **Quiet controls** (hero arrows, lightbox close/prev/next): borderless, muted, brighten to text on hover.
 
-### Programme line, filters and views
-- **Style:** the intro line in the lead style, then two button groups split across the row: format filters with a superscript count (12px), and the Programa / Índice view switch. They are plain text buttons (16px, 500, muted), with no box and no fill.
-- **State:** `aria-pressed="true"` sets ink text plus a 3px red underline at a 0.35em offset; hover sets ink text. The filter hides entries of other formats and removes any year left empty; the view choice is remembered in localStorage.
+### Links
+- **Hairline draw-in:** every text link (nav, footer, ficha, project meta, previous-project, 404, list titles) carries a 1px underline that draws in from the left over 0.35s. The email draws a 2px line over 0.5s. Hero and tile titles use a 1px offset underline on hover.
 
-### Year section and entry
-- **Year:** a two-track grid with a 2px top rule; the sticky navy numeral sits in the left track.
-- **Entry:** the frame is a link (removed from the tab order, since the title carries the link) and is shown at native ratio with no treatment. The ficha column holds the title (caps, links to the catalogue page), subtitle, format · client line, and a short ficha (Realização, Fotografia, Produção).
-- **Hover:** hovering the frame or the title gives the title a 3px red underline. The frame itself never changes.
+### Work bar (filters and views)
+Sticky under the masthead on the ground, with a hairline bottom. Contains the "Trabalho" heading (15px, 500), format filters with superscript tabular counts, and Grelha / Lista toggles pushed right. Inactive toggles are muted; the active one turns text and gains the 5px red dot before its label. The chosen view is remembered per visitor.
 
-### Ficha
-- **Style:** a definition list where each row is a label (40% min 7.5em, muted 14px/500) beside a value (16px). Rows are 9px apart in entries. In the studio and contact blocks, rows are ruled with 1px black above and below and have 10px vertical padding. On phones, labels stack over values.
+### Tiles (grid view)
+- **Frame:** 16:9 frame-black box, image contained (letterboxed), 0 radius.
+- **Caption:** title (500) and year (muted, tabular) on one row; subtitle, format and client on the next; director and DOP on a third, all muted. Credits are always visible, never revealed on hover.
+- **Hover preview:** on hover-capable devices, the box cycles through the project's other frames every 850ms, each crossfading in over 0.45s on top of the cover; leaving restores the cover.
 
-### Index table
-- **Style:** a full-width table under a 2px rule, 1px ink rules under each row, cells 11px/18px. Titles are in the title voice at 22px caps with the subtitle muted below; the year column is 500 weight. Hover gives the title a 2px red underline. Below 760px the director, DOP and production columns hide.
+### List view
+A full-width table of hairline rows: title (clamp 18 to 24px, 500) with subtitle muted inline, format, director, DOP, year right-aligned in tabular numerals. Column heads 13px muted.
 
-### Studio
-- **Style:** the section head, then lead paragraphs beside a ruled technical ficha. Below, the "Com quem trabalhámos" credits index (1px top rule) lists collaborators by role in 4 columns, with names separated by a muted " ·".
+### Ficha rows (credits and technical sheet)
+A definition list in hairline rows: term (14px muted) in a 0.8 fraction, value (15px text) in 1.2, 13px vertical padding, a hairline top on the group and below each row. Used for the studio technical sheet, contact details and every project's credits (Realização, Direção de fotografia, Produção, Agência, Cliente / exibição, Cor, Proporção, Fotogramas).
 
-### Contact and coupon form
-- **Contact:** the email in navy at display size, plain paragraphs, and a ruled contact ficha.
-- **Coupon:** a 2px black-bordered box (padding 22/24px). It has a title in the title voice and fields with no box: a muted 14px label over an input with only a 1px ink bottom rule.
-- **Focus:** the bottom rule becomes 2px navy.
-- **Submit:** ink fill, paper text, caps title voice at 20px. It turns navy on hover and muted while sending; a status line below reports the result in plain Portuguese.
+### Inputs / Fields
+- **Style:** transparent, no box, 0 radius, a single 1px hairline underline, 17px text, 9px vertical padding; label above at 13px muted.
+- **Focus:** the underline turns warm white; no glow, no outline ring.
+- **Placeholder:** a muted grey, used once as a hint for the project field.
 
-### Play button (showreel, trailer)
-- **Style:** transparent with a 2px ink border, caps title voice at 22px, and a filled play triangle. It inverts to an ink fill with paper text on hover. Clicking replaces it with a 16:9 embed; nothing loads before the click.
+### Navigation
+Masthead: cream logo left (40px tall, 34px on phones), three lowercase links right at 15px in soft white with the hairline draw-in. Footer: small logo, "zema studios · color grading · Lisboa", email and social links right, hairline top.
 
-### Catalogue page
-- **Back row:** "← Programa" on the left and a tabular-numeral folio ("3 / 27", muted) on the right.
-- **Head:** a 2px rule, the navy year numeral, the title at catalogue size with subtitle and format line, then the full ficha (Realização, Direção de fotografia, Produção, Agência, Cliente / exibição, Cor).
-- **Then:** optional notes, the stills packed as described in Layout (each still opens the lightbox, cursor zoom-in), the trailer button, and the pager.
+### Hero carousel (signature)
+Up to six featured projects stacked in one grid cell; the active slide fades in over 1.1s. A 1px progress line draws across the track over 6.5s, then advances. Hover or focus pauses; stepping with the arrows hands control to the visitor permanently; the tab being hidden stops it. Only the active slide is focusable.
 
-### Pager
-- **Style:** a 2px rule, two columns: "← Sessão anterior" / "Sessão seguinte →" in muted 15px/500 over the neighbouring title in the title voice. The next item aligns right; both stack left-aligned below 760px.
-- **Hover:** a 3px red underline on the title.
+### Project page
+- **Lead:** the first still at its native size and ratio, centred, capped at viewport height; click opens the lightbox.
+- **Head:** back link and project counter (01 / 27), display title, subtitle, format · client · year in muted, optional trailer pill; on the right the ficha rows and the measured palette.
+- **Measured palette (signature):** a 6px bar of up to six swatches whose widths are each colour's measured share of the stills, ordered dark to light, with a caption "Paleta da grade, medida em N fotogramas" and the hex codes behind 8px squares. Values are computed from the images at build time, never typed.
+- **Stills:** packed as described in Layout, each with a caption of its number and measured ratio label (16:9, 2.39:1, 9:16...).
+- **Next project:** a hairline-topped band with the next project's cover in a black box at that frame's own aspect ratio, "Seguinte" label, display-size title and format line; a quiet previous-project link below.
 
 ### Lightbox
-- **Style:** a full-viewport native `<dialog>` on `screen`. The frame is centred and fits within the viewport less 144px horizontally and 120px vertically, never upscaled past its box and never cropped. Controls are text and arrow buttons in `screen-ink` (white on hover): Fechar at the top right, arrows at mid-height on each side, and a muted counter at the bottom centre.
-- **Behaviour:** arrow keys step through the stills, Escape or a click on the backdrop closes, and a single still hides the arrows. On phones the arrows sit below the frame.
+A full-screen native dialog on lightbox black; the still at its own ratio within the viewport minus margins; "Fechar", line-arrow prev/next and a tabular counter in muted. Arrow keys step, clicking the ground closes.
 
-### Footer and 404
-- **Footer:** a 2px rule, the line "zema studios · color grading · Lisboa" at 15px, and the email, Instagram and Vimeo links on the right.
-- **404:** a 2px rule, a navy "404" in the display numeral style, a catalogue-size caps heading, and one plain sentence linking back to the programme.
+### 404
+Display heading "Página não encontrada", one muted line, and a hairline link back to the work.
 
 ### Motion
-Motion is minimal. Colour, underline-colour and background changes ease over 0.15s on filters, views, buttons and the play button. The year change is carried by native sticky positioning, with no animation. Under `prefers-reduced-motion: reduce`, all transitions are removed.
+One ease for drawn and spatial movement, cubic-bezier(0.16, 1, 0.3, 1); plain ease for fades. Under `prefers-reduced-motion: reduce` every transition and animation is removed, the hero does not advance and the tile preview does not run.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** show every frame uncropped at its native ratio, directly on `paper` or `screen`, with no filter, overlay, border, radius or text on it.
-- **Do** keep the paper neutral (#eeeeeb, R/G/B within 3) and the lightbox neutral dark (#101010).
-- **Do** set titles, section heads and numerals in Archivo 800 condensed caps (`wdth` 62–68), and everything read in sentences in Archivo at normal width.
-- **Do** divide with solid black rules: 2px between blocks, 1px between rows.
-- **Do** use navy for the year numerals, the contact email, focus and selection; use red only as an underline mark for active and hover states.
-- **Do** keep credits visible in the ficha at all times, labels in muted 14px/500 sentence case.
-- **Do** write the brand as "zema studios", always lowercase, including in alt text and titles.
+- **Do** letterbox every frame on frame black (object-fit: contain) when its ratio differs from its box.
+- **Do** show stills at native aspect ratio on project pages, including all-vertical sets laid out in their own equal columns.
+- **Do** keep the ground exactly neutral (#0b0b0b) and reserve #000 for frame boxes.
+- **Do** separate content with 1px hairlines (#262626) and space; use the ficha-row pattern for any credits or facts.
+- **Do** keep credits (director, DOP) visible on every tile and slide.
+- **Do** use the 5px red dot as the sole active-state marker for toggles.
+- **Do** use tabular numerals for counters, years, ratios and hex codes.
+- **Do** derive measured values (palette, ratio labels) from the images at build time.
+- **Do** write "zema studios" in lowercase everywhere.
 
 ### Don't:
-- **Don't** crop, tint, filter, round or overlay a graded frame, or use `object-fit: cover` on one.
-- **Don't** use a cream or tinted surround; the logo's cream (#E6E3D4) is not a page colour.
-- **Don't** add shadows, gradients, rounded corners, cards or grey hairlines.
-- **Don't** fill shapes or set text in red.
-- **Don't** add eyebrows or kickers above titles, section numbers, taglines or marketing superlatives.
-- **Don't** introduce a second typeface or a mid-width display cut.
+- **Don't** crop, filter, dim, tint or overlay a graded frame, and don't put text over an image.
+- **Don't** tint the ground or any surround toward a hue, and don't use red as a fill, text colour or button.
+- **Don't** add shadows, cards or rounded corners beyond pill buttons and the active dot.
+- **Don't** add eyebrows, kickers, taglines, marketing claims, or strings not drawn from content or fixed labels.
+- **Don't** introduce a second typeface or uppercase letterspaced labels.
+- **Don't** autoplay video or use video loops; stills only, embeds load on click.
 - **Don't** hide credits behind hover.

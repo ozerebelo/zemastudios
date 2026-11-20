@@ -1,141 +1,147 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-19T13:20:00Z",
+  "generatedAt": "2026-11-20T12:00:00Z",
   "title": "Design System: zema studios",
   "extensions": {
     "colorMeta": {
-      "paper": { "role": "neutral", "displayName": "Programme Paper", "canonical": "#eeeeeb", "tonalRamp": ["#3a3a39", "#5e5e5c", "#858583", "#acacaa", "#cfcfcc", "#e2e2df", "#eeeeeb", "#f8f8f6"] },
-      "ink": { "role": "neutral", "displayName": "Press Black", "canonical": "#141414", "tonalRamp": ["#0a0a0a", "#141414", "#2b2b2b", "#454545", "#646464", "#8a8a8a", "#b5b5b5", "#e0e0e0"] },
-      "navy": { "role": "primary", "displayName": "Logo Navy", "canonical": "#102d4f", "tonalRamp": ["#0a1a2e", "#102d4f", "#1f4672", "#36618f", "#5a80a8", "#87a3c2", "#b5c6d9", "#e1e8f0"] },
-      "red": { "role": "secondary", "displayName": "Logo Red", "canonical": "#e35443", "tonalRamp": ["#4a150f", "#7a2318", "#a83527", "#e35443", "#ea7a6d", "#f0a097", "#f6c6c0", "#fbe9e6"] },
-      "muted": { "role": "neutral", "displayName": "Grey Credit", "canonical": "#5a5a55", "tonalRamp": ["#1c1c1a", "#33332f", "#5a5a55", "#7a7a74", "#999993", "#b9b9b4", "#d8d8d4", "#f0f0ed"] },
-      "screen": { "role": "neutral", "displayName": "Viewing Room", "canonical": "#101010", "tonalRamp": ["#000000", "#101010", "#1e1e1e", "#2e2e2e", "#4a4a4a", "#6e6e6e", "#9a9a9a", "#c9c9c9"] },
-      "screen-ink": { "role": "neutral", "displayName": "Viewing Room Control", "canonical": "#c9c9c6", "tonalRamp": ["#2a2a29", "#4a4a48", "#6e6e6c", "#939391", "#b0b0ad", "#c9c9c6", "#e8e8e5", "#ffffff"] },
-      "screen-muted": { "role": "neutral", "displayName": "Viewing Room Counter", "canonical": "#9a9a96", "tonalRamp": ["#22221f", "#3c3c39", "#5a5a57", "#7a7a76", "#9a9a96", "#b6b6b3", "#d2d2cf", "#ececea"] }
+      "ground": { "role": "neutral", "displayName": "Neutral Ground", "canonical": "#0b0b0b", "tonalRamp": ["#000000", "#050505", "#0b0b0b", "#161616", "#262626", "#3a3a3a", "#8f8e8a", "#ecebe7"] },
+      "frame-black": { "role": "neutral", "displayName": "Frame Black", "canonical": "#000000", "tonalRamp": ["#000000", "#050505", "#0b0b0b", "#161616", "#262626", "#3a3a3a", "#8f8e8a", "#ecebe7"] },
+      "lightbox-black": { "role": "neutral", "displayName": "Lightbox Black", "canonical": "#050505", "tonalRamp": ["#000000", "#050505", "#0b0b0b", "#161616", "#262626", "#3a3a3a", "#8f8e8a", "#ecebe7"] },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "#262626", "tonalRamp": ["#0b0b0b", "#161616", "#1e1e1e", "#262626", "#303030", "#3a3a3a", "#5a5a59", "#8f8e8a"] },
+      "pill-line": { "role": "neutral", "displayName": "Pill Line", "canonical": "#3a3a3a", "tonalRamp": ["#0b0b0b", "#1a1a1a", "#262626", "#3a3a3a", "#4c4c4b", "#6a6a68", "#8f8e8a", "#ecebe7"] },
+      "text": { "role": "neutral", "displayName": "Warm White", "canonical": "#ecebe7", "tonalRamp": ["#262626", "#4a4a48", "#6e6d6a", "#8f8e8a", "#b0afab", "#c9c8c4", "#d7d6d2", "#ecebe7"] },
+      "text-soft": { "role": "neutral", "displayName": "Soft White", "canonical": "#d7d6d2", "tonalRamp": ["#262626", "#4a4a48", "#6e6d6a", "#8f8e8a", "#b0afab", "#c9c8c4", "#d7d6d2", "#ecebe7"] },
+      "muted": { "role": "neutral", "displayName": "Muted Grey", "canonical": "#8f8e8a", "tonalRamp": ["#262626", "#3a3a39", "#545351", "#6e6d6a", "#8f8e8a", "#b0afab", "#d7d6d2", "#ecebe7"] },
+      "logo-red": { "role": "primary", "displayName": "Logo Red", "canonical": "#e35443", "tonalRamp": ["#3a120d", "#5e1d15", "#86291e", "#b03727", "#e35443", "#ea7a6c", "#f1a59b", "#f8d2cc"] },
+      "logo-cream": { "role": "neutral", "displayName": "Logo Cream (logo asset only)", "canonical": "#e6e3d4", "tonalRamp": ["#2e2d28", "#4d4b42", "#6d6a5d", "#8f8c7c", "#b2ae9d", "#ccc8b7", "#e6e3d4", "#f3f1e9"] }
     },
     "typographyMeta": {
-      "display": { "displayName": "Year Numeral", "purpose": "Sticky navy year numeral in the programme; catalogue-page year; 404." },
-      "headline": { "displayName": "Section Head", "purpose": "Estúdio and Contacto section heads, condensed caps." },
-      "headline-catalogue": { "displayName": "Catalogue Title", "purpose": "Project title on its catalogue page; 404 heading." },
-      "headline-mail": { "displayName": "Contact Address", "purpose": "The contact email in navy at display size." },
-      "title": { "displayName": "Entry Title", "purpose": "Entry titles; the same voice sets pager, coupon, index and button labels at smaller sizes." },
-      "lead": { "displayName": "Programme Line", "purpose": "The single intro line and studio paragraphs." },
-      "subtitle": { "displayName": "Subtitle", "purpose": "Episode or work subtitle under a title." },
-      "body": { "displayName": "Body", "purpose": "Running text, nav, notes." },
-      "credit": { "displayName": "Credit", "purpose": "Ficha values and collaborator names." },
-      "label": { "displayName": "Ficha Label", "purpose": "Muted sentence-case labels for ficha rows, table heads and form fields." }
+      "display": { "displayName": "Display", "purpose": "Project title, 404 heading, next-project title." },
+      "headline": { "displayName": "Statement", "purpose": "The single studio statement under the hero; first sentence white, rest muted." },
+      "mail": { "displayName": "Mail", "purpose": "The contact email address, the main call to action." },
+      "lede": { "displayName": "Lede", "purpose": "Studio paragraphs; later paragraphs muted." },
+      "title": { "displayName": "Title", "purpose": "Hero slide title; tile and list titles at 500." },
+      "body": { "displayName": "Body", "purpose": "Base text, fields (17px), project notes (18px, 62ch)." },
+      "ui": { "displayName": "UI", "purpose": "Nav, filters, views, buttons, ficha values." },
+      "label": { "displayName": "Label", "purpose": "Counters, years, ficha terms, still captions, hex codes; tabular, never uppercase." }
     },
     "shadows": [],
     "motion": [
-      { "name": "state-change", "value": "0.15s ease", "purpose": "Colour, underline-colour and background on filters, views, submit and play buttons." },
-      { "name": "reduced-motion", "value": "transition: none", "purpose": "All transitions removed under prefers-reduced-motion: reduce." }
+      { "name": "ease-house", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Drawn and spatial movement: link hairlines (0.35s), email line (0.5s), pill gap." },
+      { "name": "link-draw", "value": "background-size 0.35s cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "1px underline drawing in from the left on every text link." },
+      { "name": "hero-fade", "value": "opacity 1.1s ease", "purpose": "Crossfade between featured slides." },
+      { "name": "hero-advance", "value": "6500ms linear", "purpose": "Progress line draw and slide interval; pauses on hover/focus, stops after manual stepping." },
+      { "name": "tile-peek", "value": "850ms interval, opacity 0.45s ease", "purpose": "Hover preview cycling a project's other frames over the cover." },
+      { "name": "reduced-motion", "value": "transition: none; animation: none", "purpose": "Under prefers-reduced-motion everything is still: no hero advance, no tile preview." }
     ],
     "breakpoints": [
-      { "name": "wide", "value": "1180px" },
-      { "name": "stack", "value": "900px" },
-      { "name": "tablet", "value": "760px" },
-      { "name": "phone", "value": "560px" }
+      { "name": "grid-3", "value": "1280px" },
+      { "name": "tablet", "value": "960px" },
+      { "name": "phone", "value": "760px" },
+      { "name": "grid-1", "value": "600px" }
     ]
   },
   "components": [
     {
-      "name": "Masthead Nav",
-      "kind": "nav",
-      "refersTo": "nav-link",
-      "description": "Lowercase nav at the right of the masthead; red underline mark on hover.",
-      "html": "<header class=\"ds-mast\"><span class=\"ds-brand\">zema studios</span><nav class=\"ds-nav\"><a href=\"#\">trabalho</a><a href=\"#\">estúdio</a><a href=\"#\">contacto</a></nav></header>",
-      "css": ".ds-mast { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 20px 0 18px; border-bottom: 2px solid var(--ink, #141414); background: var(--paper, #eeeeeb); color: var(--ink, #141414); font-family: Archivo, 'Arial Narrow', sans-serif; font-size: 17px; } .ds-brand { color: var(--navy, #102d4f); font-weight: 800; font-size: 22px; } .ds-nav { display: flex; gap: 32px; } .ds-nav a { color: inherit; font-weight: 500; text-decoration: none; } .ds-nav a:hover { text-decoration: underline; text-decoration-color: var(--red, #e35443); text-decoration-thickness: 2px; text-underline-offset: 0.3em; } .ds-nav a:focus-visible { outline: 2px solid var(--navy, #102d4f); outline-offset: 3px; }"
+      "name": "Solid Pill",
+      "kind": "button",
+      "refersTo": "button-pill-solid",
+      "description": "Form submit; warm-white pill whose arrow gap widens on hover.",
+      "html": "<button class=\"ds-pill\">Enviar <svg width=\"22\" height=\"11\" viewBox=\"0 0 24 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" aria-hidden=\"true\"><path d=\"M17 1l5 5-5 5M22 6H1\"/></svg></button>",
+      "css": ".ds-pill { display: inline-flex; align-items: center; gap: 14px; background: #ecebe7; color: #0b0b0b; border: 0; border-radius: 999px; padding: 14px 22px; font: 500 15px/1.5 'Host Grotesk', system-ui, sans-serif; cursor: pointer; transition: gap 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s; } .ds-pill:hover { gap: 20px; } .ds-pill:focus-visible { outline: 1px solid #ecebe7; outline-offset: 4px; } .ds-pill:disabled { background: #8f8e8a; cursor: progress; }"
     },
     {
-      "name": "Format Filters",
+      "name": "Outline Pill",
+      "kind": "button",
+      "refersTo": "button-pill-outline",
+      "description": "Ver showreel / Ver trailer; replaced in place by a 16:9 black embed on click.",
+      "html": "<button class=\"ds-play\"><svg width=\"9\" height=\"11\" viewBox=\"0 0 12 14\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M1 1l10 6-10 6z\"/></svg> Ver trailer</button>",
+      "css": ".ds-play { display: inline-flex; align-items: center; gap: 12px; background: transparent; color: #ecebe7; border: 1px solid #3a3a3a; border-radius: 999px; padding: 11px 20px; font: 400 15px/1.5 'Host Grotesk', system-ui, sans-serif; cursor: pointer; transition: border-color 0.2s; } .ds-play:hover { border-color: #ecebe7; } .ds-play:focus-visible { outline: 1px solid #ecebe7; outline-offset: 4px; }"
+    },
+    {
+      "name": "Work Bar Toggles",
       "kind": "chip",
-      "refersTo": "filter",
-      "description": "Text-only filter buttons with superscript counts; pressed state is ink text with a 3px red underline.",
-      "html": "<div class=\"ds-filters\"><button aria-pressed=\"true\">Tudo <span>27</span></button><button aria-pressed=\"false\">Séries <span>15</span></button><button aria-pressed=\"false\">Cinema <span>4</span></button><button aria-pressed=\"false\">Videoclips <span>2</span></button></div>",
-      "css": ".ds-filters { display: flex; flex-wrap: wrap; gap: 4px 20px; background: var(--paper, #eeeeeb); font-family: Archivo, 'Arial Narrow', sans-serif; } .ds-filters button { background: none; border: 0; padding: 4px 0; cursor: pointer; font: 500 16px Archivo, 'Arial Narrow', sans-serif; color: var(--muted, #5a5a55); text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 3px; text-underline-offset: 0.35em; transition: color 0.15s, text-decoration-color 0.15s; } .ds-filters button span { font-size: 12px; vertical-align: 0.45em; } .ds-filters button:hover { color: var(--ink, #141414); } .ds-filters button[aria-pressed=\"true\"] { color: var(--ink, #141414); text-decoration-color: var(--red, #e35443); } .ds-filters button:focus-visible { outline: 2px solid var(--navy, #102d4f); outline-offset: 3px; }"
+      "refersTo": "filter-toggle",
+      "description": "Format filters and view toggles; the active one turns white with the 5px red dot.",
+      "html": "<div class=\"ds-bar\"><b>Trabalho</b><button class=\"ds-tg\" aria-pressed=\"true\">Tudo<sup>27</sup></button><button class=\"ds-tg\" aria-pressed=\"false\">Séries<sup>6</sup></button><button class=\"ds-tg\" aria-pressed=\"false\">Cinema<sup>5</sup></button></div>",
+      "css": ".ds-bar { display: flex; align-items: baseline; gap: 22px; padding-block: 14px; background: #0b0b0b; border-bottom: 1px solid #262626; font: 400 15px/1.5 'Host Grotesk', system-ui, sans-serif; color: #ecebe7; } .ds-bar b { font-weight: 500; margin-right: 14px; } .ds-tg { background: none; border: 0; padding: 3px 0; font: inherit; color: #8f8e8a; cursor: pointer; transition: color 0.2s; } .ds-tg sup { font-size: 10px; margin-left: 3px; font-variant-numeric: tabular-nums; } .ds-tg:hover, .ds-tg[aria-pressed=true] { color: #ecebe7; } .ds-tg[aria-pressed=true]::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #e35443; margin-right: 8px; vertical-align: 0.2em; } .ds-tg:focus-visible { outline: 1px solid #ecebe7; outline-offset: 4px; }"
     },
     {
-      "name": "Programme Entry",
-      "kind": "custom",
-      "refersTo": "entry-title",
-      "description": "Year numeral, uncropped frame and ficha in one programme row; the frame never changes, the title takes the red mark on hover.",
-      "html": "<section class=\"ds-year\"><h2 class=\"ds-yr\">2024</h2><div class=\"ds-entry\"><a class=\"ds-still\" href=\"#\"><span class=\"ds-frame\"></span></a><div><h3 class=\"ds-title\"><a href=\"#\">A Filha</a></h3><p class=\"ds-fmt\">Série</p><dl class=\"ds-ficha\"><div><dt>Realização</dt><dd>António Borges Correia</dd></div><div><dt>Fotografia</dt><dd>Aline Belfort</dd></div><div><dt>Produção</dt><dd>Plural Entertainment</dd></div></dl></div></div></section>",
-      "css": ".ds-year { display: grid; grid-template-columns: 150px minmax(0, 1fr); column-gap: 24px; border-top: 2px solid var(--ink, #141414); background: var(--paper, #eeeeeb); color: var(--ink, #141414); font-family: Archivo, 'Arial Narrow', sans-serif; } .ds-yr { margin: 0; padding-top: 12px; font-size: 72px; line-height: 0.8; font-weight: 800; font-stretch: 62%; letter-spacing: -0.02em; color: var(--navy, #102d4f); } .ds-entry { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(200px, 1fr); column-gap: 24px; padding: 18px 0 30px; } .ds-frame { display: block; aspect-ratio: 2.39 / 1; background: #2b2b2b; } .ds-title { margin: 0; font-size: 34px; line-height: 0.92; font-weight: 800; font-stretch: 68%; letter-spacing: -0.01em; text-transform: uppercase; } .ds-title a { color: inherit; text-decoration: none; } .ds-title a:hover, .ds-entry:has(.ds-still:hover) .ds-title a { text-decoration: underline; text-decoration-color: var(--red, #e35443); text-decoration-thickness: 3px; text-underline-offset: 0.12em; } .ds-title a:focus-visible { outline: 2px solid var(--navy, #102d4f); outline-offset: 3px; } .ds-sub { margin: 10px 0 0; font-size: 18px; font-weight: 500; line-height: 1.32; } .ds-fmt { margin: 6px 0 0; font-size: 15px; color: var(--muted, #5a5a55); } .ds-ficha { margin: 22px 0 0; display: grid; gap: 9px; } .ds-ficha div { display: grid; grid-template-columns: minmax(7.5em, 40%) minmax(0, 1fr); gap: 12px; } .ds-ficha dt { font-size: 14px; font-weight: 500; color: var(--muted, #5a5a55); } .ds-ficha dd { margin: 0; font-size: 16px; line-height: 1.35; }"
+      "name": "Letterboxed Tile",
+      "kind": "card",
+      "refersTo": "tile-frame",
+      "description": "Grid tile: 16:9 black box with the cover contained, credits always visible below.",
+      "html": "<a class=\"ds-tile\" href=\"#\"><span class=\"ds-tile-frame\"><span class=\"ds-tile-img\"></span></span><span class=\"ds-tile-row\"><b>Título</b><span>2025</span></span><span class=\"ds-tile-sub\">Série · Prime Video</span><span class=\"ds-tile-sub\">Realização Nome · Fotografia Nome</span></a>",
+      "css": ".ds-tile { display: grid; gap: 3px; width: 280px; color: #ecebe7; text-decoration: none; font-family: 'Host Grotesk', system-ui, sans-serif; } .ds-tile-frame { display: flex; align-items: center; aspect-ratio: 16 / 9; background: #000; margin-bottom: 9px; } .ds-tile-img { display: block; width: 100%; aspect-ratio: 2.39 / 1; background: linear-gradient(120deg, #2b3a3f, #a57a52); } .ds-tile-row { display: flex; justify-content: space-between; align-items: baseline; } .ds-tile-row b { font-weight: 500; font-size: 15.5px; } .ds-tile-row span, .ds-tile-sub { font-size: 13px; color: #8f8e8a; font-variant-numeric: tabular-nums; } .ds-tile:hover b { text-decoration: underline; text-underline-offset: 0.22em; text-decoration-thickness: 1px; } .ds-tile:focus-visible { outline: 1px solid #ecebe7; outline-offset: 4px; }"
     },
     {
-      "name": "Submit Button",
-      "kind": "button",
-      "refersTo": "button-primary",
-      "description": "Ink-filled square button in the condensed caps voice; navy on hover.",
-      "html": "<button class=\"ds-btn-primary\" type=\"button\">Enviar pedido</button>",
-      "css": ".ds-btn-primary { background: var(--ink, #141414); color: var(--paper, #eeeeeb); border: 0; border-radius: 0; cursor: pointer; padding: 12px 22px 11px; font-family: Archivo, 'Arial Narrow', sans-serif; font-size: 20px; font-weight: 800; font-stretch: 68%; letter-spacing: -0.01em; text-transform: uppercase; line-height: 1; transition: background 0.15s; } .ds-btn-primary:hover { background: var(--navy, #102d4f); } .ds-btn-primary:focus-visible { outline: 2px solid var(--navy, #102d4f); outline-offset: 3px; } .ds-btn-primary:disabled { background: var(--muted, #5a5a55); cursor: progress; }"
-    },
-    {
-      "name": "Play Button",
-      "kind": "button",
-      "refersTo": "button-outline",
-      "description": "Outlined square button for showreel and trailer; inverts to ink on hover; loads the embed only on click.",
-      "html": "<button class=\"ds-btn-outline\" type=\"button\"><svg viewBox=\"0 0 12 14\" width=\"12\" height=\"14\" aria-hidden=\"true\"><path d=\"M1 1l10 6-10 6z\" fill=\"currentColor\"/></svg> Ver trailer</button>",
-      "css": ".ds-btn-outline { display: inline-flex; align-items: center; gap: 12px; background: transparent; color: var(--ink, #141414); border: 2px solid var(--ink, #141414); border-radius: 0; cursor: pointer; padding: 12px 20px 11px; font-family: Archivo, 'Arial Narrow', sans-serif; font-size: 22px; font-weight: 800; font-stretch: 68%; letter-spacing: -0.01em; text-transform: uppercase; line-height: 1; transition: background 0.15s, color 0.15s; } .ds-btn-outline:hover { background: var(--ink, #141414); color: var(--paper, #eeeeeb); } .ds-btn-outline:focus-visible { outline: 2px solid var(--navy, #102d4f); outline-offset: 3px; }"
-    },
-    {
-      "name": "Coupon Field",
+      "name": "Hairline Field",
       "kind": "input",
-      "refersTo": "input-field",
-      "description": "Boxless field inside the 2px-ruled coupon: muted label, 1px ink bottom rule, 2px navy rule on focus.",
-      "html": "<form class=\"ds-coupon\"><p class=\"ds-coupon-title\">Pedido de orçamento</p><div class=\"ds-field\"><label for=\"ds-email\">Email</label><input id=\"ds-email\" type=\"email\"></div><div class=\"ds-field\"><label for=\"ds-proj\">Projeto</label><input id=\"ds-proj\" placeholder=\"Formato, duração, câmara, data de entrega\"></div></form>",
-      "css": ".ds-coupon { border: 2px solid var(--ink, #141414); padding: 22px 24px 24px; display: grid; gap: 16px; background: var(--paper, #eeeeeb); color: var(--ink, #141414); font-family: Archivo, 'Arial Narrow', sans-serif; } .ds-coupon-title { margin: 0; font-size: 30px; font-weight: 800; font-stretch: 68%; text-transform: uppercase; line-height: 0.95; } .ds-field label { display: block; font-size: 14px; font-weight: 500; color: var(--muted, #5a5a55); margin-bottom: 2px; } .ds-field input { width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--ink, #141414); border-radius: 0; color: var(--ink, #141414); font: 400 17px Archivo, 'Arial Narrow', sans-serif; padding: 7px 0; } .ds-field input::placeholder { color: var(--muted, #5a5a55); opacity: 1; } .ds-field input:focus { outline: none; border-bottom: 2px solid var(--navy, #102d4f); padding-bottom: 6px; }"
+      "refersTo": "input-hairline",
+      "description": "Contact form field: label above, single underline that turns white on focus.",
+      "html": "<div class=\"ds-field\"><label for=\"ds-f\">Email</label><input id=\"ds-f\" type=\"email\"></div>",
+      "css": ".ds-field { font-family: 'Host Grotesk', system-ui, sans-serif; width: 320px; } .ds-field label { display: block; font-size: 13px; color: #8f8e8a; margin-bottom: 4px; } .ds-field input { width: 100%; background: transparent; border: 0; border-bottom: 1px solid #262626; border-radius: 0; color: #ecebe7; font: inherit; font-size: 17px; padding: 9px 0; caret-color: #e35443; transition: border-color 0.2s; } .ds-field input:focus { outline: none; border-bottom-color: #ecebe7; }"
     },
     {
-      "name": "Pager",
-      "kind": "nav",
-      "refersTo": "entry-title",
-      "description": "Previous/next screening under a 2px rule: muted label over the neighbouring title.",
-      "html": "<nav class=\"ds-pager\"><a href=\"#\"><span>← Sessão anterior</span><b>Recursos Humanos</b></a><a class=\"ds-next\" href=\"#\"><span>Sessão seguinte →</span><b>Moamba</b></a></nav>",
-      "css": ".ds-pager { border-top: 2px solid var(--ink, #141414); padding-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; background: var(--paper, #eeeeeb); color: var(--ink, #141414); font-family: Archivo, 'Arial Narrow', sans-serif; } .ds-pager a { color: inherit; text-decoration: none; display: grid; gap: 6px; } .ds-pager span { font-size: 15px; font-weight: 500; color: var(--muted, #5a5a55); } .ds-pager b { font-size: 30px; font-weight: 800; font-stretch: 68%; letter-spacing: -0.01em; text-transform: uppercase; line-height: 0.92; } .ds-pager a:hover b { text-decoration: underline; text-decoration-color: var(--red, #e35443); text-decoration-thickness: 3px; text-underline-offset: 0.12em; } .ds-pager a:focus-visible { outline: 2px solid var(--navy, #102d4f); outline-offset: 3px; } .ds-pager .ds-next { text-align: right; justify-items: end; }"
-    },
-    {
-      "name": "Lightbox",
+      "name": "Ficha Rows",
       "kind": "custom",
-      "refersTo": "lightbox",
-      "description": "Neutral dark viewing room: frame centred uncropped, text controls, tabular counter.",
-      "html": "<div class=\"ds-lightbox\"><span class=\"ds-lb-frame\"></span><button class=\"ds-lb-close\" type=\"button\">Fechar</button><p class=\"ds-lb-n\">3 / 9</p></div>",
-      "css": ".ds-lightbox { position: relative; display: grid; place-items: center; min-height: 320px; padding: 48px 72px; background: #101010; color: #c9c9c6; font-family: Archivo, 'Arial Narrow', sans-serif; } .ds-lb-frame { display: block; width: 100%; aspect-ratio: 1.85 / 1; background: #3a3a3a; } .ds-lb-close { position: absolute; top: 8px; right: 8px; background: none; border: 0; color: #c9c9c6; cursor: pointer; padding: 14px 18px; font: 500 16px Archivo, 'Arial Narrow', sans-serif; } .ds-lb-close:hover { color: #fff; } .ds-lb-close:focus-visible { outline: 2px solid #e8e8e5; outline-offset: 3px; } .ds-lb-n { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); margin: 0; font-size: 14px; color: #9a9a96; font-variant-numeric: tabular-nums; }"
+      "description": "Credits and facts as hairline definition rows.",
+      "html": "<dl class=\"ds-ficha\"><div><dt>Realização</dt><dd>Nome</dd></div><div><dt>Direção de fotografia</dt><dd>Nome</dd></div><div><dt>Proporção</dt><dd>2.39:1</dd></div></dl>",
+      "css": ".ds-ficha { margin: 0; width: 420px; border-top: 1px solid #262626; font-family: 'Host Grotesk', system-ui, sans-serif; } .ds-ficha div { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 16px; padding-block: 13px; border-bottom: 1px solid #262626; } .ds-ficha dt { font-size: 14px; color: #8f8e8a; } .ds-ficha dd { margin: 0; font-size: 15px; color: #ecebe7; }"
+    },
+    {
+      "name": "Masthead",
+      "kind": "nav",
+      "refersTo": "masthead",
+      "description": "Sticky translucent bar: logo left, lowercase links with hairline draw-in right.",
+      "html": "<header class=\"ds-mast\"><span class=\"ds-logo\">zema studios</span><nav><a href=\"#\">trabalho</a><a href=\"#\">estúdio</a><a href=\"#\">contacto</a></nav></header>",
+      "css": ".ds-mast { height: 76px; display: flex; align-items: center; justify-content: space-between; padding-inline: 32px; background: rgb(11 11 11 / 0.88); backdrop-filter: blur(14px); font: 400 15px/1.5 'Host Grotesk', system-ui, sans-serif; } .ds-logo { color: #e6e3d4; font-weight: 600; letter-spacing: -0.03em; } .ds-mast nav { display: flex; gap: 32px; } .ds-mast a { color: #d7d6d2; text-decoration: none; padding-bottom: 2px; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s; } .ds-mast a:hover { color: #ecebe7; background-size: 100% 1px; } .ds-mast a:focus-visible { outline: 1px solid #ecebe7; outline-offset: 4px; }"
+    },
+    {
+      "name": "Measured Palette",
+      "kind": "custom",
+      "description": "Grade palette: proportional 6px swatch bar plus hex codes, computed from the stills at build time.",
+      "html": "<figure class=\"ds-pal\"><div class=\"ds-pal-bar\"><span style=\"flex:0.31;background:#141518\"></span><span style=\"flex:0.22;background:#2e3a3c\"></span><span style=\"flex:0.18;background:#5b5446\"></span><span style=\"flex:0.15;background:#8c7458\"></span><span style=\"flex:0.14;background:#c8ad8a\"></span></div><figcaption><span>Paleta da grade, medida em 8 fotogramas</span><span>#141518 #2e3a3c #5b5446 #8c7458 #c8ad8a</span></figcaption></figure>",
+      "css": ".ds-pal { margin: 0; width: 420px; font-family: 'Host Grotesk', system-ui, sans-serif; } .ds-pal-bar { display: flex; height: 6px; } .ds-pal-bar span { min-width: 2px; } .ds-pal figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; margin-top: 10px; font-size: 12.5px; color: #8f8e8a; font-variant-numeric: tabular-nums; }"
     }
   ],
   "narrative": {
-    "northStar": "The Cinematheque Programme",
-    "overview": "The site is a printed screening programme on uncoated, neutral stock. Every project is an entry: a large frame at its native ratio, a condensed heavy title in caps, and a ficha técnica naming who directed, shot and produced it. Projects run under giant navy year numerals that hold their place while the reader scrolls through that year. Hierarchy comes from width and weight inside one type family and from solid black rules, never from colour fields, cards or shadows.\n\nThe frames carry all the colour. The paper is neutral so it cannot tint how a grade reads; black ink and logo navy carry text and structure; logo red appears only as a thin underline mark. Density is generous but not airy: credits are always visible, the frame is the largest thing in every row, and nothing hides behind a hover.",
+    "northStar": "The Work, Large and True",
+    "overview": "The site is a neutral dark room for graded pictures. A full-width featured frame changes on its own, then a dense grid of every project, then project pages where the stills run big. There is no metaphor and no costume: the craft lives in proportion, one well-tuned grotesk, hairlines, and the discipline of never touching a frame. The register is the category standard of dark post-production portfolios (Blacksmith, Electric Theatre Collective, Lol Crawley, Studio Fifteen, Okay), executed with care rather than reinvented.\n\nDensity is high where the work is (a 4-up grid of 27 projects, stills packed edge to edge in a 4-column grid) and generous everywhere else (section padding of 72 to 170px, a single statement line, one very large email address). Colour is withheld from the interface so it belongs entirely to the frames: the ground is an exactly neutral near-black, the only hue the chrome ever shows is the logo's red, and that only as a 5px dot.\n\nRejected on record by the owner: a light \"cinematheque programme\" world, ColorChecker / one-sheet / ikebana conceits, and generic dark portfolio templates. Stills only; no video loops.",
     "keyCharacteristics": [
-      "Neutral off-white paper, black ink, navy as the second ink, red only as a mark.",
-      "One variable family, Archivo: condensed 800 caps for display, normal-width 400 for reading, 500 for labels.",
-      "Solid 1px and 2px black rules divide everything; zero radius, zero shadow.",
-      "Frames sit directly on the paper, uncropped and unfiltered.",
-      "Lowercase \"zema studios\", Portuguese labels, plain factual copy."
+      "Exactly neutral near-black ground; pure black only inside frame boxes.",
+      "Frames shown whole: letterboxed on black, never cropped, filtered, dimmed or overlaid.",
+      "One family, Host Grotesk, tight negative tracking on display sizes, tabular numerals for counts, years and hex codes.",
+      "Hairline rows (1px #262626) do all structural work; no shadows, no cards, no rounding except pills and the active dot.",
+      "Brand always lowercase: \"zema studios\". No eyebrows, taglines or invented claims."
     ],
     "rules": [
-      { "name": "The Neutral Surround Rule", "body": "Any surface a frame sits on stays neutral: `paper` on the page, `screen` in the lightbox. No cream, no tint and no brand colour behind a still.", "section": "colors" },
-      { "name": "The Red Mark Rule", "body": "Red appears only as an underline mark: active filter/view, or hover. It never fills a shape, never sets a word and never appears near a frame as decoration.", "section": "colors" },
-      { "name": "The Two Widths Rule", "body": "Display text is condensed (`wdth` 62–68) heavy caps; everything read in sentences is normal width. Nothing is set in between, and no second family is introduced.", "section": "typography" },
-      { "name": "The Sentence-Case Label Rule", "body": "Labels are short, muted, 500 weight and in sentence case. There are no tracked-out uppercase kickers above titles.", "section": "typography" },
-      { "name": "The Letterpress Rule", "body": "Structure is drawn with solid black rules: 2px between major blocks (masthead, years, sections, catalogue head, pager, footer) and 1px between entries, ficha rows and table rows. There are no hairline greys and no boxes, except the coupon's 2px border.", "section": "elevation" }
+      { "name": "The Neutral Surround Rule", "body": "The ground and every grey are R = G = B (or within one warm step for text). Never tint the ground, a frame surround or a surface toward any hue; the grade must read against neutral.", "section": "colors" },
+      { "name": "The One Dot Rule", "body": "Red appears in the interface only as the 5px active dot (and the text caret). Its rarity is the point; it is the logo's i-dot, not a brand fill.", "section": "colors" },
+      { "name": "The Black Box Rule", "body": "Pure black is reserved for the box behind a frame. Interface surfaces use the ground, never #000.", "section": "colors" },
+      { "name": "The One Family Rule", "body": "Host Grotesk is the only face. Do not introduce a serif, mono or display face; reach for weight 450/500 and negative tracking instead.", "section": "typography" },
+      { "name": "The Tighter As Larger Rule", "body": "Tracking goes from 0 at UI sizes to -0.01em at titles, -0.03em at the statement and -0.045 to -0.05em at display sizes.", "section": "typography" },
+      { "name": "The Lowercase Brand Rule", "body": "\"zema studios\" is lowercase in every string, title, alt text and metadata, and nav labels are lowercase (trabalho, estúdio, contacto).", "section": "typography" },
+      { "name": "The No Shadow Rule", "body": "No box-shadow, glow or drop shadow on any element. Separate with a 1px hairline or with space.", "section": "elevation" }
     ],
     "dos": [
-      "Do show every frame uncropped at its native ratio, directly on `paper` or `screen`, with no filter, overlay, border, radius or text on it.",
-      "Do keep the paper neutral (#eeeeeb, R/G/B within 3) and the lightbox neutral dark (#101010).",
-      "Do set titles, section heads and numerals in Archivo 800 condensed caps (`wdth` 62–68), and everything read in sentences in Archivo at normal width.",
-      "Do divide with solid black rules: 2px between blocks, 1px between rows.",
-      "Do use navy for the year numerals, the contact email, focus and selection; use red only as an underline mark for active and hover states.",
-      "Do keep credits visible in the ficha at all times, labels in muted 14px/500 sentence case.",
-      "Do write the brand as \"zema studios\", always lowercase, including in alt text and titles."
+      "Do letterbox every frame on frame black (object-fit: contain) when its ratio differs from its box.",
+      "Do show stills at native aspect ratio on project pages, including all-vertical sets laid out in their own equal columns.",
+      "Do keep the ground exactly neutral (#0b0b0b) and reserve #000 for frame boxes.",
+      "Do separate content with 1px hairlines (#262626) and space; use the ficha-row pattern for any credits or facts.",
+      "Do keep credits (director, DOP) visible on every tile and slide.",
+      "Do use the 5px red dot as the sole active-state marker for toggles.",
+      "Do use tabular numerals for counters, years, ratios and hex codes.",
+      "Do derive measured values (palette, ratio labels) from the images at build time.",
+      "Do write \"zema studios\" in lowercase everywhere."
     ],
     "donts": [
-      "Don't crop, tint, filter, round or overlay a graded frame, or use `object-fit: cover` on one.",
-      "Don't use a cream or tinted surround; the logo's cream (#E6E3D4) is not a page colour.",
-      "Don't add shadows, gradients, rounded corners, cards or grey hairlines.",
-      "Don't fill shapes or set text in red.",
-      "Don't add eyebrows or kickers above titles, section numbers, taglines or marketing superlatives.",
-      "Don't introduce a second typeface or a mid-width display cut.",
+      "Don't crop, filter, dim, tint or overlay a graded frame, and don't put text over an image.",
+      "Don't tint the ground or any surround toward a hue, and don't use red as a fill, text colour or button.",
+      "Don't add shadows, cards or rounded corners beyond pill buttons and the active dot.",
+      "Don't add eyebrows, kickers, taglines, marketing claims, or strings not drawn from content or fixed labels.",
+      "Don't introduce a second typeface or uppercase letterspaced labels.",
+      "Don't autoplay video or use video loops; stills only, embeds load on click.",
       "Don't hide credits behind hover."
     ]
   }
