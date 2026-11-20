@@ -205,28 +205,6 @@ singletons:
             label: Texto
             widget: text
             hint: Deixe uma linha em branco entre parágrafos.
-          - name: foto
-            label: Foto
-            widget: image
-            required: false
-            media_folder: /media
-            public_folder: /media
-          - name: equipa
-            label: Equipa
-            label_singular: Pessoa
-            widget: list
-            required: false
-            summary: "{{nome}}"
-            fields:
-              - { name: nome, label: Nome, widget: string }
-              - { name: funcao, label: Função, widget: string, required: false }
-              - { name: bio, label: Bio curta, widget: text, required: false }
-              - name: foto
-                label: Foto
-                widget: image
-                required: false
-                media_folder: /media
-                public_folder: /media
       - name: tecnico
         label: Ficha técnica
         label_singular: Linha

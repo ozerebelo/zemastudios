@@ -16,6 +16,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { renderHome, renderProject, renderNotFound, FORMATOS } from "./templates.mjs";
+import { ratioLabel, palette } from "./palette.mjs";
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(ROOT, "dist");
@@ -100,7 +101,9 @@ async function processImage(src) {
     variants.push(`/${path.posix.join(path.posix.dirname(rel), file)} ${w}w`);
   }
   variants.push(`/${rel} ${width}w`);
-  return { src: `/${rel}`, srcset: variants.join(", "), width, height };
+  // A small raw sample of the frame, for the measured palette of the grade.
+  const sample = await sharp(input).autoOrient().resize(64, 36, { fit: "fill" }).removeAlpha().toColourspace("srgb").raw().toBuffer();
+  return { src: `/${rel}`, srcset: variants.join(", "), width, height, ratio: ratioLabel(width, height), sample };
 }
 
 async function isFresh(dest, input) {
@@ -136,11 +139,16 @@ async function build() {
 
   // Resolve every image up front (in parallel; sharp queues the work on its own thread pool).
   const all = new Set(projects.flatMap((p) => [p.capa, ...p.fotogramas]));
-  if (site.sobre?.foto) all.add(site.sobre.foto);
-  for (const m of site.sobre?.equipa || []) if (m?.foto) all.add(m.foto);
   const resolved = new Map(await Promise.all([...all].map(async (src) => [src, await image(src)])));
   const img = (src) => resolved.get(src);
 
+  // Session numbers follow programme order; the palette is measured from every still.
+  projects.forEach((p, i) => {
+    p.sessao = i + 1;
+    const frames = (p.fotogramas.length ? p.fotogramas : [p.capa]).map(img).filter(Boolean);
+    p.paleta = palette(frames.map((f) => f.sample).filter(Boolean), 6);
+    p.proporcao = img(p.capa)?.ratio || frames[0]?.ratio || "";
+  });
   const ctx = { site, projects, img, redirects };
   await write("index.html", renderHome(ctx));
   for (const [i, p] of projects.entries()) {

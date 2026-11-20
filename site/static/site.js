@@ -7,44 +7,105 @@
     get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
     set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
   };
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var canHover = window.matchMedia("(hover: hover)").matches;
 
-  // ---------------------------------------------------------- programme: filter + view
-  var body = document.body;
-  if (body.classList.contains("home")) {
-    var filterBtns = document.querySelectorAll("[data-filter]");
-    var viewBtns = document.querySelectorAll("[data-view]");
-    var items = document.querySelectorAll("[data-cat]");
-    var years = document.querySelectorAll(".year");
-    var empty = document.querySelector(".empty");
-    var current = "all";
+  // ---------------------------------------------------------- hero: featured frames
+  var hero = document.querySelector(".hero");
+  if (hero) {
+    var slides = Array.prototype.slice.call(hero.querySelectorAll(".slide"));
+    var bar = hero.querySelector(".hero-progress i");
+    var DUR = 6500;
+    var current = 0, timer = null, stopped = false;
+    var show = function (i) {
+      i = (i + slides.length) % slides.length;
+      slides.forEach(function (s, k) {
+        var on = k === i;
+        s.classList.toggle("on", on);
+        if (on) s.removeAttribute("aria-hidden"); else s.setAttribute("aria-hidden", "true");
+        s.querySelectorAll("a").forEach(function (a) { a.tabIndex = on ? 0 : -1; });
+      });
+      current = i;
+      var nextImg = slides[(i + 1) % slides.length].querySelector("img");
+      if (nextImg) nextImg.loading = "eager";
+      restartBar();
+    };
+    var restartBar = function () {
+      if (!bar) return;
+      bar.classList.remove("run");
+      void bar.offsetWidth;
+      if (timer && !stopped) { bar.style.setProperty("--dur", DUR + "ms"); bar.classList.add("run"); }
+    };
+    var start = function () {
+      if (reduceMotion || stopped || slides.length < 2 || timer) return;
+      timer = setInterval(function () { show(current + 1); }, DUR);
+      restartBar();
+    };
+    var stop = function () { clearInterval(timer); timer = null; if (bar) bar.classList.remove("run"); };
+    hero.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-slide]");
+      if (!b) return;
+      stopped = true; // a visitor who steps through by hand keeps control
+      stop();
+      show(current + (b.dataset.slide === "next" ? 1 : -1));
+    });
+    hero.addEventListener("mouseenter", stop);
+    hero.addEventListener("mouseleave", start);
+    hero.addEventListener("focusin", stop);
+    document.addEventListener("visibilitychange", function () { document.hidden ? stop() : start(); });
+    if (slides.length > 1) { var n = slides[1].querySelector("img"); if (n) n.loading = "eager"; }
+    start();
+  }
 
+  // ---------------------------------------------------------- tiles: preview the other frames on hover
+  if (canHover && !reduceMotion) {
+    document.querySelectorAll(".tile-frame[data-frames]").forEach(function (box) {
+      var srcs = box.dataset.frames.split(" ");
+      var peek = null, k = -1, t = null;
+      var step = function () {
+        k = (k + 1) % srcs.length;
+        var src = srcs[k];
+        var pre = new Image();
+        pre.onload = function () {
+          if (!t) return;
+          if (!peek) { peek = document.createElement("img"); peek.className = "peek"; peek.alt = ""; box.appendChild(peek); }
+          peek.src = src;
+          peek.classList.add("on");
+        };
+        pre.src = src;
+      };
+      var link = box.closest("a");
+      link.addEventListener("mouseenter", function () { if (t) return; t = setInterval(step, 850); step(); });
+      link.addEventListener("mouseleave", function () {
+        clearInterval(t); t = null; k = -1;
+        if (peek) peek.classList.remove("on");
+      });
+    });
+  }
+
+  // ---------------------------------------------------------- work: filter + view
+  var workEl = document.getElementById("trabalho");
+  if (workEl) {
+    var filterBtns = workEl.querySelectorAll("[data-filter]");
+    var viewBtns = workEl.querySelectorAll("[data-view]");
+    var items = workEl.querySelectorAll("[data-cat]");
     var applyFilter = function (f) {
-      current = f;
       filterBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.filter === f)); });
-      var shown = 0;
       items.forEach(function (el) {
-        var on = f === "all" || el.dataset.cat === f;
-        if (on) { el.removeAttribute("data-hide"); if (el.tagName === "LI") shown++; }
-        else el.setAttribute("data-hide", "");
+        if (f === "all" || el.dataset.cat === f) el.removeAttribute("data-hide"); else el.setAttribute("data-hide", "");
       });
-      // A year with nothing left in it disappears from the programme.
-      years.forEach(function (y) {
-        var any = y.querySelector(".entry:not([data-hide])");
-        if (any) y.removeAttribute("data-hide"); else y.setAttribute("data-hide", "");
-      });
-      if (empty) empty.hidden = shown > 0;
     };
     var applyView = function (v) {
       viewBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.view === v)); });
-      document.querySelectorAll("[data-pane]").forEach(function (p) { p.hidden = p.dataset.pane !== v; });
+      workEl.querySelectorAll("[data-pane]").forEach(function (p) { p.hidden = p.dataset.pane !== v; });
     };
-    document.addEventListener("click", function (e) {
+    workEl.addEventListener("click", function (e) {
       var f = e.target.closest("[data-filter]");
       if (f) applyFilter(f.dataset.filter);
       var v = e.target.closest("[data-view]");
       if (v) { applyView(v.dataset.view); store.set("zema-view", v.dataset.view); }
     });
-    if (store.get("zema-view") === "indice") applyView("indice");
+    if (store.get("zema-view") === "lista") applyView("lista");
   }
 
   // ---------------------------------------------------------- video (click to load)
@@ -62,13 +123,11 @@
     btn.replaceWith(box);
   });
 
-  // ---------------------------------------------------------- lightbox
-  var gallery = document.querySelector("[data-gallery]");
+  // ---------------------------------------------------------- lightbox (project pages)
   var dialog = document.querySelector(".lightbox");
-  if (gallery && dialog && typeof dialog.showModal === "function") {
-    var links = Array.prototype.slice.call(gallery.querySelectorAll(".still"));
-    // Created on first open, so the page never carries an <img> without a source.
-    var lbImg = null;
+  var links = Array.prototype.slice.call(document.querySelectorAll(".project-page .still"));
+  if (dialog && links.length && typeof dialog.showModal === "function") {
+    var lbImg = null; // created on first open, so the page never carries an <img> without a source
     var lbN = dialog.querySelector(".lb-n");
     var idx = 0;
     var open = function (i) {
@@ -80,8 +139,8 @@
       lbN.textContent = idx + 1 + " / " + links.length;
       if (!dialog.open) dialog.showModal();
     };
-    gallery.addEventListener("click", function (e) {
-      var a = e.target.closest(".still");
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest(".project-page .still");
       if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
       e.preventDefault();
       open(links.indexOf(a));
@@ -100,7 +159,7 @@
   }
 
   // ---------------------------------------------------------- contact form
-  var form = document.querySelector(".coupon");
+  var form = document.querySelector(".form");
   if (form && window.fetch) {
     var status = form.querySelector(".form-status");
     var submit = form.querySelector("button[type=submit]");
@@ -112,11 +171,9 @@
         .then(function (r) {
           if (!r.ok) throw new Error(String(r.status));
           form.reset();
-          status.textContent = "Pedido enviado. Respondemos por email.";
+          status.textContent = "Mensagem enviada. Respondemos por email.";
         })
-        .catch(function () {
-          status.textContent = "Não foi possível enviar. Escreva diretamente para o email ao lado.";
-        })
+        .catch(function () { status.textContent = "Não foi possível enviar. Escreva diretamente para o email ao lado."; })
         .then(function () { submit.disabled = false; });
     });
   }

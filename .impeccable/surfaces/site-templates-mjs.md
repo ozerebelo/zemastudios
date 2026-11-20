@@ -7,28 +7,27 @@ related_targets: ["site/static/site.css","site/static/site.js"]
 
 ## Scope
 
-Whole site: home (`/`), project pages (`/trabalho/<slug>/`), 404. Mode: Experience (portfolio). Audience: DOPs, directors, production companies and platforms, agencies. Language: Portuguese only. Brand "zema studios" always lowercase.
+Whole site: home (`/`), project pages (`/trabalho/<slug>/`), 404. Mode: Experience (portfolio). Audience: DOPs, directors, production companies and platforms, agencies. Portuguese only. Brand "zema studios" always lowercase.
 
-User rejected the previous redesign as generic, with weak typography/hierarchy, and work that did not impress (small images). Chosen direction: the IMPECCABLE'S PICK card, "Programa da Cinemateca".
+History: the owner rejected a dark generic portfolio, a cinematheque-programme world (and its refinement), a ColorChecker / one-sheet / ikebana hand, and a dark safer hand of sketches. After a second study they chose, in their own words, a design that is "aesthetically beautiful and appealing, simple but with depth and detail, not super innovative", dark and cinematic, with visual impact and no conceptual metaphor; references picked from a numbered board: dark full-screen image (Lol Crawley, Studio Fifteen, Okay) combined with a dense dark grid of stills (Blacksmith, Electric Theatre). Stills only, no video loops.
 
 ## Direction contract
 
-THESIS: The studio's work printed as a cinematheque programme: every project is a screening entry with its ficha técnica, the frame shown large and uncropped. Refuses the category default of a dark full-bleed reel over a uniform thumbnail grid.
+THESIS: The work, large and true, on a neutral dark ground: a full-width featured frame that changes on its own, then a dense grid of every project, then project pages where the stills run big. Refuses metaphors and costumes; the craft is in proportion, type and detail.
 
-OWN-WORLD: Uncoated programme stock in neutral off-white (#EEEEEB, equal-ish RGB, never cream), black ink #141414 for text and 2px rules, logo navy #102D4F as the second ink for the giant year numerals and links, logo red #E35443 only for marks (active filter, featured mark). One family, Archivo variable: titles in condensed heavy caps (wdth 62-75, wght 700-800), body in normal width 400, credits labels small in 500. Hairline-free: rules are solid 1px/2px black like letterpress programme rules. Frames sit directly on the paper, no shadows, no rounding, no filters.
+OWN-WORLD: Neutral near-black ground #0b0b0b, pure black #000 only as the frame box behind letterboxed stills, hairlines #262626, text #ecebe7, muted #8f8e8a, logo red #e35443 only as a 5px active dot. One family, Host Grotesk (self-hosted variable): display 450-500 with tight tracking (-0.03 to -0.05em), UI 400 at 13-16px. No shadows, no rounding except pill buttons, links underline by a 1px hairline that draws in.
 
-STORY: A DOP or producer sees in one viewport that this is a grading studio with Prime Video/RTP series, recognises the frames and the people credited, scrolls the programme by year, filters by format, opens an entry, studies the stills at full size, and writes to info@zemastudios.com.
+STORY: A DOP or producer lands on a full-width graded frame with title and credits, sees six featured projects advance, reads one line of what the studio is, scans 27 projects in a grid (hovering a tile previews its other frames), filters by format or switches to a list, opens a project, studies the stills at native ratio, sees the measured palette and credits, moves to the next project, writes to info@zemastudios.com.
 
-FIRST VIEWPORT: Masthead row: logo left, nav right (trabalho, estúdio, contacto). 2px black rule. A single programme line: what the studio is, and the format index as filters with counts. Then a three-column programme band: giant navy year numeral "2026" (sticky, ~200px condensed) left; the first entry's still at native ratio ~60% of the width; the entry's ficha right (condensed caps title ~44px, subtitle, formato · cliente, Realização / Fotografia / Produção). The next entry's still begins above the fold. Primary action: open an entry (the still and title are the link); contact sits in the nav and at the close.
+FIRST VIEWPORT: Sticky masthead (logo left, lowercase nav right) over a full-width 16:9 frame box (contained, never cropped) holding the first featured still; under it a caption row: counter 01 / 06, title with subtitle in muted, director and DOP right-aligned, prev/next arrows, a 1px progress line. Primary action: the frame and title link to the project.
 
-FORM: Cinemateca programme leaflet / festival catalogue entry; position 1 on the ordered grounded list (IMPECCABLE'S PICK, chosen over the assigned 35 mm contact sheet). seed:e8c3da70bec22fe0
+FORM: The category standard executed at the craft of Blacksmith, Electric Theatre, Lol Crawley, Studio Fifteen and Okay (canon, safer register, user-steered). seed: none (pinned) "algo estéticamente bonito e apelativo, simplista mas com profundidade e detalhe"; "escuro / cinematográfico"; references 2, 3, 5, 6, 10.
 
-Signature interaction: the sticky year numeral changes as the reader scrolls from one year's entries to the next (numerals slide up, exponential ease-out; instant under reduced motion), and the format filter rewrites the programme, hiding empty years. Project page: the entry becomes a catalogue page, with title at display scale, ficha técnica, then the stills large in sequence at native ratio, a lightbox, trailer on demand, and previous/next screening.
+Signature interaction: tiles cycle through the project's other frames on hover (crossfade, 850ms per frame), and the hero advances with a drawn progress line; both stop under reduced motion.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 
 ## Constraints
 
-- Never alter graded frames: no filters, overlays, text on images, tinted surrounds. Stills uncropped at native ratio on project pages and in programme entries.
-- No eyebrows, no section numbers, no taglines, no invented claims.
-- CMS-editable content only (Sveltia): every string on the page comes from content/ or the fixed labels.
+- Never alter graded frames: no filters, overlays, text over images, tinted surrounds; letterbox instead of crop.
+- No eyebrows, taglines or invented claims. Every string from content/ or fixed labels.

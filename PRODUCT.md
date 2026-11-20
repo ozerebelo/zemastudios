@@ -45,6 +45,7 @@ A Lisbon grading studio whose credits span Portuguese streaming series, features
 - No individual names or portraits on the site; the studio is the brand.
 - Existing logo (`site/static/logo.svg`): lowercase "zema / studios" wordmark, the "i" drawn as a red dot over a red bar. Brand colours from the logo: navy #102D4F, red #E35443, cream #E6E3D4.
 - Voice: factual and plain. No taglines or marketing superlatives.
+- Look (chosen by the owner after three rejected rounds, 2026-11-20): dark and cinematic, direct and elegant rather than conceptual; simple, with depth and detail. Combines full-screen image impact with a dense grid of stills. Craft references: Blacksmith (blacksmith.tv), Electric Theatre Collective (electrictheatre.com), Lol Crawley (lolcrawley.com), Studio Fifteen (studiofifteenpost.com), Okay Studio (okaystudio.co.uk). Stills only; no video loops.
 
 ## Evidence on Hand
 

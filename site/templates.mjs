@@ -1,6 +1,7 @@
 // HTML templates. Every value that comes from content/ goes through esc().
-// The site is set as a cinematheque programme: each project is a screening
-// entry with its ficha técnica, the frame shown large and uncropped.
+// Dark and cinematic: a full-width frame up top, a dense grid of the work,
+// and project pages that let the stills run large. Frames are shown whole:
+// any frame wider or narrower than its box is letterboxed, never cropped.
 
 export const FORMATOS = {
   "Série": "series",
@@ -41,10 +42,11 @@ const paragraphs = (text) =>
     .join("\n");
 
 const telHref = (t) => "tel:" + String(t).replace(/[^\d+]/g, "");
+const pad2 = (n) => String(n).padStart(2, "0");
 
-const ARROW_LEFT = `<svg class="ico" viewBox="0 0 20 12" aria-hidden="true"><path d="M7 1 2 6l5 5M2 6h17"/></svg>`;
-const ARROW_RIGHT = `<svg class="ico" viewBox="0 0 20 12" aria-hidden="true"><path d="M13 1l5 5-5 5M18 6H1"/></svg>`;
-const PLAY = `<svg class="ico ico-fill" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z"/></svg>`;
+const ARROW_LEFT = `<svg class="ico" viewBox="0 0 24 12" aria-hidden="true"><path d="M7 1 2 6l5 5M2 6h21"/></svg>`;
+const ARROW_RIGHT = `<svg class="ico" viewBox="0 0 24 12" aria-hidden="true"><path d="M17 1l5 5-5 5M22 6H1"/></svg>`;
+const PLAY = `<svg class="ico ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z"/></svg>`;
 
 // ---------------------------------------------------------------- video
 
@@ -65,40 +67,48 @@ export function embedUrl(url) {
 
 // ---------------------------------------------------------------- pieces
 
-function picture(im, { alt = "", sizes = "100vw", eager = false } = {}) {
+function picture(im, { alt = "", sizes = "100vw", eager = false, cls = "" } = {}) {
   if (!im) return "";
   const dims = im.width ? ` width="${im.width}" height="${im.height}"` : "";
   const srcset = im.srcset ? ` srcset="${esc(im.srcset)}" sizes="${esc(sizes)}"` : "";
   const loading = eager ? ` fetchpriority="high"` : ` loading="lazy" decoding="async"`;
-  const tall = im.width && im.height > im.width ? ` class="tall"` : "";
-  return `<img${tall} src="${esc(im.src)}"${srcset}${dims} alt="${esc(alt)}"${loading}>`;
+  const classes = [cls, im.width && im.height > im.width ? "tall" : ""].filter(Boolean).join(" ");
+  return `<img${classes ? ` class="${classes}"` : ""} src="${esc(im.src)}"${srcset}${dims} alt="${esc(alt)}"${loading}>`;
 }
 
-/** "Artur Ribeiro, Tiago Guedes & X e Y" -> ["Artur Ribeiro", "Tiago Guedes", "X", "Y"] */
-const people = (s) =>
-  String(s || "")
-    .split(/\s*(?:,|&|\be\b|\/)\s*/)
-    .map((x) => x.trim())
-    .filter(Boolean);
-
-function collaborators(projects, key) {
-  const seen = new Map();
-  for (const p of projects)
-    for (const n of new Set(people(p[key]))) {
-      const k = n.toLowerCase();
-      const cur = seen.get(k) || { name: n, count: 0 };
-      cur.count++;
-      seen.set(k, cur);
-    }
-  return [...seen.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "pt")).map((x) => x.name);
+/** The variant closest to `w` pixels wide, for hover previews and thumbnails. */
+function variant(im, w = 640) {
+  const list = (im.srcset || "")
+    .split(",")
+    .map((s) => s.trim().split(" "))
+    .filter((x) => x[0])
+    .map(([u, d]) => [u, parseInt(d, 10) || 0]);
+  const pick = list.find(([, d]) => d >= w) || list[list.length - 1];
+  return pick ? pick[0] : im.src;
 }
+
+/** Escaped text where hyphenated words (G-SHOCK) never break at the hyphen. */
+const keep = (t) => esc(t).replace(/(\S+-\S+)/g, '<span class="nw">$1</span>');
 
 const fmtLine = (p) => [p.formato, p.cliente].filter(Boolean).map(esc).join(" · ");
 const fullTitle = (p) => (p.subtitulo ? `${p.titulo}, ${p.subtitulo}` : p.titulo);
+const frames = (p, img) => (p.fotogramas.length ? p.fotogramas : [p.capa]).map(img).filter(Boolean);
+const people = (p) => [p.realizacao && `Realização ${esc(p.realizacao)}`, p.fotografia && `Fotografia ${esc(p.fotografia)}`].filter(Boolean).join(" · ");
 
-function ficha(p, keys = FICHA) {
-  const rows = keys.filter(([k]) => p[k]).map(([k, label]) => `<div><dt>${label}</dt><dd>${esc(p[k])}</dd></div>`);
-  return rows.length ? `<dl class="ficha">${rows.join("")}</dl>` : "";
+function ficha(rows, cls = "") {
+  const items = rows.filter(([, v]) => v);
+  return items.length ? `<dl class="ficha${cls ? " " + cls : ""}">${items.map(([l, v]) => `<div><dt>${l}</dt><dd>${v}</dd></div>`).join("")}</dl>` : "";
+}
+
+/** The measured palette of the grade: a thin bar of proportional swatches and their codes. */
+function palette(p) {
+  if (!p.paleta?.length) return "";
+  const n = p.fotogramas.length || 1;
+  const list = p.paleta.map((c) => `${c.hex} ${Math.round(c.share * 100)}%`).join(", ");
+  return `<figure class="palette">
+        <div class="bar" role="img" aria-label="Paleta da grade: ${list}">${p.paleta.map((c) => `<span style="flex:${c.share.toFixed(4)} 1 0;background:${c.hex}"></span>`).join("")}</div>
+        <figcaption><span>Paleta da grade, medida em ${n} ${n === 1 ? "fotograma" : "fotogramas"}</span><span class="hexes">${p.paleta.map((c) => `<i style="--c:${c.hex}"></i>${c.hex}`).join(" ")}</span></figcaption>
+      </figure>`;
 }
 
 // ---------------------------------------------------------------- layout
@@ -123,9 +133,9 @@ function layout(ctx, { title, description, path, image, body, head = "", bodyCla
 <meta property="og:description" content="${esc(description || site.descricao)}">
 <meta property="og:url" content="${esc(canonical)}">
 ${og ? `<meta property="og:image" content="${esc(og)}">\n<meta name="twitter:card" content="summary_large_image">` : ""}
-<meta name="theme-color" content="#EEEEEB">
+<meta name="theme-color" content="#0b0b0b">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/host-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/site.css">
 ${head}
 </head>
@@ -134,7 +144,7 @@ ${head}
 <header class="mast">
   <a class="brand" href="/"><img src="/logo.svg" alt="${esc(site.nome)}" width="104" height="48"></a>
   <nav aria-label="Principal">
-    <a href="/#programa">trabalho</a>
+    <a href="/#trabalho">trabalho</a>
     <a href="/#estudio">estúdio</a>
     <a href="/#contacto">contacto</a>
   </nav>
@@ -143,6 +153,7 @@ ${head}
 ${body}
 </main>
 <footer class="foot">
+  <img src="/logo.svg" alt="" width="70" height="32">
   <p>${esc(site.nome)} · color grading · Lisboa</p>
   <p class="foot-links">
     ${c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : ""}
@@ -158,165 +169,156 @@ ${body}
 
 // ---------------------------------------------------------------- home
 
-function entry(p, img, first) {
-  const href = `/trabalho/${esc(p.slug)}/`;
-  return `<li class="entry" data-cat="${FORMATOS[p.formato]}">
-        <a class="entry-still" href="${href}" tabindex="-1" aria-hidden="true">${picture(img(p.capa), {
-          alt: "",
-          sizes: "(max-width: 900px) 100vw, 55vw",
-          eager: first,
-        })}</a>
-        <div class="entry-text">
-          <h3><a href="${href}">${esc(p.titulo)}</a></h3>
-          ${p.subtitulo ? `<p class="sub">${esc(p.subtitulo)}</p>` : ""}
-          <p class="fmt">${fmtLine(p)}</p>
-          ${ficha(p, [["realizacao", "Realização"], ["fotografia", "Fotografia"], ["producao", "Produção"]])}
+function hero(ctx) {
+  const { projects, img } = ctx;
+  const featured = projects.filter((p) => p.destaque);
+  const list = featured.length ? featured : projects.slice(0, 5);
+  const slides = list
+    .map((p, i) => {
+      const href = `/trabalho/${esc(p.slug)}/`;
+      return `<li class="slide${i === 0 ? " on" : ""}"${i ? ' aria-hidden="true"' : ""}>
+        <a class="slide-frame" href="${href}" tabindex="${i ? "-1" : "0"}">${picture(img(p.capa), { alt: `Fotograma de ${fullTitle(p)}`, sizes: "100vw", eager: i === 0 })}</a>
+        <div class="slide-cap">
+          <span class="slide-n">${pad2(i + 1)} <span>/ ${pad2(list.length)}</span></span>
+          <a class="slide-title" href="${href}" tabindex="${i ? "-1" : "0"}">${esc(p.titulo)}${p.subtitulo ? ` <span>${esc(p.subtitulo)}</span>` : ""}</a>
+          <span class="slide-people">${people(p)}</span>
         </div>
       </li>`;
-}
-
-function programme(ctx) {
-  const { projects, img, site } = ctx;
-  const counts = Object.fromEntries(CATEGORIAS.map(([k]) => [k, 0]));
-  for (const p of projects) counts[FORMATOS[p.formato]]++;
-  const filters = [
-    `<button type="button" data-filter="all" aria-pressed="true">Tudo <span>${projects.length}</span></button>`,
-    ...CATEGORIAS.filter(([k]) => counts[k]).map(
-      ([k, label]) => `<button type="button" data-filter="${k}" aria-pressed="false">${label} <span>${counts[k]}</span></button>`,
-    ),
-  ].join("\n        ");
-
-  const years = [...new Set(projects.map((p) => p.ano))];
-  let first = true;
-  const sections = years
-    .map((y) => {
-      const items = projects.filter((p) => p.ano === y);
-      const html = items.map((p) => {
-        const e = entry(p, img, first);
-        first = false;
-        return e;
-      });
-      return `<section class="year" data-year="${y}" aria-label="${y}">
-      <h2 class="yr"><span>${y}</span></h2>
-      <ol class="entries">
-      ${html.join("\n      ")}
-      </ol>
-    </section>`;
     })
-    .join("\n    ");
-
-  const rows = projects
-    .map(
-      (p) => `<tr data-cat="${FORMATOS[p.formato]}">
-          <td class="c-ano">${p.ano}</td>
-          <th scope="row"><a href="/trabalho/${esc(p.slug)}/">${esc(p.titulo)}</a>${p.subtitulo ? ` <span>${esc(p.subtitulo)}</span>` : ""}</th>
-          <td>${esc(p.formato)}</td>
-          <td class="c-opt">${esc(p.realizacao)}</td>
-          <td class="c-opt">${esc(p.fotografia)}</td>
-          <td class="c-opt">${esc(p.producao)}</td>
-        </tr>`,
-    )
-    .join("\n        ");
-
-  return `<div class="progline">
-    <p class="intro">${esc(site.intro)}</p>
-    <div class="controls">
-      <div class="filters" role="group" aria-label="Filtrar por formato">
-        ${filters}
-      </div>
-      <div class="views" role="group" aria-label="Vista">
-        <button type="button" data-view="programa" aria-pressed="true">Programa</button>
-        <button type="button" data-view="indice" aria-pressed="false">Índice</button>
-      </div>
-    </div>
-  </div>
-  <div id="programa" class="programme" data-pane="programa">
-    ${sections}
-  </div>
-  <div class="index" data-pane="indice" hidden>
-    <table>
-      <caption class="vh">Índice de trabalhos</caption>
-      <thead><tr><th scope="col" class="c-ano">Ano</th><th scope="col">Título</th><th scope="col">Formato</th><th scope="col" class="c-opt">Realização</th><th scope="col" class="c-opt">Fotografia</th><th scope="col" class="c-opt">Produção</th></tr></thead>
-      <tbody>
-        ${rows}
-      </tbody>
-    </table>
-  </div>
-  <p class="empty" hidden>Nenhum trabalho neste formato.</p>`;
-}
-
-function studio(ctx) {
-  const { site, projects, img } = ctx;
-  const s = site.sobre || {};
-  const team = (s.equipa || []).filter((m) => m?.nome);
-  const tech = (site.tecnico || []).filter((t) => t?.rotulo && t?.valor);
-  const groups = [
-    ["Realização", collaborators(projects, "realizacao")],
-    ["Direção de fotografia", collaborators(projects, "fotografia")],
-    ["Produção", collaborators(projects, "producao")],
-    ["Clientes e exibição", collaborators(projects, "cliente")],
-  ].filter(([, names]) => names.length);
-
-  return `<section id="estudio" class="studio" aria-labelledby="h-estudio">
-    <h2 id="h-estudio" class="sect">Estúdio</h2>
-    <div class="studio-grid">
-      <div class="studio-text">
-        ${paragraphs(s.texto)}
-        ${s.foto ? `<figure class="studio-photo">${picture(img(s.foto), { alt: "", sizes: "320px" })}</figure>` : ""}
-        ${
-          team.length
-            ? `<ul class="team">${team
-                .map(
-                  (m) =>
-                    `<li>${m.foto ? picture(img(m.foto), { alt: m.nome, sizes: "120px" }) : ""}<div><h3>${esc(m.nome)}</h3>${m.funcao ? `<p class="fmt">${esc(m.funcao)}</p>` : ""}${paragraphs(m.bio)}</div></li>`,
-                )
-                .join("")}</ul>`
-            : ""
-        }
-      </div>
-      ${tech.length ? `<dl class="ficha ficha-tech">${tech.map((t) => `<div><dt>${esc(t.rotulo)}</dt><dd>${esc(t.valor)}</dd></div>`).join("")}</dl>` : ""}
-    </div>
+    .join("\n      ");
+  return `<section class="hero" aria-roledescription="carrossel" aria-label="Trabalhos em destaque">
+    <ol class="slides">
+      ${slides}
+    </ol>
     ${
-      groups.length
-        ? `<div class="credits-index">
-      <h3>Com quem trabalhámos</h3>
-      <dl>${groups.map(([label, names]) => `<div><dt>${label}</dt><dd>${names.map((n) => `<span>${esc(n)}</span>`).join(" ")}</dd></div>`).join("")}</dl>
-    </div>`
+      list.length > 1
+        ? `<div class="hero-ctl">
+      <button type="button" data-slide="prev" aria-label="Anterior">${ARROW_LEFT}</button>
+      <button type="button" data-slide="next" aria-label="Seguinte">${ARROW_RIGHT}</button>
+    </div>
+    <div class="hero-progress" aria-hidden="true"><i></i></div>`
         : ""
     }
   </section>`;
 }
 
+function tile(p, img) {
+  const href = `/trabalho/${esc(p.slug)}/`;
+  const all = frames(p, img);
+  const cover = img(p.capa);
+  const others = all.filter((f) => f.src !== cover.src).map((f) => variant(f, 640));
+  return `<li class="tile" data-cat="${FORMATOS[p.formato]}">
+        <a href="${href}">
+          <span class="tile-frame"${others.length ? ` data-frames="${esc(others.join(" "))}"` : ""}>${picture(cover, {
+            alt: "",
+            sizes: "(max-width: 600px) 100vw, (max-width: 960px) 50vw, (max-width: 1280px) 33vw, 25vw",
+          })}</span>
+          <span class="tile-cap">
+            <span class="tile-row"><b>${keep(p.titulo)}</b><span class="tile-year">${p.ano}</span></span>
+            <span class="tile-fmt">${p.subtitulo ? `${esc(p.subtitulo)} · ` : ""}${fmtLine(p)}</span>
+            <span class="tile-people">${people(p)}</span>
+          </span>
+        </a>
+      </li>`;
+}
+
+function work(ctx) {
+  const { projects, img } = ctx;
+  const counts = Object.fromEntries(CATEGORIAS.map(([k]) => [k, 0]));
+  for (const p of projects) counts[FORMATOS[p.formato]]++;
+  const filters = [
+    `<button type="button" data-filter="all" aria-pressed="true">Tudo<sup>${projects.length}</sup></button>`,
+    ...CATEGORIAS.filter(([k]) => counts[k]).map(([k, label]) => `<button type="button" data-filter="${k}" aria-pressed="false">${label}<sup>${counts[k]}</sup></button>`),
+  ].join("\n        ");
+  const rows = projects
+    .map(
+      (p) => `<tr data-cat="${FORMATOS[p.formato]}">
+          <th scope="row"><a href="/trabalho/${esc(p.slug)}/">${esc(p.titulo)}</a>${p.subtitulo ? ` <span>${esc(p.subtitulo)}</span>` : ""}</th>
+          <td>${esc(p.formato)}</td>
+          <td class="c-opt">${esc(p.realizacao)}</td>
+          <td class="c-opt">${esc(p.fotografia)}</td>
+          <td class="c-ano">${p.ano}</td>
+        </tr>`,
+    )
+    .join("\n        ");
+  return `<section id="trabalho" class="work" aria-labelledby="h-trabalho">
+    <div class="work-bar">
+      <h2 id="h-trabalho">Trabalho</h2>
+      <div class="filters" role="group" aria-label="Filtrar por formato">
+        ${filters}
+      </div>
+      <div class="views" role="group" aria-label="Vista">
+        <button type="button" data-view="grelha" aria-pressed="true">Grelha</button>
+        <button type="button" data-view="lista" aria-pressed="false">Lista</button>
+      </div>
+    </div>
+    <ul class="grid" data-pane="grelha">
+      ${projects.map((p) => tile(p, img)).join("\n      ")}
+    </ul>
+    <div class="list" data-pane="lista" hidden>
+      <table>
+        <caption class="vh">Lista de trabalhos</caption>
+        <thead><tr><th scope="col">Título</th><th scope="col">Formato</th><th scope="col" class="c-opt">Realização</th><th scope="col" class="c-opt">Fotografia</th><th scope="col" class="c-ano">Ano</th></tr></thead>
+        <tbody>
+        ${rows}
+        </tbody>
+      </table>
+    </div>
+  </section>`;
+}
+
+function studio(ctx) {
+  const { site } = ctx;
+  const tech = (site.tecnico || []).filter((t) => t?.rotulo && t?.valor);
+  return `<section id="estudio" class="studio" aria-labelledby="h-estudio">
+    <h2 id="h-estudio" class="sect">Estúdio</h2>
+    <div class="studio-grid">
+      <div class="studio-text">${paragraphs(site.sobre?.texto)}</div>
+      ${ficha(tech.map((t) => [esc(t.rotulo), esc(t.valor)]), "ficha-rows")}
+    </div>
+  </section>`;
+}
+
 function contact(ctx) {
   const c = ctx.site.contacto || {};
+  const ig = c.instagram ? c.instagram.replace(/^https?:\/\/(www\.)?instagram\.com\//, "@").replace(/\/$/, "") : "";
   const form = c.formspree
-    ? `<form class="coupon" action="https://formspree.io/f/${esc(c.formspree)}" method="POST">
-        <p class="coupon-title">Pedido de orçamento</p>
+    ? `<form class="form" action="https://formspree.io/f/${esc(c.formspree)}" method="POST">
         <div class="field"><label for="f-nome">Nome</label><input id="f-nome" name="nome" autocomplete="name"></div>
         <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
         <div class="field"><label for="f-projeto">Projeto</label><input id="f-projeto" name="projeto" placeholder="Formato, duração, câmara, data de entrega"></div>
         <div class="field"><label for="f-msg">Mensagem</label><textarea id="f-msg" name="mensagem" rows="4" required></textarea></div>
         <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp">
-        <button type="submit">Enviar pedido</button>
+        <button type="submit">Enviar ${ARROW_RIGHT}</button>
         <p class="form-status" role="status"></p>
       </form>`
     : "";
   return `<section id="contacto" class="contact" aria-labelledby="h-contacto">
     <h2 id="h-contacto" class="sect">Contacto</h2>
     <div class="contact-grid">
-      <div>
+      <div class="contact-main">
         ${c.email ? `<p class="mail"><a href="mailto:${esc(c.email)}">${esc(c.email).replace("@", "@<wbr>")}</a></p>` : ""}
         ${paragraphs(c.texto)}
-        <dl class="ficha ficha-contact">
-          ${c.telefone ? `<div><dt>Telefone</dt><dd><a href="${esc(telHref(c.telefone))}">${esc(c.telefone)}</a></dd></div>` : ""}
-          ${c.instagram ? `<div><dt>Instagram</dt><dd><a href="${esc(c.instagram)}" rel="me">${esc(c.instagram.replace(/^https?:\/\/(www\.)?instagram\.com\//, "@").replace(/\/$/, ""))}</a></dd></div>` : ""}
-          ${c.vimeo ? `<div><dt>Vimeo</dt><dd><a href="${esc(c.vimeo)}" rel="me">Vimeo</a></dd></div>` : ""}
-          <div><dt>Sala</dt><dd>Lisboa</dd></div>
-        </dl>
+        ${ficha(
+          [
+            ["Telefone", c.telefone ? `<a href="${esc(telHref(c.telefone))}">${esc(c.telefone)}</a>` : ""],
+            ["Instagram", c.instagram ? `<a href="${esc(c.instagram)}" rel="me">${esc(ig)}</a>` : ""],
+            ["Vimeo", c.vimeo ? `<a href="${esc(c.vimeo)}" rel="me">Vimeo</a>` : ""],
+            ["Sala", "Lisboa"],
+          ],
+          "ficha-rows",
+        )}
       </div>
       ${form}
     </div>
   </section>`;
+}
+
+/** First sentence in full white, the rest in the muted voice. */
+function statement(text) {
+  const t = String(text || "").trim();
+  const i = t.indexOf(". ");
+  return i < 0 ? esc(t) : `${esc(t.slice(0, i + 1))} <span>${esc(t.slice(i + 2))}</span>`;
 }
 
 export function renderHome(ctx) {
@@ -324,10 +326,14 @@ export function renderHome(ctx) {
   const reel = embedUrl(site.showreel);
   const firstFeatured = projects.find((p) => p.destaque) || projects[0];
   // Old site used #project/<slug> and #work; send those links to the new pages.
-  const redirectScript = `<script>(function(){var m=${JSON.stringify(redirects)};function go(){var h=location.hash;if(h.indexOf("#project/")===0){var s=m[h.slice(9)];location.replace(s?"/trabalho/"+s+"/":"/#programa");}else if(h==="#work"){location.replace("/#programa");}}go();addEventListener("hashchange",go);})();</script>`;
+  const redirectScript = `<script>(function(){var m=${JSON.stringify(redirects)};function go(){var h=location.hash;if(h.indexOf("#project/")===0){var s=m[h.slice(9)];location.replace(s?"/trabalho/"+s+"/":"/#trabalho");}else if(h==="#work"){location.replace("/#trabalho");}}go();addEventListener("hashchange",go);})();</script>`;
   const body = `
-  ${programme(ctx)}
-  ${reel ? `<section class="reel" aria-label="Showreel"><button type="button" class="play-btn" data-embed="${esc(reel)}" data-title="Showreel">${PLAY} Ver showreel</button></section>` : ""}
+  ${hero(ctx)}
+  <section class="intro" aria-label="Apresentação">
+    <p class="statement">${statement(site.intro)}</p>
+    ${reel ? `<button type="button" class="play-btn" data-embed="${esc(reel)}" data-title="Showreel">${PLAY} Ver showreel</button>` : ""}
+  </section>
+  ${work(ctx)}
   ${studio(ctx)}
   ${contact(ctx)}`;
   return layout(ctx, {
@@ -363,40 +369,60 @@ function packStills(images) {
 }
 
 export function renderProject(ctx, p, prev, next) {
-  const { img } = ctx;
-  const stills = (p.fotogramas.length ? p.fotogramas : [p.capa]).map((src) => img(src));
+  const { img, projects } = ctx;
+  const stills = frames(p, img);
   const embed = embedUrl(p.video);
   const cover = img(p.capa);
+  const total = stills.length;
+  const idx = projects.indexOf(p) + 1;
 
   const still = (im, i, sizes) =>
-    `<a class="still" href="${esc(im.src)}" data-index="${i}">${picture(im, {
+    `<figure class="still-fig"><a class="still" href="${esc(im.src)}" data-index="${i}">${picture(im, {
       alt: `${fullTitle(p)}, fotograma ${i + 1}`,
       sizes,
       eager: i === 0,
-    })}</a>`;
+    })}</a><figcaption><span>${pad2(i + 1)}</span><span>${esc(im.ratio || "")}</span></figcaption></figure>`;
 
   const [first, ...rest] = stills;
+  const nextIm = next ? img(next.capa) : null;
   const body = `
-  <article class="cat">
-    <p class="back"><a href="/#programa">${ARROW_LEFT} Programa</a><span class="folio">${ctx.projects.indexOf(p) + 1} / ${ctx.projects.length}</span></p>
-    <header class="cat-head">
-      <p class="cat-year">${p.ano}</p>
-      <div class="cat-title">
-        <h1>${esc(p.titulo)}</h1>
+  <article class="project-page">
+    <div class="lead">
+      <a class="still lead-frame" href="${esc(first.src)}" data-index="0">${picture(first, { alt: `${fullTitle(p)}, fotograma 1`, sizes: "100vw", eager: true })}</a>
+    </div>
+    <header class="p-head">
+      <div class="p-title">
+        <p class="p-meta"><a href="/#trabalho">${ARROW_LEFT} Trabalho</a><span>${pad2(idx)} / ${pad2(projects.length)}</span></p>
+        <h1>${keep(p.titulo)}</h1>
         ${p.subtitulo ? `<p class="sub">${esc(p.subtitulo)}</p>` : ""}
-        <p class="fmt">${fmtLine(p)}</p>
+        <p class="fmt">${fmtLine(p)} · ${p.ano}</p>
+        ${embed ? `<div class="trailer"><button type="button" class="play-btn" data-embed="${esc(embed)}" data-title="Trailer de ${esc(fullTitle(p))}">${PLAY} Ver trailer</button></div>` : ""}
       </div>
-      ${ficha(p)}
+      <div class="p-side">
+        ${ficha([...FICHA.map(([k, l]) => [l, esc(p[k] || "")]), ["Proporção", esc(p.proporcao)], ["Fotogramas", String(total)]], "ficha-rows")}
+        ${palette(p)}
+      </div>
     </header>
     ${p.notas ? `<div class="notes">${paragraphs(p.notas)}</div>` : ""}
-    <div class="stills" data-gallery>
-      ${still(first, 0, "(max-width: 1500px) 100vw, 1440px")}
-      ${rest.length ? `<div class="stills-rest">${packStills(rest).map(({ im, span }, i) => `<div class="cell span-${span}">${still(im, i + 1, span === 4 ? "(max-width: 1500px) 100vw, 1440px" : span === 2 ? "(max-width: 760px) 100vw, 50vw" : "(max-width: 760px) 50vw, 25vw")}</div>`).join("\n      ")}</div>` : ""}
-    </div>
-    ${embed ? `<section class="trailer" aria-label="Trailer"><button type="button" class="play-btn" data-embed="${esc(embed)}" data-title="Trailer de ${esc(fullTitle(p))}">${PLAY} Ver trailer</button></section>` : ""}
-    <nav class="pager" aria-label="Outros trabalhos">
-      ${prev ? `<a class="prev" href="/trabalho/${esc(prev.slug)}/"><span>${ARROW_LEFT} Sessão anterior</span><b>${esc(prev.titulo)}</b></a>` : "<span></span>"}
-      ${next ? `<a class="next" href="/trabalho/${esc(next.slug)}/"><span>Sessão seguinte ${ARROW_RIGHT}</span><b>${esc(next.titulo)}</b></a>` : "<span></span>"}
+    ${
+      rest.length
+        ? `<div class="stills" data-gallery>
+      ${packStills(rest)
+        .map(({ im, span }, i) => `<div class="cell span-${span}">${still(im, i + 1, span === 4 ? "100vw" : span === 2 ? "(max-width: 760px) 100vw, 50vw" : "(max-width: 760px) 50vw, 25vw")}</div>`)
+        .join("\n      ")}
+    </div>`
+        : ""
+    }
+    <nav class="next" aria-label="Outros trabalhos">
+      ${
+        next
+          ? `<a class="next-link" href="/trabalho/${esc(next.slug)}/">
+        <span class="next-frame">${picture(nextIm, { alt: "", sizes: "(max-width: 900px) 100vw, 60vw" })}</span>
+        <span class="next-text"><span class="next-label">Seguinte ${ARROW_RIGHT}</span><b>${keep(next.titulo)}</b><span>${fmtLine(next)} · ${next.ano}</span></span>
+      </a>`
+          : ""
+      }
+      ${prev ? `<a class="prev-link" href="/trabalho/${esc(prev.slug)}/">${ARROW_LEFT} ${esc(prev.titulo)}</a>` : ""}
     </nav>
   </article>
   <dialog class="lightbox" aria-label="Fotogramas">
@@ -406,11 +432,7 @@ export function renderProject(ctx, p, prev, next) {
     <button type="button" class="lb-next" aria-label="Fotograma seguinte">${ARROW_RIGHT}</button>
   </dialog>`;
 
-  const description = [
-    p.formato + (p.ano ? `, ${p.ano}` : ""),
-    p.realizacao && `realização de ${p.realizacao}`,
-    p.fotografia && `fotografia de ${p.fotografia}`,
-  ]
+  const description = [p.formato + (p.ano ? `, ${p.ano}` : ""), p.realizacao && `realização de ${p.realizacao}`, p.fotografia && `fotografia de ${p.fotografia}`]
     .filter(Boolean)
     .join(", ");
   return layout(ctx, {
@@ -427,6 +449,6 @@ export function renderNotFound(ctx) {
   return layout(ctx, {
     title: "Página não encontrada",
     path: "/404.html",
-    body: `<div class="notfound"><p class="cat-year">404</p><h1>Esta sessão não existe</h1><p>O endereço mudou ou foi escrito com um erro. <a href="/#programa">Ver o programa completo</a>.</p></div>`,
+    body: `<div class="notfound"><h1>Página não encontrada</h1><p>O endereço mudou ou foi escrito com um erro.</p><p><a href="/#trabalho">${ARROW_LEFT} Ver todo o trabalho</a></p></div>`,
   });
 }
