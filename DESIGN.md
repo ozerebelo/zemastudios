@@ -10,6 +10,7 @@ colors:
   text: "#ecebe7"
   text-soft: "#d7d6d2"
   muted: "#8f8e8a"
+  dim: "#84837f"
   logo-red: "#e35443"
   logo-cream: "#e6e3d4"
 typography:
@@ -153,7 +154,7 @@ A colourless chrome: neutral greys stepped from black to warm-white, with the lo
 ### Named Rules
 **The Neutral Surround Rule.** The ground and every grey are R = G = B (or within one warm step for text). Never tint the ground, a frame surround or a surface toward any hue; the grade must read against neutral.
 
-**The One Dot Rule.** Red appears in the interface only as the 5px active dot (and the text caret). Its rarity is the point; it is the logo's i-dot, not a brand fill.
+**The One Dot Rule.** Red appears in the interface only as the 5px active dot (and the text caret): on the active filter and view, and beside the nav link of the section in view. Its rarity is the point; it is the logo's i-dot, not a brand fill.
 
 **The Black Box Rule.** Pure black is reserved for the box behind a frame. Interface surfaces use the ground, never #000.
 
@@ -194,7 +195,7 @@ A colourless chrome: neutral greys stepped from black to warm-white, with the lo
 
 ## Elevation & Depth
 
-The system is flat. There are no shadows anywhere. Depth comes from three tonal planes (lightbox #050505 below, frame black inside boxes, the ground around them), from hairlines, and from the frames themselves. The one translucent surface is the masthead: the ground at 88% opacity with a 14px backdrop blur (saturation held at 1), so chrome passing over a frame during scroll softens it without tinting it.
+The system is flat. There are no shadows anywhere. Depth comes from three tonal planes (lightbox #050505 below, frame black inside boxes, the ground around them), from hairlines, and from the frames themselves. The masthead is opaque ground: nothing, not even a blurred pane, ever sits over a graded frame.
 
 ### Named Rules
 **The No Shadow Rule.** No box-shadow, glow or drop shadow on any element. Separate with a 1px hairline or with space.
@@ -223,7 +224,7 @@ Sticky under the masthead on the ground, with a hairline bottom. Contains the "T
 - **Hover preview:** on hover-capable devices, the box cycles through the project's other frames every 850ms, each crossfading in over 0.45s on top of the cover; leaving restores the cover.
 
 ### List view
-A full-width table of hairline rows: title (clamp 18 to 24px, 500) with subtitle muted inline, format, director, DOP, year right-aligned in tabular numerals. Column heads 13px muted.
+A full-width table of hairline rows: title (clamp 18 to 24px, 500) with subtitle muted inline, format, director, DOP, measured ratio, year right-aligned in tabular numerals. Column heads 13px muted.
 
 ### Ficha rows (credits and technical sheet)
 A definition list in hairline rows: term (14px muted) in a 0.8 fraction, value (15px text) in 1.2, 13px vertical padding, a hairline top on the group and below each row. Used for the studio technical sheet, contact details and every project's credits (Realização, Direção de fotografia, Produção, Agência, Cliente / exibição, Cor, Proporção, Fotogramas).
@@ -234,17 +235,23 @@ A definition list in hairline rows: term (14px muted) in a 0.8 fraction, value (
 - **Placeholder:** a muted grey, used once as a hint for the project field.
 
 ### Navigation
-Masthead: cream logo left (40px tall, 34px on phones), three lowercase links right at 15px in soft white with the hairline draw-in. Footer: small logo, "zema studios · color grading · Lisboa", email and social links right, hairline top.
+Masthead: opaque ground, cream logo left (40px tall, 34px on phones), three lowercase links right at 15px in soft white with the hairline draw-in. The link of the section in view turns full white and gains the red dot to its left (scaling in over 0.35s, `aria-current="location"`); on project pages "trabalho" carries it.
+
+### Footer (the close)
+A hairline-topped band: the cream logo large (clamp 180 to 380px wide) on the left; email, telephone and social links on the right at clamp 17 to 21px in soft white. Below a second hairline: "zema studios · color grading · Lisboa" in muted and "Voltar ao topo" with a drawn up-arrow. On project pages it is the only contact.
+
+### The colour of each project (signature)
+Between the work and the studio: a heading "A cor de cada projeto" (clamp 28 to 46px, 450) with one muted line of method beside it, then one row per project: title (14px muted, full white on hover), the measured palette as a 16px bar of proportional swatches, year in dim tabular numerals. Each row links to the project. On phones the title and year share a line and the bar runs full width beneath. Data comes from the same build-time measurement as the project palette.
 
 ### Hero carousel (signature)
 Up to six featured projects stacked in one grid cell; the active slide fades in over 1.1s. A 1px progress line draws across the track over 6.5s, then advances. Hover or focus pauses; stepping with the arrows hands control to the visitor permanently; the tab being hidden stops it. Only the active slide is focusable.
 
 ### Project page
-- **Lead:** the first still at its native size and ratio, centred, capped at viewport height; click opens the lightbox.
+- **Lead:** the first still at its native size and ratio, centred, capped at viewport height, captioned with its number and measured ratio like every other still; click opens the lightbox.
 - **Head:** back link and project counter (01 / 27), display title, subtitle, format · client · year in muted, optional trailer pill; on the right the ficha rows and the measured palette.
-- **Measured palette (signature):** a 6px bar of up to six swatches whose widths are each colour's measured share of the stills, ordered dark to light, with a caption "Paleta da grade, medida em N fotogramas" and the hex codes behind 8px squares. Values are computed from the images at build time, never typed.
+- **Measured palette (signature):** a 28px bar of up to six swatches whose widths are each colour's measured share of the stills, ordered dark to light; under each swatch its hex code in 12px tabular numerals, shown only where it fits the swatch; then the caption "Paleta da grade, medida em N fotogramas, da sombra à luz". On phones the codes move into an inline legend behind 8px squares. Values are computed from the images at build time, never typed.
 - **Stills:** packed as described in Layout, each with a caption of its number and measured ratio label (16:9, 2.39:1, 9:16...).
-- **Next project:** a hairline-topped band with the next project's cover in a black box at that frame's own aspect ratio, "Seguinte" label, display-size title and format line; a quiet previous-project link below.
+- **Next project:** a hairline-topped band with the next project's cover in a black box at that frame's own aspect ratio, "Seguinte" label, display-size title and format line; below a hairline, the previous project on the left and "Todo o trabalho" on the right.
 
 ### Lightbox
 A full-screen native dialog on lightbox black; the still at its own ratio within the viewport minus margins; "Fechar", line-arrow prev/next and a tabular counter in muted. Arrow keys step, clicking the ground closes.
@@ -253,7 +260,7 @@ A full-screen native dialog on lightbox black; the still at its own ratio within
 Display heading "Página não encontrada", one muted line, and a hairline link back to the work.
 
 ### Motion
-One ease for drawn and spatial movement, cubic-bezier(0.16, 1, 0.3, 1); plain ease for fades. Under `prefers-reduced-motion: reduce` every transition and animation is removed, the hero does not advance and the tile preview does not run.
+One ease for drawn and spatial movement, cubic-bezier(0.16, 1, 0.3, 1); plain ease for fades. Lazy frames (tiles, stills, next-project cover) fade in over 0.7s once decoded, so a progressive JPEG never paints in bands; the black box holds their place, and without JavaScript they are simply visible. Under `prefers-reduced-motion: reduce` every transition and animation is removed, the hero does not advance and the tile preview does not run.
 
 ## Do's and Don'ts
 

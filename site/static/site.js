@@ -10,6 +10,47 @@
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var canHover = window.matchMedia("(hover: hover)").matches;
 
+  // ---------------------------------------------------------- frames appear once decoded
+  document.querySelectorAll("img.fade").forEach(function (img) {
+    var show = function () { img.classList.add("ok"); };
+    if (img.complete && img.naturalWidth) show();
+    else { img.addEventListener("load", show); img.addEventListener("error", show); }
+  });
+
+  // ---------------------------------------------------------- nav: the red dot follows the section in view
+  var spyLinks = document.querySelectorAll(".mast [data-spy]");
+  var spyTargets = Array.prototype.map.call(spyLinks, function (a) { return document.getElementById(a.dataset.spy); }).filter(Boolean);
+  if (spyTargets.length) {
+    var ticking = false;
+    var mark = function () {
+      ticking = false;
+      // The last section whose top has passed the upper third of the screen is the current one.
+      var current = "";
+      spyTargets.forEach(function (t) { if (t.getBoundingClientRect().top < window.innerHeight * 0.35) current = t.id; });
+      spyLinks.forEach(function (a) {
+        var on = a.dataset.spy === current;
+        a.classList.toggle("on", on);
+        if (on) a.setAttribute("aria-current", "location"); else a.removeAttribute("aria-current");
+      });
+    };
+    window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(mark); } }, { passive: true });
+    mark();
+  }
+
+  // ---------------------------------------------------------- palette codes: show only those that fit their swatch
+  var fitLabels = function () {
+    document.querySelectorAll(".bar-labels span").forEach(function (l) {
+      if (!l.dataset.hex) l.dataset.hex = l.textContent;
+      l.textContent = l.dataset.hex;
+      if (l.scrollWidth > l.clientWidth) l.textContent = "";
+    });
+  };
+  if (document.querySelector(".bar-labels")) {
+    fitLabels();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLabels);
+    window.addEventListener("resize", fitLabels);
+  }
+
   // ---------------------------------------------------------- hero: featured frames
   var hero = document.querySelector(".hero");
   if (hero) {

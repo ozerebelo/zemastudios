@@ -67,12 +67,12 @@ export function embedUrl(url) {
 
 // ---------------------------------------------------------------- pieces
 
-function picture(im, { alt = "", sizes = "100vw", eager = false, cls = "" } = {}) {
+function picture(im, { alt = "", sizes = "100vw", eager = false, cls = "", fade = false } = {}) {
   if (!im) return "";
   const dims = im.width ? ` width="${im.width}" height="${im.height}"` : "";
   const srcset = im.srcset ? ` srcset="${esc(im.srcset)}" sizes="${esc(sizes)}"` : "";
   const loading = eager ? ` fetchpriority="high"` : ` loading="lazy" decoding="async"`;
-  const classes = [cls, im.width && im.height > im.width ? "tall" : ""].filter(Boolean).join(" ");
+  const classes = [cls, fade ? "fade" : "", im.width && im.height > im.width ? "tall" : ""].filter(Boolean).join(" ");
   return `<img${classes ? ` class="${classes}"` : ""} src="${esc(im.src)}"${srcset}${dims} alt="${esc(alt)}"${loading}>`;
 }
 
@@ -101,19 +101,22 @@ function ficha(rows, cls = "") {
 }
 
 /** The measured palette of the grade: a thin bar of proportional swatches and their codes. */
+const swatches = (p) => p.paleta.map((c) => `<span style="flex:${c.share.toFixed(4)} 1 0;background:${c.hex}"></span>`).join("");
+const paletteLabel = (p) => p.paleta.map((c) => `${c.hex} ${Math.round(c.share * 100)}%`).join(", ");
+
 function palette(p) {
   if (!p.paleta?.length) return "";
   const n = p.fotogramas.length || 1;
-  const list = p.paleta.map((c) => `${c.hex} ${Math.round(c.share * 100)}%`).join(", ");
   return `<figure class="palette">
-        <div class="bar" role="img" aria-label="Paleta da grade: ${list}">${p.paleta.map((c) => `<span style="flex:${c.share.toFixed(4)} 1 0;background:${c.hex}"></span>`).join("")}</div>
-        <figcaption><span>Paleta da grade, medida em ${n} ${n === 1 ? "fotograma" : "fotogramas"}</span><span class="hexes">${p.paleta.map((c) => `<span class="hx"><i style="--c:${c.hex}"></i>${c.hex}</span>`).join(" ")}</span></figcaption>
+        <div class="bar" role="img" aria-label="Paleta da grade: ${paletteLabel(p)}">${swatches(p)}</div>
+        <div class="bar-labels" aria-hidden="true">${p.paleta.map((c) => `<span style="flex:${c.share.toFixed(4)} 1 0">${c.share >= 0.06 ? c.hex : ""}</span>`).join("")}</div>
+        <figcaption><span>Paleta da grade, medida em ${n} ${n === 1 ? "fotograma" : "fotogramas"}, da sombra à luz</span><span class="hexes">${p.paleta.map((c) => `<span class="hx"><i style="--c:${c.hex}"></i>${c.hex}</span>`).join(" ")}</span></figcaption>
       </figure>`;
 }
 
 // ---------------------------------------------------------------- layout
 
-function layout(ctx, { title, description, path, image, body, head = "", bodyClass = "" }) {
+function layout(ctx, { title, description, path, image, body, head = "", bodyClass = "", current = "" }) {
   const { site } = ctx;
   const docTitle = title ? `${title} · ${site.nome}` : `${site.nome} · color grading, Lisboa`;
   const canonical = site.url + path;
@@ -141,25 +144,31 @@ ${head}
 </head>
 <body${bodyClass ? ` class="${bodyClass}"` : ""}>
 <a class="skip" href="#conteudo">Saltar para o conteúdo</a>
-<header class="mast">
+<header class="mast" id="topo">
   <a class="brand" href="/"><img src="/logo.svg" alt="${esc(site.nome)}" width="104" height="48"></a>
   <nav aria-label="Principal">
-    <a href="/#trabalho">trabalho</a>
-    <a href="/#estudio">estúdio</a>
-    <a href="/#contacto">contacto</a>
+    ${[["trabalho", "trabalho"], ["estudio", "estúdio"], ["contacto", "contacto"]]
+      .map(([id, label]) => `<a href="/#${id}" data-spy="${id}"${current === id ? ' class="on"' : ""}>${label}</a>`)
+      .join("\n    ")}
   </nav>
 </header>
 <main id="conteudo">
 ${body}
 </main>
 <footer class="foot">
-  <img src="/logo.svg" alt="" width="70" height="32">
-  <p>${esc(site.nome)} · color grading · Lisboa</p>
-  <p class="foot-links">
-    ${c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : ""}
-    ${c.instagram ? `<a href="${esc(c.instagram)}" rel="me">Instagram</a>` : ""}
-    ${c.vimeo ? `<a href="${esc(c.vimeo)}" rel="me">Vimeo</a>` : ""}
-  </p>
+  <div class="foot-top">
+    <a class="foot-brand" href="/" aria-label="${esc(site.nome)}, início"><img src="/logo.svg" alt="" width="104" height="48"></a>
+    <ul class="foot-links">
+      ${c.email ? `<li><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></li>` : ""}
+      ${c.telefone ? `<li><a href="${esc(telHref(c.telefone))}">${esc(c.telefone)}</a></li>` : ""}
+      ${c.instagram ? `<li><a href="${esc(c.instagram)}" rel="me">Instagram</a></li>` : ""}
+      ${c.vimeo ? `<li><a href="${esc(c.vimeo)}" rel="me">Vimeo</a></li>` : ""}
+    </ul>
+  </div>
+  <div class="foot-base">
+    <p>${esc(site.nome)} · color grading · Lisboa</p>
+    <a class="foot-top-link" href="#topo">Voltar ao topo <svg class="ico ico-up" viewBox="0 0 12 24" aria-hidden="true"><path d="M1 7l5-5 5 5M6 2v21"/></svg></a>
+  </div>
 </footer>
 <script src="/site.js" defer></script>
 </body>
@@ -211,6 +220,7 @@ function tile(p, img) {
         <a href="${href}">
           <span class="tile-frame"${others.length ? ` data-frames="${esc(others.join(" "))}"` : ""}>${picture(cover, {
             alt: "",
+            fade: true,
             sizes: "(max-width: 600px) 100vw, (max-width: 960px) 50vw, (max-width: 1280px) 33vw, 25vw",
           })}</span>
           <span class="tile-cap">
@@ -237,6 +247,7 @@ function work(ctx) {
           <td>${keep(p.formato)}</td>
           <td class="c-opt">${esc(p.realizacao)}</td>
           <td class="c-opt">${esc(p.fotografia)}</td>
+          <td class="c-opt c-ratio">${esc(p.proporcao)}</td>
           <td class="c-ano">${p.ano}</td>
         </tr>`,
     )
@@ -258,12 +269,37 @@ function work(ctx) {
     <div class="list" data-pane="lista" hidden>
       <table>
         <caption class="vh">Lista de trabalhos</caption>
-        <thead><tr><th scope="col">Título</th><th scope="col">Formato</th><th scope="col" class="c-opt">Realização</th><th scope="col" class="c-opt">Fotografia</th><th scope="col" class="c-ano">Ano</th></tr></thead>
+        <thead><tr><th scope="col">Título</th><th scope="col">Formato</th><th scope="col" class="c-opt">Realização</th><th scope="col" class="c-opt">Fotografia</th><th scope="col" class="c-opt c-ratio">Proporção</th><th scope="col" class="c-ano">Ano</th></tr></thead>
         <tbody>
         ${rows}
         </tbody>
       </table>
     </div>
+  </section>`;
+}
+
+/** Every grade's measured palette, stacked: the colour of the body of work at a glance. */
+function paletteWall(ctx) {
+  const { projects } = ctx;
+  const withColour = projects.filter((p) => p.paleta?.length);
+  if (!withColour.length) return "";
+  const frames = withColour.reduce((n, p) => n + (p.fotogramas.length || 1), 0);
+  return `<section id="cor" class="pwall" aria-labelledby="h-cor">
+    <div class="pw-head">
+      <h2 id="h-cor">A cor de cada projeto</h2>
+      <p>Paletas medidas em ${frames} fotogramas, uma linha por grade, da sombra à luz.</p>
+    </div>
+    <ol class="pw-list">
+      ${withColour
+        .map(
+          (p) => `<li><a href="/trabalho/${esc(p.slug)}/">
+        <span class="pw-title">${keep(p.titulo)}</span>
+        <span class="pw-bar" role="img" aria-label="${esc(p.titulo)}: ${paletteLabel(p)}">${swatches(p)}</span>
+        <span class="pw-year">${p.ano}</span>
+      </a></li>`,
+        )
+        .join("\n      ")}
+    </ol>
   </section>`;
 }
 
@@ -334,6 +370,7 @@ export function renderHome(ctx) {
     ${reel ? `<button type="button" class="play-btn" data-embed="${esc(reel)}" data-title="Showreel">${PLAY} Ver showreel</button>` : ""}
   </section>
   ${work(ctx)}
+  ${paletteWall(ctx)}
   ${studio(ctx)}
   ${contact(ctx)}`;
   return layout(ctx, {
@@ -381,6 +418,7 @@ export function renderProject(ctx, p, prev, next) {
       alt: `${fullTitle(p)}, fotograma ${i + 1}`,
       sizes,
       eager: i === 0,
+      fade: true,
     })}</a><figcaption><span>${pad2(i + 1)}</span><span>${esc(im.ratio || "")}</span></figcaption></figure>`;
 
   const [first, ...rest] = stills;
@@ -388,7 +426,10 @@ export function renderProject(ctx, p, prev, next) {
   const body = `
   <article class="project-page">
     <div class="lead">
-      <a class="still lead-frame" href="${esc(first.src)}" data-index="0">${picture(first, { alt: `${fullTitle(p)}, fotograma 1`, sizes: "100vw", eager: true })}</a>
+      <figure class="lead-fig">
+        <a class="still lead-frame" href="${esc(first.src)}" data-index="0">${picture(first, { alt: `${fullTitle(p)}, fotograma 1`, sizes: "100vw", eager: true })}</a>
+        <figcaption><span>${pad2(1)} / ${pad2(total)}</span><span>${esc(first.ratio || "")}</span></figcaption>
+      </figure>
     </div>
     <header class="p-head">
       <div class="p-title">
@@ -417,12 +458,15 @@ export function renderProject(ctx, p, prev, next) {
       ${
         next
           ? `<a class="next-link" href="/trabalho/${esc(next.slug)}/">
-        <span class="next-frame" style="aspect-ratio:${nextIm.width || 16} / ${nextIm.height || 9}">${picture(nextIm, { alt: "", sizes: "(max-width: 900px) 100vw, 60vw" })}</span>
+        <span class="next-frame" style="aspect-ratio:${nextIm.width || 16} / ${nextIm.height || 9}">${picture(nextIm, { alt: "", sizes: "(max-width: 900px) 100vw, 60vw", fade: true })}</span>
         <span class="next-text"><span class="next-label">Seguinte ${ARROW_RIGHT}</span><b>${keep(next.titulo)}</b><span>${fmtLine(next)} · ${next.ano}</span></span>
       </a>`
           : ""
       }
-      ${prev ? `<a class="prev-link" href="/trabalho/${esc(prev.slug)}/">${ARROW_LEFT} ${esc(prev.titulo)}</a>` : ""}
+      <p class="next-row">
+        ${prev ? `<a class="prev-link" href="/trabalho/${esc(prev.slug)}/">${ARROW_LEFT} ${esc(prev.titulo)}</a>` : "<span></span>"}
+        <a class="prev-link" href="/#trabalho">Todo o trabalho</a>
+      </p>
     </nav>
   </article>
   <dialog class="lightbox" aria-label="Fotogramas">
@@ -442,6 +486,7 @@ export function renderProject(ctx, p, prev, next) {
     image: cover?.src,
     body,
     bodyClass: "project",
+    current: "trabalho",
   });
 }
 
