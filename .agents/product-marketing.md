@@ -73,7 +73,7 @@ Read by the marketing skills in `.claude/skills/` (copywriting, copy-editing and
 Get qualified enquiries (format, duration, camera, delivery date) from DOPs, directors and producers through the contact page.
 
 ## Learnings
-- 2026-11-22: owner called the earlier copy generic and "slop". A client-led rewrite (Prime Video, RTP, brands) was rejected: "não é o que pretendo". Chosen direction: "Ofício, factual": what the studio does and how, concrete facts about the room and process, no adjectives. Numbers beside the headline are computed from the content.
+- 2026-11-22: owner called the earlier copy generic and "slop". A client-led rewrite (Prime Video, RTP, brands) was rejected: "não é o que pretendo". Chosen direction: "Ofício, factual": what the studio does and how, concrete facts about the room and process, no adjectives. Then the two lines under the mosaic ("Fazemos a cor de séries, filmes e publicidade." and the long computed line) were also disliked: the home now carries only a small caption, "Color grading em Lisboa" and "27 projetos, 2021–2026" (computed). Keep the landing nearly wordless.
 
 ## Changelog
 - v1 (2026-11-22): created from site content during the copy review.
