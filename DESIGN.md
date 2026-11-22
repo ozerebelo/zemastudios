@@ -253,7 +253,7 @@ A definition list in hairline rows: term (14px muted) in a 0.8 fraction, value (
 - **Placeholder:** a muted grey, used once as a hint for the project field.
 
 ### Navigation
-Masthead: opaque ground, cream logo left (40px tall, 34px on phones), three lowercase links right in bold (700, 17px, 15px on phones) and full warm white with the hairline draw-in. Each link is a page (`/trabalho/`, `/estudio/`, `/contacto/`); the logo is the way home. The link of the current page gains the red dot to its left and `aria-current="page"`; on project pages "trabalho" carries the dot without `aria-current`. The home page shows no dot.
+Masthead: opaque ground, cream logo left (40px tall, 34px on phones), three lowercase links right in bold (700, 17px, 15px on phones) and full warm white with the hairline draw-in. Each link is a page (`/trabalho/`, `/estudio/`, `/contacto/`); the logo is the way home. Alignment is optical and measured from pixels: the middle of the links' lowercase letters sits on the middle of the logo's two lines (links raised 3.75px, 3.6px on phones), and the logo is pulled 2.4px left (2px on phones) so its letters, not its SVG box, start on the content edge shared with the mosaic. The link of the current page gains the red dot to its left and `aria-current="page"`; on project pages "trabalho" carries the dot without `aria-current`. The home page shows no dot.
 
 ### Footer (the close)
 A hairline-topped band: the cream logo large (clamp 180 to 380px wide) on the left; email, telephone and social links on the right at clamp 17 to 21px in soft white. Below a second hairline: "zema studios · color grading · Lisboa" in muted and "Voltar ao topo" with a drawn up-arrow. Outside the contact page it is the only contact.
