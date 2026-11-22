@@ -84,8 +84,8 @@ p { text-wrap: pretty; }
 }
 /* The logo's letters start on the content edge (its SVG carries 2.4px of side bearing), like the mosaic and the text below. */
 .brand img { height: 40px; width: auto; margin-left: -2.4px; }
-/* Optical centring, measured from pixels: the middle of the links' lowercase letters sits on the middle of the logo's two lines (3.75px above box centre). */
-.mast nav { display: flex; gap: clamp(22px, 3vw, 44px); font-size: 17px; font-weight: 700; letter-spacing: -0.015em; position: relative; top: -3.75px; }
+/* Centring measured from pixels: the middle of the links (top of the tallest letters to the baseline) sits on the middle of the logo's two lines. */
+.mast nav { display: flex; gap: clamp(22px, 3vw, 44px); font-size: 17px; font-weight: 700; letter-spacing: -0.015em; position: relative; top: -2.375px; }
 .mast nav a { position: relative; padding-bottom: 2px; color: var(--text); transition: color 0.2s, background-size 0.35s var(--ease); }
 .mast nav a:hover, .mast nav a.on { color: var(--text); }
 /* The one red dot also marks where you are. */
@@ -353,7 +353,7 @@ main { max-width: var(--max); margin-inline: auto; }
   .stills-tall { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px 10px; }
   .stills-tall .cell { flex: 0 0 calc(50% - 5px); }
   .brand img { height: 34px; margin-left: -2px; }
-  .mast nav { gap: 18px; font-size: 15px; top: -3.6px; }
+  .mast nav { gap: 18px; font-size: 15px; top: -1.5px; }
   .work-bar { position: static; }
   .views { margin-left: 0; }
   .stills { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 10px; }
