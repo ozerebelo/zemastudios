@@ -104,14 +104,10 @@ function ficha(rows, cls = "") {
 const swatches = (p) => p.paleta.map((c) => `<span style="flex:${c.share.toFixed(4)} 1 0;background:${c.hex}"></span>`).join("");
 const paletteLabel = (p) => p.paleta.map((c) => `${c.hex} ${Math.round(c.share * 100)}%`).join(", ");
 
+/** The measured palette of the grade: colour only, no visible text (the label is for screen readers). */
 function palette(p) {
   if (!p.paleta?.length) return "";
-  const n = p.fotogramas.length || 1;
-  return `<figure class="palette">
-        <div class="bar" role="img" aria-label="Paleta da grade: ${paletteLabel(p)}">${swatches(p)}</div>
-        <div class="bar-labels" aria-hidden="true">${p.paleta.map((c) => `<span style="flex:${c.share.toFixed(4)} 1 0">${c.share >= 0.06 ? c.hex : ""}</span>`).join("")}</div>
-        <figcaption><span>Paleta da grade, medida em ${n} ${n === 1 ? "fotograma" : "fotogramas"}, da sombra à luz</span><span class="hexes">${p.paleta.map((c) => `<span class="hx"><i style="--c:${c.hex}"></i>${c.hex}</span>`).join(" ")}</span></figcaption>
-      </figure>`;
+  return `<div class="palette bar" role="img" aria-label="Paleta da grade, da sombra à luz: ${paletteLabel(p)}">${swatches(p)}</div>`;
 }
 
 // ---------------------------------------------------------------- layout
@@ -178,36 +174,38 @@ ${body}
 
 // ---------------------------------------------------------------- home
 
-function hero(ctx) {
-  const { projects, img } = ctx;
-  const featured = projects.filter((p) => p.destaque);
-  const list = featured.length ? featured : projects.slice(0, 5);
-  const slides = list
+/**
+ * The living mosaic: every project's cover in justified rows at its native
+ * ratio (never cropped), and under it the studio statement. Without
+ * JavaScript the rows simply wrap; site.js packs them so whole rows fill the
+ * first screen, and swaps one tile at a time to another frame of the same
+ * project, chosen only among frames of the cover's own ratio.
+ */
+function mosaic(ctx) {
+  const { site, projects, img, reel } = ctx;
+  const list = [...projects.filter((p) => p.destaque), ...projects.filter((p) => !p.destaque)];
+  const sizes = "(max-width: 760px) 50vw, 30vw";
+  const cells = list
     .map((p, i) => {
-      const href = `/trabalho/${esc(p.slug)}/`;
-      return `<li class="slide${i === 0 ? " on" : ""}"${i ? ' aria-hidden="true"' : ""}>
-        <a class="slide-frame" href="${href}" tabindex="${i ? "-1" : "0"}">${picture(img(p.capa), { alt: `Fotograma de ${fullTitle(p)}`, sizes: "100vw", eager: i === 0 })}</a>
-        <div class="slide-cap">
-          <span class="slide-n">${pad2(i + 1)} <span>/ ${pad2(list.length)}</span></span>
-          <a class="slide-title" href="${href}" tabindex="${i ? "-1" : "0"}">${esc(p.titulo)}${p.subtitulo ? ` <span>${esc(p.subtitulo)}</span>` : ""}</a>
-          <span class="slide-people">${people(p)}</span>
-        </div>
-      </li>`;
+      const im = img(p.capa);
+      if (!im) return "";
+      const r = im.width && im.height ? im.width / im.height : 16 / 9;
+      const same = frames(p, img).filter((f) => f.src !== im.src && f.width && Math.abs(f.width / f.height - r) / r < 0.03);
+      const alt = same.length ? [im, ...same].map((f) => [f.src, f.srcset]) : null;
+      const meta = [p.formato, p.ano].filter(Boolean).join(" · ");
+      return `<a class="m-cell" href="/trabalho/${esc(p.slug)}/" style="--r:${r.toFixed(4)}" aria-label="${esc(fullTitle(p))}" data-t="${esc(fullTitle(p))}" data-m="${esc(meta)}"${alt ? ` data-frames="${esc(JSON.stringify(alt))}"` : ""}>${picture(im, { alt: "", sizes, eager: i < 8, fade: i >= 8 })}</a>`;
     })
-    .join("\n      ");
-  return `<section class="hero" aria-roledescription="carrossel" aria-label="Trabalhos em destaque">
-    <ol class="slides">
-      ${slides}
-    </ol>
-    ${
-      list.length > 1
-        ? `<div class="hero-ctl">
-      <button type="button" data-slide="prev" aria-label="Anterior">${ARROW_LEFT}</button>
-      <button type="button" data-slide="next" aria-label="Seguinte">${ARROW_RIGHT}</button>
+    .join("");
+  const t = String(site.intro || "").trim();
+  const cut = t.indexOf(". ");
+  const head = cut < 0 ? t : t.slice(0, cut + 1);
+  const rest = cut < 0 ? "" : t.slice(cut + 2);
+  return `<section class="mosaic" aria-label="Trabalhos">
+    <div class="m-wall">${cells}</div>
+    <div class="m-band">
+      <div class="m-lead"><h1 class="m-h">${esc(head)}</h1>${reel ? `<button type="button" class="play-btn" data-embed="${esc(reel)}" data-title="Showreel">${PLAY} Ver showreel</button>` : ""}</div>
+      <div class="m-side"><p class="m-s">${esc(rest)}</p><p class="m-cap" aria-hidden="true"><b></b><span></span></p></div>
     </div>
-    <div class="hero-progress" aria-hidden="true"><i></i></div>`
-        : ""
-    }
   </section>`;
 }
 
@@ -283,19 +281,13 @@ function paletteWall(ctx) {
   const { projects } = ctx;
   const withColour = projects.filter((p) => p.paleta?.length);
   if (!withColour.length) return "";
-  const frames = withColour.reduce((n, p) => n + (p.fotogramas.length || 1), 0);
   return `<section id="cor" class="pwall" aria-labelledby="h-cor">
-    <div class="pw-head">
-      <h2 id="h-cor">A cor de cada projeto</h2>
-      <p>Paletas medidas em ${frames} fotogramas, uma linha por grade, da sombra à luz.</p>
-    </div>
+    <h2 id="h-cor" class="vh">A cor de cada projeto</h2>
     <ol class="pw-list">
       ${withColour
         .map(
-          (p) => `<li><a href="/trabalho/${esc(p.slug)}/">
-        <span class="pw-title">${keep(p.titulo)}</span>
-        <span class="pw-bar" role="img" aria-label="${esc(p.titulo)}: ${paletteLabel(p)}">${swatches(p)}</span>
-        <span class="pw-year">${p.ano}</span>
+          (p) => `<li><a href="/trabalho/${esc(p.slug)}/" aria-label="${esc(fullTitle(p))}, ${p.ano}: paleta ${paletteLabel(p)}">
+        <span class="pw-bar">${swatches(p)}</span>
       </a></li>`,
         )
         .join("\n      ")}
@@ -351,12 +343,6 @@ function contact(ctx) {
 }
 
 /** First sentence in full white, the rest in the muted voice. */
-function statement(text) {
-  const t = String(text || "").trim();
-  const i = t.indexOf(". ");
-  return i < 0 ? esc(t) : `${esc(t.slice(0, i + 1))} <span>${esc(t.slice(i + 2))}</span>`;
-}
-
 export function renderHome(ctx) {
   const { site, projects, redirects } = ctx;
   const reel = embedUrl(site.showreel);
@@ -364,11 +350,7 @@ export function renderHome(ctx) {
   // Old site used #project/<slug> and #work; send those links to the new pages.
   const redirectScript = `<script>(function(){var m=${JSON.stringify(redirects)};function go(){var h=location.hash;if(h.indexOf("#project/")===0){var s=m[h.slice(9)];location.replace(s?"/trabalho/"+s+"/":"/#trabalho");}else if(h==="#work"){location.replace("/#trabalho");}}go();addEventListener("hashchange",go);})();</script>`;
   const body = `
-  ${hero(ctx)}
-  <section class="intro" aria-label="Apresentação">
-    <p class="statement">${statement(site.intro)}</p>
-    ${reel ? `<button type="button" class="play-btn" data-embed="${esc(reel)}" data-title="Showreel">${PLAY} Ver showreel</button>` : ""}
-  </section>
+  ${mosaic({ ...ctx, reel })}
   ${work(ctx)}
   ${paletteWall(ctx)}
   ${studio(ctx)}

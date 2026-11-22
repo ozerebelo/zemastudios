@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-20T12:00:00Z",
+  "generatedAt": "2026-11-22T15:48:34.184Z",
   "title": "Design System: zema studios",
   "extensions": {
     "colorMeta": {
@@ -177,7 +177,7 @@
       },
       "headline": {
         "displayName": "Statement",
-        "purpose": "The single studio statement under the hero; first sentence white, rest muted."
+        "purpose": "The home h1 under the mosaic: first sentence of the intro, 700, tight; the rest of the intro muted at the right of the band."
       },
       "mail": {
         "displayName": "Mail",
@@ -189,7 +189,7 @@
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Hero slide title; tile and list titles at 500."
+        "purpose": "Tile and list titles at 500."
       },
       "body": {
         "displayName": "Body",
@@ -197,11 +197,15 @@
       },
       "ui": {
         "displayName": "UI",
-        "purpose": "Nav, filters, views, buttons, ficha values."
+        "purpose": "Filters, views, buttons, ficha values, footer."
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Counters, years, ficha terms, still captions, hex codes; tabular, never uppercase."
+        "purpose": "Counters, years, ficha terms, still captions; tabular, never uppercase."
+      },
+      "nav": {
+        "displayName": "Nav",
+        "purpose": "Masthead links, 700 at 17px (15px on phones), full warm white."
       }
     },
     "shadows": [],
@@ -217,14 +221,14 @@
         "purpose": "1px underline drawing in from the left on every text link."
       },
       {
-        "name": "hero-fade",
-        "value": "opacity 1.1s ease",
-        "purpose": "Crossfade between featured slides."
+        "name": "mosaic-swap",
+        "value": "1100ms interval, opacity 0.8s ease",
+        "purpose": "One landing tile at a time crossfades to another frame of its project, only among frames within 3% of the cover's ratio; never the tile under the pointer."
       },
       {
-        "name": "hero-advance",
-        "value": "6500ms linear",
-        "purpose": "Progress line draw and slide interval; pauses on hover/focus, stops after manual stepping."
+        "name": "mosaic-pack",
+        "value": "on load and resize",
+        "purpose": "Justified rows packed so whole rows fill the first screen; covers that do not fit wait out of the page."
       },
       {
         "name": "tile-peek",
@@ -234,7 +238,7 @@
       {
         "name": "reduced-motion",
         "value": "transition: none; animation: none",
-        "purpose": "Under prefers-reduced-motion everything is still: no hero advance, no tile preview."
+        "purpose": "Under prefers-reduced-motion everything is still: no mosaic swaps, no tile preview."
       }
     ],
     "breakpoints": [
@@ -308,33 +312,42 @@
       "name": "Masthead",
       "kind": "nav",
       "refersTo": "masthead",
-      "description": "Sticky opaque bar: logo left, lowercase links right; the section in view gets the red dot.",
+      "description": "Sticky opaque bar: logo left, bold lowercase links right in warm white; the section in view gets the red dot.",
       "html": "<header class=\"ds-mast\"><span class=\"ds-logo\">zema studios</span><nav><a href=\"#\" class=\"on\">trabalho</a><a href=\"#\">estúdio</a><a href=\"#\">contacto</a></nav></header>",
-      "css": ".ds-mast { height: 76px; display: flex; align-items: center; justify-content: space-between; padding-inline: 32px; background: #0b0b0b; font: 400 15px/1.5 'Host Grotesk', system-ui, sans-serif; } .ds-logo { color: #e6e3d4; font-weight: 600; letter-spacing: -0.03em; } .ds-mast nav { display: flex; gap: 32px; } .ds-mast a { color: #d7d6d2; text-decoration: none; padding-bottom: 2px; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s; } .ds-mast a:hover { color: #ecebe7; background-size: 100% 1px; } .ds-mast a:focus-visible { outline: 1px solid #ecebe7; outline-offset: 4px; } .ds-mast nav a { position: relative; } .ds-mast nav a.on { color: #ecebe7; } .ds-mast nav a.on::before { content: ''; position: absolute; left: -12px; top: 50%; width: 5px; height: 5px; margin-top: -3px; border-radius: 50%; background: #e35443; }"
+      "css": ".ds-mast { height: 76px; display: flex; align-items: center; justify-content: space-between; padding-inline: 32px; background: #0b0b0b; font: 700 17px/1.5 'Host Grotesk', system-ui, sans-serif; } .ds-logo { color: #e6e3d4; font-weight: 600; letter-spacing: -0.03em; } .ds-mast nav { display: flex; gap: 32px; } .ds-mast a { color: #ecebe7; letter-spacing: -0.015em; text-decoration: none; padding-bottom: 2px; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s; } .ds-mast a:hover { color: #ecebe7; background-size: 100% 1px; } .ds-mast a:focus-visible { outline: 1px solid #ecebe7; outline-offset: 4px; } .ds-mast nav a { position: relative; } .ds-mast nav a.on { color: #ecebe7; } .ds-mast nav a.on::before { content: ''; position: absolute; left: -12px; top: 50%; width: 5px; height: 5px; margin-top: -3px; border-radius: 50%; background: #e35443; }"
     },
     {
       "name": "Measured Palette",
       "kind": "custom",
-      "description": "Grade palette: proportional 6px swatch bar plus hex codes, computed from the stills at build time.",
-      "html": "<figure class=\"ds-pal\"><div class=\"ds-pal-bar\"><span style=\"flex:0.31;background:#141518\"></span><span style=\"flex:0.22;background:#2e3a3c\"></span><span style=\"flex:0.18;background:#5b5446\"></span><span style=\"flex:0.15;background:#8c7458\"></span><span style=\"flex:0.14;background:#c8ad8a\"></span></div><figcaption><span>Paleta da grade, medida em 8 fotogramas</span><span>#141518 #2e3a3c #5b5446 #8c7458 #c8ad8a</span></figcaption></figure>",
-      "css": ".ds-pal { margin: 0; width: 420px; font-family: 'Host Grotesk', system-ui, sans-serif; } .ds-pal-bar { display: flex; height: 6px; } .ds-pal-bar span { min-width: 2px; } .ds-pal figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; margin-top: 10px; font-size: 12.5px; color: #8f8e8a; font-variant-numeric: tabular-nums; }"
+      "description": "Grade palette: a 28px bar of proportional swatches, dark to light, computed from the stills at build time. Colour alone: no codes, no caption.",
+      "html": "<div class=\"ds-pal\" role=\"img\" aria-label=\"Paleta da grade, da sombra à luz\"><span style=\"flex:0.31;background:#141518\"></span><span style=\"flex:0.22;background:#2e3a3c\"></span><span style=\"flex:0.18;background:#5b5446\"></span><span style=\"flex:0.15;background:#8c7458\"></span><span style=\"flex:0.14;background:#c8ad8a\"></span></div>",
+      "css": ".ds-pal { display: flex; width: 420px; height: 28px; } .ds-pal span { min-width: 2px; }"
     },
     {
-      "name": "Palette Row",
+      "name": "Palette Wall Bar",
       "kind": "data",
       "refersTo": "the colour of each project",
-      "description": "One row per project: muted title, the measured palette as proportional swatches, dim tabular year; links to the project.",
-      "html": "<a class=\"ds-pw\" href=\"#\"><span class=\"t\">First Date</span><span class=\"b\"><i style=\"flex:.19;background:#181614\"></i><i style=\"flex:.2;background:#312821\"></i><i style=\"flex:.1;background:#493e2f\"></i><i style=\"flex:.07;background:#735d44\"></i><i style=\"flex:.14;background:#aa9d7c\"></i><i style=\"flex:.3;background:#d8caa7\"></i></span><span class=\"y\">2025</span></a>",
-      "css": ".ds-pw { display: grid; grid-template-columns: 15rem 1fr 3.2rem; gap: 24px; align-items: center; padding-block: 6px; background: #0b0b0b; font: 400 14px/1.5 'Host Grotesk', system-ui, sans-serif; color: #8f8e8a; text-decoration: none; } .ds-pw .b { display: flex; height: 16px; } .ds-pw .b i { display: block; } .ds-pw .y { font-size: 13px; color: #84837f; text-align: right; font-variant-numeric: tabular-nums; } .ds-pw:hover .t { color: #ecebe7; }"
+      "description": "One 14px bar of proportional swatches per project, nothing else visible; links to the project and grows to 26px on hover or focus.",
+      "html": "<a class=\"ds-pw\" href=\"#\" aria-label=\"First Date, 2025: paleta\"><span class=\"b\"><i style=\"flex:.19;background:#181614\"></i><i style=\"flex:.2;background:#312821\"></i><i style=\"flex:.1;background:#493e2f\"></i><i style=\"flex:.07;background:#735d44\"></i><i style=\"flex:.14;background:#aa9d7c\"></i><i style=\"flex:.3;background:#d8caa7\"></i></span></a>",
+      "css": ".ds-pw { display: block; width: 560px; padding-block: 2px; background: #0b0b0b; } .ds-pw .b { display: flex; height: 14px; transition: height 0.35s cubic-bezier(0.16, 1, 0.3, 1); } .ds-pw .b i { display: block; } .ds-pw:hover .b, .ds-pw:focus-visible .b { height: 26px; }"
+    },
+    {
+      "name": "Living Mosaic",
+      "kind": "custom",
+      "refersTo": "mosaic-cell",
+      "description": "Landing wall: covers in justified rows, each cell growing by its frame's ratio so no frame is cropped; under it the band with the bold statement and the muted intro line, which names the tile under the pointer.",
+      "html": "<section class=\"ds-mo\"><div class=\"ds-row\"><a style=\"--r:1.7778\"></a><a style=\"--r:2.39\"></a><a style=\"--r:1.7778\"></a></div><div class=\"ds-row\"><a style=\"--r:2\"></a><a style=\"--r:1.7778\"></a><a style=\"--r:1.85\"></a></div><div class=\"ds-band\"><h1>Estúdio de color grading em Lisboa.</h1><p>Séries, cinema, documentário, videoclips e publicidade.</p></div></section>",
+      "css": ".ds-mo { width: 640px; background: #0b0b0b; font-family: 'Host Grotesk', system-ui, sans-serif; display: grid; gap: 6px; } .ds-row { display: flex; gap: 6px; } .ds-row a { flex: var(--r) 1 0; aspect-ratio: var(--r); background: #000; } .ds-band { display: flex; justify-content: space-between; align-items: end; gap: 24px; padding-top: 16px; } .ds-band h1 { margin: 0; font-size: 40px; line-height: 0.92; letter-spacing: -0.045em; font-weight: 700; color: #ecebe7; } .ds-band p { margin: 0; max-width: 22ch; text-align: right; font-size: 15px; color: #8f8e8a; }"
     }
   ],
   "narrative": {
     "northStar": "The Work, Large and True",
-    "overview": "The site is a neutral dark room for graded pictures. A full-width featured frame changes on its own, then a dense grid of every project, then project pages where the stills run big. There is no metaphor and no costume: the craft lives in proportion, one well-tuned grotesk, hairlines, and the discipline of never touching a frame. The register is the category standard of dark post-production portfolios (Blacksmith, Electric Theatre Collective, Lol Crawley, Studio Fifteen, Okay), executed with care rather than reinvented.\n\nDensity is high where the work is (a 4-up grid of 27 projects, stills packed edge to edge in a 4-column grid) and generous everywhere else (section padding of 72 to 170px, a single statement line, one very large email address). Colour is withheld from the interface so it belongs entirely to the frames: the ground is an exactly neutral near-black, the only hue the chrome ever shows is the logo's red, and that only as a 5px dot.\n\nRejected on record by the owner: a light \"cinematheque programme\" world, ColorChecker / one-sheet / ikebana conceits, and generic dark portfolio templates. Stills only; no video loops.",
+    "overview": "The site is a neutral dark room for graded pictures. It opens on a living mosaic: every project's cover in justified rows that fill the first screen exactly, one tile at a time turning to another frame of its project, above the studio statement set large and bold. Then comes a dense grid of every project, then project pages where the stills run big. There is no metaphor and no costume: the craft lives in proportion, one well-tuned grotesk, hairlines, and the discipline of never touching a frame. The register is the category standard of dark post-production portfolios (Blacksmith, Electric Theatre Collective, Lol Crawley, Studio Fifteen, Okay), executed with care rather than reinvented.\n\nDensity is high where the work is (a 4-up grid of 27 projects, stills packed edge to edge in a 4-column grid) and generous everywhere else (section padding of 80 to 170px, one statement, one very large email address). Colour is withheld from the interface so it belongs entirely to the frames: the ground is an exactly neutral near-black, the only hue the chrome ever shows is the logo's red, and that only as a 5px dot.\n\nRejected on record by the owner: a light \"cinematheque programme\" world, ColorChecker / one-sheet / ikebana conceits, and generic dark portfolio templates. Stills only; no video loops.",
     "keyCharacteristics": [
       "Exactly neutral near-black ground; pure black only inside frame boxes.",
       "Frames shown whole: letterboxed on black, never cropped, filtered, dimmed or overlaid.",
-      "One family, Host Grotesk, tight negative tracking on display sizes, tabular numerals for counts, years and hex codes.",
+      "One family, Host Grotesk, tight negative tracking on display sizes, tabular numerals for counts and years.",
+      "Measured palettes are shown as colour alone: bars of proportional swatches, never hex codes or captions.",
       "Hairline rows (1px #262626) do all structural work; no shadows, no cards, no rounding except pills and the active dot.",
       "Brand always lowercase: \"zema studios\". No eyebrows, taglines or invented claims."
     ],
@@ -361,7 +374,7 @@
       },
       {
         "name": "The Tighter As Larger Rule",
-        "body": "Tracking goes from 0 at UI sizes to -0.01em at titles, -0.03em at the statement and -0.045 to -0.05em at display sizes.",
+        "body": "Tracking goes from 0 at UI sizes to -0.01em at titles, -0.015em at the nav and -0.045 to -0.05em at the statement and display sizes.",
         "section": "typography"
       },
       {
@@ -380,9 +393,9 @@
       "Do show stills at native aspect ratio on project pages, including all-vertical sets laid out in their own equal columns.",
       "Do keep the ground exactly neutral (#0b0b0b) and reserve #000 for frame boxes.",
       "Do separate content with 1px hairlines (#262626) and space; use the ficha-row pattern for any credits or facts.",
-      "Do keep credits (director, DOP) visible on every tile and slide.",
+      "Do keep credits (director, DOP) visible on every grid tile and project page.",
       "Do use the 5px red dot as the sole active-state marker for toggles.",
-      "Do use tabular numerals for counters, years, ratios and hex codes.",
+      "Do use tabular numerals for counters, years and ratios.",
       "Do derive measured values (palette, ratio labels) from the images at build time.",
       "Do write \"zema studios\" in lowercase everywhere."
     ],

@@ -22,10 +22,10 @@ typography:
     letterSpacing: "-0.05em"
   headline:
     fontFamily: "Host Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
-    fontSize: "clamp(28px, 3.6vw, 56px)"
-    fontWeight: 450
-    lineHeight: 1.12
-    letterSpacing: "-0.03em"
+    fontSize: "clamp(40px, 5.2vw, 88px)"
+    fontWeight: 700
+    lineHeight: 0.92
+    letterSpacing: "-0.045em"
   mail:
     fontFamily: "Host Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
     fontSize: "clamp(34px, 5.4vw, 88px)"
@@ -38,6 +38,12 @@ typography:
     fontWeight: 400
     lineHeight: 1.28
     letterSpacing: "-0.02em"
+  nav:
+    fontFamily: "Host Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "17px"
+    fontWeight: 700
+    lineHeight: 1.5
+    letterSpacing: "-0.015em"
   title:
     fontFamily: "Host Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
     fontSize: "20px"
@@ -109,9 +115,14 @@ components:
     backgroundColor: "{colors.frame-black}"
     rounded: "{rounded.none}"
   masthead:
-    backgroundColor: "rgb(11 11 11 / 0.88)"
-    textColor: "{colors.text-soft}"
+    backgroundColor: "{colors.ground}"
+    textColor: "{colors.text}"
+    typography: "{typography.nav}"
     height: "{spacing.mast}"
+  mosaic-cell:
+    backgroundColor: "{colors.frame-black}"
+    rounded: "{rounded.none}"
+    gap: "6px"
 ---
 
 # Design System: zema studios
@@ -120,16 +131,17 @@ components:
 
 **Creative North Star: "The Work, Large and True"**
 
-The site is a neutral dark room for graded pictures. A full-width featured frame changes on its own, then a dense grid of every project, then project pages where the stills run big. There is no metaphor and no costume: the craft lives in proportion, one well-tuned grotesk, hairlines, and the discipline of never touching a frame. The register is the category standard of dark post-production portfolios (Blacksmith, Electric Theatre Collective, Lol Crawley, Studio Fifteen, Okay), executed with care rather than reinvented.
+The site is a neutral dark room for graded pictures. It opens on a living mosaic: every project's cover in justified rows that fill the first screen exactly, one tile at a time turning to another frame of its project, above the studio statement set large and bold. Then comes a dense grid of every project, then project pages where the stills run big. There is no metaphor and no costume: the craft lives in proportion, one well-tuned grotesk, hairlines, and the discipline of never touching a frame. The register is the category standard of dark post-production portfolios (Blacksmith, Electric Theatre Collective, Lol Crawley, Studio Fifteen, Okay), executed with care rather than reinvented.
 
-Density is high where the work is (a 4-up grid of 27 projects, stills packed edge to edge in a 4-column grid) and generous everywhere else (section padding of 72 to 170px, a single statement line, one very large email address). Colour is withheld from the interface so it belongs entirely to the frames: the ground is an exactly neutral near-black, the only hue the chrome ever shows is the logo's red, and that only as a 5px dot.
+Density is high where the work is (a 4-up grid of 27 projects, stills packed edge to edge in a 4-column grid) and generous everywhere else (section padding of 80 to 170px, one statement, one very large email address). Colour is withheld from the interface so it belongs entirely to the frames: the ground is an exactly neutral near-black, the only hue the chrome ever shows is the logo's red, and that only as a 5px dot.
 
 Rejected on record by the owner: a light "cinematheque programme" world, ColorChecker / one-sheet / ikebana conceits, and generic dark portfolio templates. Stills only; no video loops.
 
 **Key Characteristics:**
 - Exactly neutral near-black ground; pure black only inside frame boxes.
 - Frames shown whole: letterboxed on black, never cropped, filtered, dimmed or overlaid.
-- One family, Host Grotesk, tight negative tracking on display sizes, tabular numerals for counts, years and hex codes.
+- One family, Host Grotesk, tight negative tracking on display sizes, tabular numerals for counts and years.
+- Measured palettes are shown as colour alone: bars of proportional swatches, never hex codes or captions.
 - Hairline rows (1px #262626) do all structural work; no shadows, no cards, no rounding except pills and the active dot.
 - Brand always lowercase: "zema studios". No eyebrows, taglines or invented claims.
 
@@ -142,13 +154,13 @@ A colourless chrome: neutral greys stepped from black to warm-white, with the lo
 
 ### Neutral
 - **Neutral Ground** (ground): page background, masthead (at 88% opacity), sticky work bar, `theme-color`. R, G and B are equal on purpose: a tinted surround would shift how the grades read.
-- **Frame Black** (frame-black): the box behind every letterboxed frame (hero slide, grid tile, next-project teaser, video embed). The only place pure black appears, so a frame's own blacks read against true black like a masked print.
+- **Frame Black** (frame-black): the box behind every letterboxed frame (mosaic cell, grid tile, next-project teaser, video embed). The only place pure black appears, so a frame's own blacks read against true black like a masked print.
 - **Lightbox Black** (lightbox-black): the full-screen lightbox ground and backdrop, one step below the page so a still in isolation sits in near-darkness.
-- **Hairline** (hairline): every rule: work-bar underline, ficha rows, list rows, field underlines, section tops, footer top, hero progress track.
-- **Pill Line** (pill-line): the outline of the play pill (showreel, trailer) and the scrollbar thumb.
-- **Warm White** (text): primary text, active controls, focus outline, solid pill fill, hero progress fill, selection background.
-- **Soft White** (text-soft): masthead nav and footer links at rest, one step under full text so hover can brighten them.
-- **Muted Grey** (muted): secondary voice: subtitles, credits, counters, years, labels, ficha terms, the second sentence of the statement, inactive filters, disabled submit.
+- **Hairline** (hairline): every rule: work-bar underline, ficha rows, list rows, field underlines, section tops, footer top.
+- **Pill Line** (pill-line): the outline of the play pill (showreel, trailer), and the scrollbar thumb.
+- **Warm White** (text): primary text, masthead nav, the statement, the tile named in the band, active controls, focus outline, solid pill fill, selection background.
+- **Soft White** (text-soft): footer links at rest, one step under full text so hover can brighten them.
+- **Muted Grey** (muted): secondary voice: subtitles, credits, counters, years, labels, ficha terms, the line beside the statement, inactive filters, disabled submit.
 - **Logo Cream** (logo-cream): lives only inside `logo.svg`; it is never used as an interface colour.
 
 ### Named Rules
@@ -164,34 +176,35 @@ A colourless chrome: neutral greys stepped from black to warm-white, with the lo
 **Body Font:** Host Grotesk
 **Label Font:** Host Grotesk with tabular numerals
 
-**Character:** a single contemporary grotesk carries everything; hierarchy comes from size, weight steps of 400 / 450 / 500 and progressively tighter tracking as size grows, never from a second family.
+**Character:** a single contemporary grotesk carries everything; hierarchy comes from size, weight steps of 400 / 450 / 500 / 700 and progressively tighter tracking as size grows, never from a second family. Bold 700 is reserved for what must hit first: the masthead nav, the statement under the mosaic and the tile name in the band.
 
 ### Hierarchy
 - **Display** (500, clamp(44px, 6.6vw, 104px), 0.95, -0.05em): project title on the project page; the 404 heading at clamp(40px, 6vw, 90px); the next-project title at clamp(34px, 4.6vw, 72px), -0.045em.
 - **Mail** (450, clamp(34px, 5.4vw, 88px), 1, -0.045em): the contact email address, the largest call to action on the site.
-- **Headline** (450, clamp(28px, 3.6vw, 56px), 1.12, -0.03em, max 23ch, balanced): the single studio statement under the hero; first sentence in full white, the rest muted.
+- **Headline** (700, clamp(40px, 5.2vw, 88px), 0.92, -0.045em, balanced): the home page's h1, the first sentence of the studio intro, under the mosaic. The rest of the intro sits at the right of the band at 17px in muted (16px on phones, below the h1).
+- **Nav** (700, 17px, -0.015em; 15px on phones): the three masthead links, in full warm white.
 - **Lede** (400, clamp(22px, 2.1vw, 32px), 1.28, -0.02em, max 26ch): studio paragraphs; second and later paragraphs muted. Project subtitles sit near here at clamp(19px, 1.6vw, 24px).
-- **Title** (500, 20px, -0.01em): hero slide title (subtitle inline in muted 400). Tile titles 500 at 15.5px; list-view titles 500 at clamp(18px, 1.6vw, 24px).
+- **Title** (500, 15.5 to 20px, -0.01em): tile titles 500 at 15.5px; list-view titles 500 at clamp(18px, 1.6vw, 24px).
 - **Body** (400, 16px, 1.5): base; form fields and contact text at 17px; project notes at 18px, max 62ch.
 - **UI** (400, 15px): nav, filters, views, buttons, ficha values, footer (14px).
-- **Label** (400, 12.5 to 14px, tabular): counters (01 / 06), years, ficha terms, still captions (number and ratio), palette hex codes, field labels. Never uppercase, never letterspaced.
+- **Label** (400, 12.5 to 14px, tabular): counters (01 / 06), years, ficha terms, still captions (number and ratio), field labels. Never uppercase, never letterspaced.
 
 ### Named Rules
 **The One Family Rule.** Host Grotesk is the only face. Do not introduce a serif, mono or display face; reach for weight 450/500 and negative tracking instead.
 
-**The Tighter As Larger Rule.** Tracking goes from 0 at UI sizes to -0.01em at titles, -0.03em at the statement and -0.045 to -0.05em at display sizes.
+**The Tighter As Larger Rule.** Tracking goes from 0 at UI sizes to -0.01em at titles, -0.015em at the nav and -0.045 to -0.05em at the statement and display sizes.
 
 **The Lowercase Brand Rule.** "zema studios" is lowercase in every string, title, alt text and metadata, and nav labels are lowercase (trabalho, estúdio, contacto).
 
 ## Layout
 
 - **Container:** content max 1760px, centred; side padding `pad` = clamp(16px, 3vw, 44px). Masthead is sticky, 76px (64px on phones), full bleed.
-- **Hero:** one 16:9 frame box at full content width, capped at the viewport height minus masthead and caption; a caption row under it (74px counter column, title, credits right-aligned), prev/next arrows at bottom right, and a 1px progress line spanning the content width at the bottom.
+- **Mosaic (first screen):** exactly one screen tall (100svh minus the masthead, at least 560px): the wall of covers takes all the height the band leaves; the band (statement left, intro line right, bottom-aligned) closes it at the fold. Without JavaScript the section is as tall as its wrapped rows.
 - **Work grid:** 4 columns, 16px column gap, 40px row gap; 3 columns at 1280px, 2 at 960px (32px / 12px gaps), 1 at 600px.
 - **Two-column bands:** studio, contact and project head use a 1.3 : 1 (project 1.25 : 1) split with a clamp(40px, 7vw, 120px) gap, collapsing to one column at 960px.
 - **Project stills:** a 4-column packing grid with 16px / 40px gaps: landscape stills span 2, verticals span 1, and a landscape left alone on the last row spans all 4. An all-vertical set lays out in as many equal columns as stills (max 5); on phones it wraps two per row with an odd last still centred.
-- **Rhythm:** section padding steps by clamp: roughly 72 to 150px above the statement, 80 to 170px below sections, 100 to 180px above the next-project teaser.
-- **Phones (760px and below):** hero and project lead run edge to edge (no side padding, still uncropped); the hero subtitle hides; the work bar stops being sticky; stills go to 2 columns with landscape frames full width; list view drops the director and DOP columns; lightbox arrows move to the bottom.
+- **Rhythm:** section padding steps by clamp: roughly 80 to 170px below sections, 100 to 180px above the next-project teaser.
+- **Phones (760px and below):** the project lead runs edge to edge (no side padding, still uncropped); the mosaic keeps its side padding with 4px gaps and the band stacks; the work bar stops being sticky; stills go to 2 columns with landscape frames full width; list view drops the director and DOP columns; lightbox arrows move to the bottom.
 
 ## Elevation & Depth
 
@@ -210,10 +223,10 @@ Square by default: frame boxes, tiles, fields, the palette bar and its swatches 
 Two pills, used sparingly.
 - **Solid pill** (form submit): warm-white fill, ground text, 500 weight, 14px 22px, with a trailing arrow. Hover widens the gap between label and arrow from 14 to 20px over 0.35s on the house ease. Disabled turns muted with a progress cursor.
 - **Outline pill** (Ver showreel, Ver trailer): transparent, 1px pill-line border, play triangle leading, 11px 20px. Hover brightens the border to warm white. Clicking replaces the pill in place with a 16:9 black embed box; nothing autoloads.
-- **Quiet controls** (hero arrows, lightbox close/prev/next): borderless, muted, brighten to text on hover.
+- **Quiet controls** (lightbox close/prev/next): borderless, muted, brighten to text on hover.
 
 ### Links
-- **Hairline draw-in:** every text link (nav, footer, ficha, project meta, previous-project, 404, list titles) carries a 1px underline that draws in from the left over 0.35s. The email draws a 2px line over 0.5s. Hero and tile titles use a 1px offset underline on hover.
+- **Hairline draw-in:** every text link (nav, footer, ficha, project meta, previous-project, 404, list titles) carries a 1px underline that draws in from the left over 0.35s. The email draws a 2px line over 0.5s. Tile titles use a 1px offset underline on hover.
 
 ### Work bar (filters and views)
 Sticky under the masthead on the ground, with a hairline bottom. Contains the "Trabalho" heading (15px, 500), format filters with superscript tabular counts, and Grelha / Lista toggles pushed right. Inactive toggles are muted; the active one turns text and gains the 5px red dot before its label. The chosen view is remembered per visitor.
@@ -235,21 +248,21 @@ A definition list in hairline rows: term (14px muted) in a 0.8 fraction, value (
 - **Placeholder:** a muted grey, used once as a hint for the project field.
 
 ### Navigation
-Masthead: opaque ground, cream logo left (40px tall, 34px on phones), three lowercase links right at 15px in soft white with the hairline draw-in. The link of the section in view turns full white and gains the red dot to its left (scaling in over 0.35s, `aria-current="location"`); on project pages "trabalho" carries it.
+Masthead: opaque ground, cream logo left (40px tall, 34px on phones), three lowercase links right in bold (700, 17px, 15px on phones) and full warm white with the hairline draw-in. The link of the section in view gains the red dot to its left (scaling in over 0.35s, `aria-current="location"`); on project pages "trabalho" carries it.
 
 ### Footer (the close)
 A hairline-topped band: the cream logo large (clamp 180 to 380px wide) on the left; email, telephone and social links on the right at clamp 17 to 21px in soft white. Below a second hairline: "zema studios · color grading · Lisboa" in muted and "Voltar ao topo" with a drawn up-arrow. On project pages it is the only contact.
 
 ### The colour of each project (signature)
-Between the work and the studio: a heading "A cor de cada projeto" (clamp 28 to 46px, 450) with one muted line of method beside it, then one row per project: title (14px muted, full white on hover), the measured palette as a 16px bar of proportional swatches, year in dim tabular numerals. Each row links to the project. On phones the title and year share a line and the bar runs full width beneath. Data comes from the same build-time measurement as the project palette.
+Between the work and the studio, after a hairline: one 14px bar of proportional swatches per project, 6px apart, and nothing else: no visible heading (an h2 for assistive technology only), titles, years or codes. Each bar links to its project, with title, year and palette in its accessible name, and grows to 26px on hover or focus. Data comes from the same build-time measurement as the project palette.
 
-### Hero carousel (signature)
-Up to six featured projects stacked in one grid cell; the active slide fades in over 1.1s. A 1px progress line draws across the track over 6.5s, then advances. Hover or focus pauses; stepping with the arrows hands control to the visitor permanently; the tab being hidden stops it. Only the active slide is focusable.
+### Living mosaic (signature)
+Every project's cover, featured first, in justified rows: each cell grows in proportion to its frame's ratio, so a row shares one height and no frame is cropped. site.js picks the row height that leaves the least space under the last whole row (weighted toward three or four covers per line and about four rows on tall screens), and covers that do not fit wait out of the page. Every 1.1s one visible tile (never the one under the pointer, never one of the last four) crossfades over 0.8s to the next frame of its project, chosen only among frames within 3% of the cover's ratio, so a cell never changes shape. Pointing at or focusing a tile replaces the intro line in the band with the project's title (700, warm white) and format · year (muted). Under reduced motion nothing swaps; with the tab hidden the swaps wait.
 
 ### Project page
 - **Lead:** the first still at its native size and ratio, centred, capped at viewport height, captioned with its number and measured ratio like every other still; click opens the lightbox.
 - **Head:** back link and project counter (01 / 27), display title, subtitle, format · client · year in muted, optional trailer pill; on the right the ficha rows and the measured palette.
-- **Measured palette (signature):** a 28px bar of up to six swatches whose widths are each colour's measured share of the stills, ordered dark to light; under each swatch its hex code in 12px tabular numerals, shown only where it fits the swatch; then the caption "Paleta da grade, medida em N fotogramas, da sombra à luz". On phones the codes move into an inline legend behind 8px squares. Values are computed from the images at build time, never typed.
+- **Measured palette (signature):** a 28px bar of up to six swatches whose widths are each colour's measured share of the stills, ordered dark to light. Colour alone: no hex codes, no caption; the bar carries its description for assistive technology. Values are computed from the images at build time, never typed.
 - **Stills:** packed as described in Layout, each with a caption of its number and measured ratio label (16:9, 2.39:1, 9:16...).
 - **Next project:** a hairline-topped band with the next project's cover in a black box at that frame's own aspect ratio, "Seguinte" label, display-size title and format line; below a hairline, the previous project on the left and "Todo o trabalho" on the right.
 
@@ -260,7 +273,7 @@ A full-screen native dialog on lightbox black; the still at its own ratio within
 Display heading "Página não encontrada", one muted line, and a hairline link back to the work.
 
 ### Motion
-One ease for drawn and spatial movement, cubic-bezier(0.16, 1, 0.3, 1); plain ease for fades. Lazy frames (tiles, stills, next-project cover) fade in over 0.7s once decoded, so a progressive JPEG never paints in bands; the black box holds their place, and without JavaScript they are simply visible. Under `prefers-reduced-motion: reduce` every transition and animation is removed, the hero does not advance and the tile preview does not run.
+One ease for drawn and spatial movement, cubic-bezier(0.16, 1, 0.3, 1); plain ease for fades. Lazy frames (tiles, stills, next-project cover) fade in over 0.7s once decoded, so a progressive JPEG never paints in bands; the black box holds their place, and without JavaScript they are simply visible. Under `prefers-reduced-motion: reduce` every transition and animation is removed, the mosaic does not swap frames and the tile preview does not run.
 
 ## Do's and Don'ts
 
@@ -269,9 +282,9 @@ One ease for drawn and spatial movement, cubic-bezier(0.16, 1, 0.3, 1); plain ea
 - **Do** show stills at native aspect ratio on project pages, including all-vertical sets laid out in their own equal columns.
 - **Do** keep the ground exactly neutral (#0b0b0b) and reserve #000 for frame boxes.
 - **Do** separate content with 1px hairlines (#262626) and space; use the ficha-row pattern for any credits or facts.
-- **Do** keep credits (director, DOP) visible on every tile and slide.
+- **Do** keep credits (director, DOP) visible on every grid tile and project page.
 - **Do** use the 5px red dot as the sole active-state marker for toggles.
-- **Do** use tabular numerals for counters, years, ratios and hex codes.
+- **Do** use tabular numerals for counters, years and ratios.
 - **Do** derive measured values (palette, ratio labels) from the images at build time.
 - **Do** write "zema studios" in lowercase everywhere.
 

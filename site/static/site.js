@@ -37,65 +37,106 @@
     mark();
   }
 
-  // ---------------------------------------------------------- palette codes: show only those that fit their swatch
-  var fitLabels = function () {
-    document.querySelectorAll(".bar-labels span").forEach(function (l) {
-      if (!l.dataset.hex) l.dataset.hex = l.textContent;
-      l.textContent = l.dataset.hex;
-      if (l.scrollWidth > l.clientWidth) l.textContent = "";
-    });
-  };
-  if (document.querySelector(".bar-labels")) {
-    fitLabels();
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLabels);
-    window.addEventListener("resize", fitLabels);
-  }
+  // ---------------------------------------------------------- mosaic: whole rows fill the first screen
+  var mo = document.querySelector(".mosaic");
+  if (mo) {
+    var wall = mo.querySelector(".m-wall");
+    var cells = Array.prototype.slice.call(wall.querySelectorAll(".m-cell"));
+    var ratios = cells.map(function (c) { return parseFloat(c.style.getPropertyValue("--r")) || 16 / 9; });
+    var spare = document.createElement("div"); // cells that do not fit this screen wait here, out of the page
+    spare.hidden = true;
+    mo.appendChild(spare);
+    var lastW = 0, lastH = 0;
 
-  // ---------------------------------------------------------- hero: featured frames
-  var hero = document.querySelector(".hero");
-  if (hero) {
-    var slides = Array.prototype.slice.call(hero.querySelectorAll(".slide"));
-    var bar = hero.querySelector(".hero-progress i");
-    var DUR = 6500;
-    var current = 0, timer = null, stopped = false;
-    var show = function (i) {
-      i = (i + slides.length) % slides.length;
-      slides.forEach(function (s, k) {
-        var on = k === i;
-        s.classList.toggle("on", on);
-        if (on) s.removeAttribute("aria-hidden"); else s.setAttribute("aria-hidden", "true");
-        s.querySelectorAll("a").forEach(function (a) { a.tabIndex = on ? 0 : -1; });
+    // Greedy justified rows for a target height h: a row closes once its height (width over the sum of ratios) drops to h.
+    var rowsFor = function (W, g, h) {
+      var rows = [], row = [], sum = 0;
+      for (var i = 0; i < cells.length; i++) {
+        row.push(i); sum += ratios[i];
+        var rh = (W - (row.length - 1) * g) / sum;
+        if (rh <= h) { rows.push({ items: row, h: rh }); row = []; sum = 0; }
+      }
+      return rows;
+    };
+    var pack = function () {
+      var W = wall.clientWidth, H = wall.clientHeight;
+      if (!W || !H || (W === lastW && H === lastH)) return;
+      lastW = W; lastH = H;
+      var g = parseFloat(getComputedStyle(mo).getPropertyValue("--gap")) || 6;
+      var perRow = W < 1100 ? 3 : 4;
+      // Preferred row height: a 16:9 cover sits perRow to a line, but never fewer than about four rows on a tall screen.
+      var pref = Math.min((W - (perRow - 1) * g) / perRow / 1.78, H / 3.6);
+      var best = null;
+      for (var h = Math.round(pref * 0.6); h <= Math.round(pref * 1.7); h++) {
+        var rows = rowsFor(W, g, h), used = 0, n = 0;
+        while (n < rows.length && used + rows[n].h + (n ? g : 0) <= H) { used += rows[n].h + (n ? g : 0); n++; }
+        if (!n) continue;
+        // Least empty space under the last row wins; among near ties, the size closest to the preferred one.
+        var score = H - used + Math.abs(h - pref) * 0.35;
+        if (!best || score < best.score) best = { score: score, rows: rows.slice(0, n) };
+      }
+      if (!best) return;
+      var frag = document.createDocumentFragment(), shown = {};
+      best.rows.forEach(function (r) {
+        var line = document.createElement("div");
+        line.className = "m-row";
+        r.items.forEach(function (i) { line.appendChild(cells[i]); shown[i] = true; });
+        frag.appendChild(line);
       });
-      current = i;
-      var nextImg = slides[(i + 1) % slides.length].querySelector("img");
-      if (nextImg) nextImg.loading = "eager";
-      restartBar();
+      cells.forEach(function (c, i) { if (!shown[i]) spare.appendChild(c); });
+      wall.textContent = "";
+      wall.appendChild(frag);
+      wall.classList.add("packed");
     };
-    var restartBar = function () {
-      if (!bar) return;
-      bar.classList.remove("run");
-      void bar.offsetWidth;
-      if (timer && !stopped) { bar.style.setProperty("--dur", DUR + "ms"); bar.classList.add("run"); }
+    pack();
+    if (window.ResizeObserver) new ResizeObserver(function () { requestAnimationFrame(pack); }).observe(wall);
+    else window.addEventListener("resize", function () { requestAnimationFrame(pack); });
+
+    // Pointing at a tile names it in the band.
+    var cap = mo.querySelector(".m-cap");
+    var naming = function (c) {
+      if (c) { cap.firstChild.textContent = c.dataset.t; cap.lastChild.textContent = c.dataset.m; }
+      mo.classList.toggle("m-naming", !!c);
     };
-    var start = function () {
-      if (reduceMotion || stopped || slides.length < 2 || timer) return;
-      timer = setInterval(function () { show(current + 1); }, DUR);
-      restartBar();
-    };
-    var stop = function () { clearInterval(timer); timer = null; if (bar) bar.classList.remove("run"); };
-    hero.addEventListener("click", function (e) {
-      var b = e.target.closest("[data-slide]");
-      if (!b) return;
-      stopped = true; // a visitor who steps through by hand keeps control
-      stop();
-      show(current + (b.dataset.slide === "next" ? 1 : -1));
+    cells.forEach(function (c) {
+      c.addEventListener("mouseenter", function () { naming(c); });
+      c.addEventListener("mouseleave", function () { naming(null); });
+      c.addEventListener("focus", function () { naming(c); });
+      c.addEventListener("blur", function () { naming(null); });
     });
-    hero.addEventListener("mouseenter", stop);
-    hero.addEventListener("mouseleave", start);
-    hero.addEventListener("focusin", stop);
-    document.addEventListener("visibilitychange", function () { document.hidden ? stop() : start(); });
-    if (slides.length > 1) { var n = slides[1].querySelector("img"); if (n) n.loading = "eager"; }
-    start();
+
+    // One tile at a time turns to another frame of its project, crossfading over the one it replaces.
+    if (!reduceMotion) {
+      var recent = [];
+      var turn = function () {
+        if (document.hidden) return;
+        var pool = cells.filter(function (c) { return c.dataset.frames && c.parentNode !== spare && recent.indexOf(c) < 0 && !c.matches(":hover"); });
+        if (!pool.length) return;
+        var c = pool[Math.floor(Math.random() * pool.length)];
+        recent.push(c); if (recent.length > 4) recent.shift();
+        var list = c._frames || (c._frames = JSON.parse(c.dataset.frames));
+        c._k = ((c._k || 0) + 1) % list.length;
+        var cur = c.querySelector("img:last-child");
+        var next = document.createElement("img");
+        next.className = "m-in";
+        next.alt = "";
+        next.sizes = cur.sizes || "30vw";
+        if (list[c._k][1]) next.srcset = list[c._k][1];
+        next.src = list[c._k][0];
+        var swap = function () {
+          if (!next.naturalWidth) return;
+          c.appendChild(next);
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              next.classList.remove("m-in");
+              setTimeout(function () { Array.prototype.forEach.call(c.querySelectorAll("img"), function (im) { if (im !== next) im.remove(); }); }, 900);
+            });
+          });
+        };
+        if (next.decode) next.decode().then(swap, function () {}); else next.onload = swap;
+      };
+      setInterval(turn, 1100);
+    }
   }
 
   // ---------------------------------------------------------- tiles: preview the other frames on hover
