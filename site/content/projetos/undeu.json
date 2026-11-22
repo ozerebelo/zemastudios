@@ -1,0 +1,32 @@
+{
+  "titulo": "Undeu",
+  "subtitulo": "Novas Narrativas de Caça",
+  "ano": 2026,
+  "formato": "Série",
+  "cliente": "RTP",
+  "realizacao": "Diogo Gazella Carvalho",
+  "fotografia": "Maurício Franco",
+  "producao": "Many Takes & Galo Bravo",
+  "agencia": "",
+  "cor": "",
+  "video": "",
+  "capa": "/media/projetos/undeu-01.jpg",
+  "fotogramas": [
+    "/media/projetos/undeu-01.jpg",
+    "/media/projetos/undeu-02.jpg",
+    "/media/projetos/undeu-03.jpg",
+    "/media/projetos/undeu-04.jpg",
+    "/media/projetos/undeu-05.jpg",
+    "/media/projetos/undeu-06.jpg",
+    "/media/projetos/undeu-07.jpg",
+    "/media/projetos/undeu-08.jpg",
+    "/media/projetos/undeu-09.jpg",
+    "/media/projetos/undeu-10.jpg",
+    "/media/projetos/undeu-11.jpg",
+    "/media/projetos/undeu-12.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": -3,
+  "publicado": true
+}

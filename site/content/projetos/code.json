@@ -1,0 +1,29 @@
+{
+  "titulo": "Codé",
+  "subtitulo": "Novas Narrativas de Caça",
+  "ano": 2026,
+  "formato": "Série",
+  "cliente": "RTP",
+  "realizacao": "Cláudia Semedo",
+  "fotografia": "Maurício Franco",
+  "producao": "Many Takes & Galo Bravo",
+  "agencia": "",
+  "cor": "",
+  "video": "",
+  "capa": "/media/projetos/code-01.jpg",
+  "fotogramas": [
+    "/media/projetos/code-01.jpg",
+    "/media/projetos/code-02.jpg",
+    "/media/projetos/code-03.jpg",
+    "/media/projetos/code-04.jpg",
+    "/media/projetos/code-05.jpg",
+    "/media/projetos/code-06.jpg",
+    "/media/projetos/code-07.jpg",
+    "/media/projetos/code-08.jpg",
+    "/media/projetos/code-09.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": -4,
+  "publicado": true
+}

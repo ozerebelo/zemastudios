@@ -257,7 +257,8 @@ main { max-width: var(--max); margin-inline: auto; }
 .lead { padding-inline: var(--pad); }
 .lead-fig figcaption { display: flex; justify-content: space-between; margin-top: 9px; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .lead-frame { display: flex; justify-content: center; cursor: zoom-in; }
-.lead-frame img { width: auto; max-width: 100%; max-height: calc(100svh - var(--mast) - 40px); }
+/* .still.lead-frame outranks ".still img { width: 100% }": the lead keeps its own ratio, capped by width and by the screen's height. */
+.still.lead-frame img { width: auto; height: auto; max-width: 100%; max-height: calc(100svh - var(--mast) - 40px); object-fit: contain; }
 .p-head {
   display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(40px, 7vw, 120px);
   padding: clamp(36px, 4.5vw, 64px) var(--pad) clamp(56px, 7vw, 100px); align-items: start;

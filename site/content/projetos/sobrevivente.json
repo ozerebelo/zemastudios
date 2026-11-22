@@ -1,0 +1,33 @@
+{
+  "titulo": "Sobrevivente",
+  "subtitulo": "Novas Narrativas de Caça",
+  "ano": 2026,
+  "formato": "Série",
+  "cliente": "RTP",
+  "realizacao": "",
+  "fotografia": "Johel Almeida",
+  "producao": "Many Takes & Galo Bravo",
+  "agencia": "",
+  "cor": "",
+  "video": "",
+  "capa": "/media/projetos/sobrevivente-01.jpg",
+  "fotogramas": [
+    "/media/projetos/sobrevivente-01.jpg",
+    "/media/projetos/sobrevivente-02.jpg",
+    "/media/projetos/sobrevivente-03.jpg",
+    "/media/projetos/sobrevivente-04.jpg",
+    "/media/projetos/sobrevivente-05.jpg",
+    "/media/projetos/sobrevivente-06.jpg",
+    "/media/projetos/sobrevivente-07.jpg",
+    "/media/projetos/sobrevivente-08.jpg",
+    "/media/projetos/sobrevivente-09.jpg",
+    "/media/projetos/sobrevivente-10.jpg",
+    "/media/projetos/sobrevivente-11.jpg",
+    "/media/projetos/sobrevivente-12.jpg",
+    "/media/projetos/sobrevivente-13.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": -2,
+  "publicado": true
+}

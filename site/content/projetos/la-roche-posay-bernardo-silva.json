@@ -1,0 +1,26 @@
+{
+  "titulo": "Bernardo Silva",
+  "subtitulo": "",
+  "ano": 2026,
+  "formato": "Publicidade",
+  "cliente": "La Roche-Posay",
+  "realizacao": "Maurício Franco & Marcelo Gafanha",
+  "fotografia": "Maurício Franco",
+  "producao": "Many Takes",
+  "agencia": "",
+  "cor": "",
+  "video": "",
+  "capa": "/media/projetos/la-roche-posay-bernardo-silva-01.jpg",
+  "fotogramas": [
+    "/media/projetos/la-roche-posay-bernardo-silva-01.jpg",
+    "/media/projetos/la-roche-posay-bernardo-silva-02.jpg",
+    "/media/projetos/la-roche-posay-bernardo-silva-03.jpg",
+    "/media/projetos/la-roche-posay-bernardo-silva-04.jpg",
+    "/media/projetos/la-roche-posay-bernardo-silva-05.jpg",
+    "/media/projetos/la-roche-posay-bernardo-silva-06.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": -5,
+  "publicado": true
+}

@@ -1,0 +1,32 @@
+{
+  "titulo": "Loucos por Olá",
+  "subtitulo": "",
+  "ano": 2026,
+  "formato": "Publicidade",
+  "cliente": "Olá",
+  "realizacao": "Filipe Traslatti & Luis Almeida",
+  "fotografia": "Bruno Grilo",
+  "producao": "Many Takes",
+  "agencia": "",
+  "cor": "",
+  "video": "",
+  "capa": "/media/projetos/ola-loucos-por-ola-01.jpg",
+  "fotogramas": [
+    "/media/projetos/ola-loucos-por-ola-01.jpg",
+    "/media/projetos/ola-loucos-por-ola-02.jpg",
+    "/media/projetos/ola-loucos-por-ola-03.jpg",
+    "/media/projetos/ola-loucos-por-ola-04.jpg",
+    "/media/projetos/ola-loucos-por-ola-05.jpg",
+    "/media/projetos/ola-loucos-por-ola-06.jpg",
+    "/media/projetos/ola-loucos-por-ola-07.jpg",
+    "/media/projetos/ola-loucos-por-ola-08.jpg",
+    "/media/projetos/ola-loucos-por-ola-09.jpg",
+    "/media/projetos/ola-loucos-por-ola-10.jpg",
+    "/media/projetos/ola-loucos-por-ola-11.jpg",
+    "/media/projetos/ola-loucos-por-ola-12.jpg"
+  ],
+  "notas": "",
+  "destaque": false,
+  "ordem": -6,
+  "publicado": true
+}
