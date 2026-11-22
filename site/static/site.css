@@ -202,6 +202,11 @@ main { max-width: var(--max); margin-inline: auto; }
 .contact { padding: 0 var(--pad) clamp(56px, 6vw, 96px); }
 .studio-grid, .contact-grid { border-top: 1px solid var(--line); padding-top: clamp(36px, 5vw, 64px); }
 .studio-grid, .contact-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(40px, 7vw, 120px); align-items: start; }
+/* With the studio photo: the photo on the left at its own 4:5, text and technical sheet stacked on the right. */
+.studio-grid.has-photo { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); }
+.studio-photo { margin: 0; }
+.studio-photo img { display: block; width: 100%; height: auto; }
+.studio-body .ficha-rows { margin-top: clamp(32px, 4vw, 56px); }
 .studio-text p { font-size: clamp(22px, 2.1vw, 32px); line-height: 1.28; letter-spacing: -0.02em; max-width: 26ch; margin-bottom: 0.7em; font-weight: 400; }
 .studio-text p + p { color: var(--muted); }
 
@@ -331,7 +336,8 @@ main { max-width: var(--max); margin-inline: auto; }
 }
 @media (max-width: 960px) {
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 12px; }
-  .studio-grid, .contact-grid, .p-head, .foot-top { grid-template-columns: minmax(0, 1fr); }
+  .studio-grid, .studio-grid.has-photo, .contact-grid, .p-head, .foot-top { grid-template-columns: minmax(0, 1fr); }
+  .studio-photo { max-width: 440px; }
   .next-link { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 760px) {

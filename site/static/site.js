@@ -222,9 +222,9 @@
         .then(function (r) {
           if (!r.ok) throw new Error(String(r.status));
           form.reset();
-          status.textContent = "Mensagem enviada. Respondemos por email.";
+          status.textContent = "Pedido enviado. Respondemos por email.";
         })
-        .catch(function () { status.textContent = "Não foi possível enviar. Escreva diretamente para o email ao lado."; })
+        .catch(function () { status.textContent = "Não foi possível enviar. Escreva-nos para " + (form.dataset.email || "o nosso email") + "."; })
         .then(function () { submit.disabled = false; });
     });
   }

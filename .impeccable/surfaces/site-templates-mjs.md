@@ -30,5 +30,6 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 ## Constraints
 
 - Never alter graded frames: no filters, overlays, text over images, tinted surrounds; letterbox instead of crop. Single exception, asked for by the owner: the mosaic tile's name chip while it is pointed at or focused.
+- Copy is factual and about the craft; no client, platform or brand names in marketing copy (owner, 2026-11-22). The studio photo (two colorists from behind) is approved.
 - The home page is the mosaic and one block; the project grid, palettes, studio and contact each live on their own page.
 - No eyebrows, taglines or invented claims. Every string from content/ or fixed labels.

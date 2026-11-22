@@ -191,7 +191,7 @@ singletons:
       - name: intro
         label: Frase de apresentação
         widget: text
-        hint: Por baixo do mosaico da página inicial. A primeira frase (até ao primeiro ponto) fica em grande; o resto aparece ao lado, mais pequeno.
+        hint: O título grande por baixo do mosaico da página inicial. Uma frase curta e verificável (ex. para quem fazemos cor). A linha ao lado é calculada a partir dos projetos e atualiza-se sozinha.
       - name: showreel
         label: Showreel
         widget: string
@@ -201,6 +201,21 @@ singletons:
         label: Sobre
         widget: object
         fields:
+          - name: titulo
+            label: Título
+            widget: string
+            required: false
+            hint: O título do bloco na página inicial e na página Estúdio.
+          - name: foto
+            label: Fotografia do estúdio
+            widget: image
+            required: false
+            hint: Aparece ao lado do texto, na página inicial e na página Estúdio. Corte vertical 4:5, com pelo menos 1200 px de largura.
+          - name: foto_alt
+            label: Descrição da fotografia
+            widget: string
+            required: false
+            hint: Para quem não vê a imagem. Diga o que se vê.
           - name: texto
             label: Texto
             widget: text

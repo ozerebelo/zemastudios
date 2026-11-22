@@ -228,6 +228,8 @@ Two pills, used sparingly.
 - **Quiet controls** (lightbox close/prev/next): borderless, muted, brighten to text on hover.
 
 ### Links
+- **Studio photo:** in "O nosso trabalho" and on /estudio/, the black-and-white studio photo (two colorists from behind, facing the screens; the owner's own photo, cropped by request to 4:5) sits in the left column at 0.8fr with the text and technical sheet stacked on the right; on one-column layouts it caps at 440px. It is not a graded frame, so it carries no black box. Set from the CMS (`sobre.foto`, `sobre.foto_alt`).
+- **Copy voice:** factual, about the craft (owner's choice, 2026-11-22): what the studio does and how, never client or brand names outside each project's own credits. The line beside the home h1 is computed from the published projects ("27 projetos entre 2021 e 2026: 15 séries, …"), with numbers bound to their nouns by non-breaking spaces; hyphenated words never split in paragraphs.
 - **Onward links:** at the end of the home block and the studio page, the next places to go ("Ver todo o trabalho", "Falar connosco") at clamp(20px, 1.9vw, 28px), 500, each followed by the line arrow; the gap to the arrow widens from 14 to 20px on hover while the hairline draws in. The home block's heading "O nosso trabalho" is an h2 at clamp(32px, 3.6vw, 56px), 700.
 - **Hairline draw-in:** every text link (nav, onward links, footer, ficha, project meta, previous-project, 404, list titles) carries a 1px underline that draws in from the left over 0.35s. The email draws a 2px line over 0.5s. Tile titles use a 1px offset underline on hover.
 

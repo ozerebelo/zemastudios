@@ -21,6 +21,30 @@ const CATEGORIAS = [
   ["publicidade", "Publicidade"],
 ];
 
+/** How each category is counted in running copy: singular and plural. */
+const CONTAGEM = {
+  series: ["série", "séries"],
+  cinema: ["filme", "filmes"],
+  documentario: ["documentário", "documentários"],
+  videoclip: ["videoclip", "videoclips"],
+  publicidade: ["campanha", "campanhas"],
+};
+
+/**
+ * Facts for running copy, computed from the published projects so a line like
+ * "27 projetos entre 2021 e 2026: 15 séries, ..." can never go stale or overstate.
+ */
+function facts(projects) {
+  const anos = projects.map((p) => p.ano).filter(Boolean);
+  const counts = {};
+  for (const p of projects) counts[FORMATOS[p.formato]] = (counts[FORMATOS[p.formato]] || 0) + 1;
+  const parts = CATEGORIAS.filter(([k]) => counts[k]).map(([k]) => `${counts[k]}\u00A0${CONTAGEM[k][counts[k] === 1 ? 0 : 1]}`);
+  const list = parts.length > 1 ? `${parts.slice(0, -1).join(", ")} e ${parts[parts.length - 1]}` : parts[0] || "";
+  const de = Math.min(...anos), ate = Math.max(...anos);
+  const periodo = de === ate ? `em ${de}` : `entre ${de} e ${ate}`;
+  return { n: projects.length, list, periodo };
+}
+
 const FICHA = [
   ["realizacao", "Realização"],
   ["fotografia", "Direção de fotografia"],
@@ -38,7 +62,7 @@ const paragraphs = (text) =>
     .split(/\n\s*\n/)
     .map((p) => p.trim())
     .filter(Boolean)
-    .map((p) => `<p>${esc(p).replace(/\n/g, "<br>")}</p>`)
+    .map((p) => `<p>${keep(p).replace(/\n/g, "<br>")}</p>`) // hyphenated words (faz-se, G-SHOCK) never split
     .join("\n");
 
 const telHref = (t) => "tel:" + String(t).replace(/[^\d+]/g, "");
@@ -203,10 +227,10 @@ function mosaic(ctx) {
       return `<a class="m-cell" href="/trabalho/${esc(p.slug)}/" style="--r:${r.toFixed(4)}" aria-label="${esc(fullTitle(p))}"${alt ? ` data-frames="${esc(JSON.stringify(alt))}"` : ""}>${picture(im, { alt: "", sizes, eager: i < 8, fade: i >= 8 })}${name}</a>`;
     })
     .join("");
-  const t = String(site.intro || "").trim();
-  const cut = t.indexOf(". ");
-  const head = cut < 0 ? t : t.slice(0, cut + 1);
-  const rest = cut < 0 ? "" : t.slice(cut + 2);
+  // The headline is the owner's sentence from the CMS; the line beside it is computed, so its numbers stay true.
+  const head = String(site.intro || "").trim();
+  const f = facts(projects);
+  const rest = `Estúdio de color grading em Lisboa. ${f.n}\u00A0projetos ${f.periodo}: ${f.list}.`;
   return `<section class="mosaic" aria-label="Trabalhos">
     <div class="m-wall">${cells}</div>
     <div class="m-band">
@@ -303,11 +327,20 @@ function paletteWall(ctx) {
 
 /** The studio text beside the technical sheet; on the home page under a visible heading, on /estudio/ under the page title. */
 function studioGrid(ctx) {
-  const { site } = ctx;
+  const { site, img } = ctx;
   const tech = (site.tecnico || []).filter((t) => t?.rotulo && t?.valor);
-  return `<div class="studio-grid">
-      <div class="studio-text">${paragraphs(site.sobre?.texto)}</div>
-      ${ficha(tech.map((t) => [esc(t.rotulo), esc(t.valor)]), "ficha-rows")}
+  const foto = site.sobre?.foto ? img(site.sobre.foto) : null;
+  const sheet = ficha(tech.map((t) => [esc(t.rotulo), esc(t.valor)]), "ficha-rows");
+  const text = `<div class="studio-text">${paragraphs(site.sobre?.texto)}</div>`;
+  // With the studio photo: photo on the left, text and technical sheet stacked on the right.
+  return foto
+    ? `<div class="studio-grid has-photo">
+      <figure class="studio-photo">${picture(foto, { alt: site.sobre.foto_alt || "", sizes: "(max-width: 960px) 100vw, 36vw", fade: true })}</figure>
+      <div class="studio-body">${text}${sheet}</div>
+    </div>`
+    : `<div class="studio-grid">
+      ${text}
+      ${sheet}
     </div>`;
 }
 
@@ -323,13 +356,13 @@ function contact(ctx) {
   const c = ctx.site.contacto || {};
   const ig = c.instagram ? c.instagram.replace(/^https?:\/\/(www\.)?instagram\.com\//, "@").replace(/\/$/, "") : "";
   const form = c.formspree
-    ? `<form class="form" action="https://formspree.io/f/${esc(c.formspree)}" method="POST">
+    ? `<form class="form" data-email="${esc(c.email || "")}" action="https://formspree.io/f/${esc(c.formspree)}" method="POST">
         <div class="field"><label for="f-nome">Nome</label><input id="f-nome" name="nome" autocomplete="name"></div>
         <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
         <div class="field"><label for="f-projeto">Projeto</label><input id="f-projeto" name="projeto" placeholder="Formato, duração, câmara, data de entrega"></div>
         <div class="field"><label for="f-msg">Mensagem</label><textarea id="f-msg" name="mensagem" rows="4" required></textarea></div>
         <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp">
-        <button type="submit">Enviar ${ARROW_RIGHT}</button>
+        <button type="submit">Enviar pedido ${ARROW_RIGHT}</button>
         <p class="form-status" role="status"></p>
       </form>`
     : "";
@@ -363,9 +396,9 @@ export function renderHome(ctx) {
   const body = `
   ${mosaic({ ...ctx, reel })}
   <section class="studio" aria-labelledby="h-nosso">
-    <h2 id="h-nosso" class="sec-h">O nosso trabalho</h2>
+    <h2 id="h-nosso" class="sec-h">${esc(site.sobre?.titulo || "O nosso trabalho")}</h2>
     ${studioGrid(ctx)}
-    ${onward([["/trabalho/", "Ver todo o trabalho"], ["/contacto/", "Falar connosco"]])}
+    ${onward([["/trabalho/", `Ver os ${projects.length} projetos`], ["/contacto/", "Pedir orçamento"]])}
   </section>`;
   return layout(ctx, {
     title: "",
@@ -383,7 +416,7 @@ export function renderWork(ctx) {
   const first = projects.find((p) => p.destaque) || projects[0];
   return layout(ctx, {
     title: "Trabalho",
-    description: `Todos os projetos de cor da ${ctx.site.nome}: séries, cinema, documentário, videoclips e publicidade.`,
+    description: (() => { const f = facts(projects); return `Os ${f.n} projetos de color grading da ${ctx.site.nome} ${f.periodo}: ${f.list}.`; })(),
     path: "/trabalho/",
     image: first ? ctx.img(first.capa)?.src : "",
     body: `
@@ -404,10 +437,11 @@ export function renderStudio(ctx) {
     path: "/estudio/",
     body: `
   ${pageHead("Estúdio")}
-  <section class="studio" aria-label="Sobre o estúdio">
+  <section class="studio" aria-labelledby="h-sobre">
+    <h2 id="h-sobre" class="sec-h">${esc(site.sobre?.titulo || "O nosso trabalho")}</h2>
     ${studioGrid(ctx)}
     ${reel ? `<p class="studio-reel"><button type="button" class="play-btn" data-embed="${esc(reel)}" data-title="Showreel">${PLAY} Ver showreel</button></p>` : ""}
-    ${onward([["/trabalho/", "Ver o trabalho"], ["/contacto/", "Falar connosco"]])}
+    ${onward([["/trabalho/", `Ver os ${ctx.projects.length} projetos`], ["/contacto/", "Pedir orçamento"]])}
   </section>`,
     current: "estudio",
   });
@@ -523,7 +557,7 @@ export function renderProject(ctx, p, prev, next) {
     .join(", ");
   return layout(ctx, {
     title: fullTitle(p),
-    description: `${description}. Color grading: ${ctx.site.nome}.`,
+    description: `${description}. Color grading da ${ctx.site.nome}, em Lisboa.`,
     path: `/trabalho/${p.slug}/`,
     image: cover?.src,
     body,

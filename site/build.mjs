@@ -138,7 +138,7 @@ async function build() {
   await cp(path.join(ROOT, "static"), OUT, { recursive: true });
 
   // Resolve every image up front (in parallel; sharp queues the work on its own thread pool).
-  const all = new Set(projects.flatMap((p) => [p.capa, ...p.fotogramas]));
+  const all = new Set([...projects.flatMap((p) => [p.capa, ...p.fotogramas]), site.sobre?.foto].filter(Boolean));
   const resolved = new Map(await Promise.all([...all].map(async (src) => [src, await image(src)])));
   const img = (src) => resolved.get(src);
 
