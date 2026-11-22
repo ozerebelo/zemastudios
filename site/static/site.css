@@ -83,8 +83,7 @@ p { text-wrap: pretty; }
   background: var(--bg);
 }
 .brand img { height: 40px; width: auto; }
-/* The nav sits on the baseline of the logo's lower line ("studios"), not between its two lines: 7px below centre, measured from pixels. */
-.mast nav { display: flex; gap: clamp(22px, 3vw, 44px); font-size: 17px; font-weight: 700; letter-spacing: -0.015em; position: relative; top: 7px; }
+.mast nav { display: flex; gap: clamp(22px, 3vw, 44px); font-size: 17px; font-weight: 700; letter-spacing: -0.015em; }
 .mast nav a { position: relative; padding-bottom: 2px; color: var(--text); transition: color 0.2s, background-size 0.35s var(--ease); }
 .mast nav a:hover, .mast nav a.on { color: var(--text); }
 /* The one red dot also marks where you are. */
@@ -105,19 +104,17 @@ main { max-width: var(--max); margin-inline: auto; }
 /* Justified rows: each cell grows in proportion to its ratio, so a row shares one height and every frame keeps its shape. */
 .m-wall { display: flex; flex-wrap: wrap; gap: var(--gap); align-content: start; }
 .m-wall::after { content: ""; flex-grow: 1e4; }
-/* Packed rows sit centred in the wall: what little height whole rows cannot fill is split above and below. */
-.m-wall.packed { display: grid; align-content: center; }
+.m-wall.packed { display: grid; }
 .m-wall.packed::after { content: none; }
 .m-row { display: flex; gap: var(--gap); }
 .m-cell { position: relative; display: block; flex: var(--r) 1 calc(var(--r) * 150px); aspect-ratio: var(--r); background: var(--frame); }
 .m-row .m-cell { flex: var(--r) 1 0; }
 .m-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity 0.8s ease; }
 .m-cell img.m-in { opacity: 0; }
-/* Under the mosaic, one caption line: what and where on the left, the computed count on the right. The frames keep the screen. */
-.m-band { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 24px; padding: 14px 0 18px; }
-.m-h { font-size: 17px; line-height: 1.3; letter-spacing: -0.015em; font-weight: 700; }
+.m-band { display: flex; justify-content: space-between; align-items: end; gap: 30px; padding: 22px 0 26px; }
+.m-h { font-size: clamp(40px, 5.2vw, 88px); line-height: 0.92; letter-spacing: -0.045em; font-weight: 700; text-wrap: balance; }
 .m-lead .play-btn { margin-top: 22px; }
-.m-side { font-size: 15px; line-height: 1.3; color: var(--muted); font-variant-numeric: tabular-nums; }
+.m-side { flex: 0 0 auto; width: 28ch; max-width: 40%; text-align: right; font-size: 17px; line-height: 1.35; color: var(--muted); padding-bottom: 6px; }
 /* A tile names itself only while pointed at or focused: a solid chip of page ground in its lower corner, no blur, no gradient. */
 .m-name {
   position: absolute; left: 0; bottom: 0; z-index: 1; max-width: 100%;
@@ -348,13 +345,13 @@ main { max-width: var(--max); margin-inline: auto; }
   /* On phones the project lead runs edge to edge: more image, still no crop. */
   .lead { padding-inline: 0; }
   .mosaic { --gap: 4px; }
-  .m-h { font-size: 15px; }
-  .m-side { font-size: 14px; }
+  .m-band { flex-direction: column; align-items: start; gap: 12px; padding: 18px 0 22px; }
+  .m-side { width: auto; max-width: none; text-align: left; font-size: 16px; padding-bottom: 0; }
   /* Vertical sets on phones: two per row, an odd last still centred instead of orphaned. */
   .stills-tall { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px 10px; }
   .stills-tall .cell { flex: 0 0 calc(50% - 5px); }
   .brand img { height: 34px; }
-  .mast nav { gap: 18px; font-size: 15px; top: 5.25px; }
+  .mast nav { gap: 18px; font-size: 15px; }
   .work-bar { position: static; }
   .views { margin-left: 0; }
   .stills { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 10px; }

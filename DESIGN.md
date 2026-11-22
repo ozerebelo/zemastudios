@@ -22,10 +22,10 @@ typography:
     letterSpacing: "-0.05em"
   headline:
     fontFamily: "Host Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
-    fontSize: "17px"
+    fontSize: "clamp(40px, 5.2vw, 88px)"
     fontWeight: 700
-    lineHeight: 1.3
-    letterSpacing: "-0.015em"
+    lineHeight: 0.92
+    letterSpacing: "-0.045em"
   mail:
     fontFamily: "Host Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
     fontSize: "clamp(34px, 5.4vw, 88px)"
@@ -181,7 +181,7 @@ A colourless chrome: neutral greys stepped from black to warm-white, with the lo
 ### Hierarchy
 - **Display** (500, clamp(44px, 6.6vw, 104px), 0.95, -0.05em): project title on the project page; the 404 heading at clamp(40px, 6vw, 90px); the next-project title at clamp(34px, 4.6vw, 72px), -0.045em.
 - **Mail** (450, clamp(34px, 5.4vw, 88px), 1, -0.045em): the contact email address, the largest call to action on the site.
-- **Headline** (700, 17px, -0.015em; 15px on phones): the home page's h1, a caption under the mosaic ("Color grading em Lisboa", from the CMS); the computed count ("27 projetos, 2021–2026") sits right-aligned at 15px in muted tabular numerals. The frames keep the screen; the owner rejected larger statements here.
+- **Headline** (700, clamp(40px, 5.2vw, 88px), 0.92, -0.045em, balanced): the home page's h1, the first sentence of the studio intro, under the mosaic. The rest of the intro sits at the right of the band at 17px in muted (16px on phones, below the h1).
 - **Nav** (700, 17px, -0.015em; 15px on phones): the three masthead links, in full warm white.
 - **Lede** (400, clamp(22px, 2.1vw, 32px), 1.28, -0.02em, max 26ch): studio paragraphs; second and later paragraphs muted. Project subtitles sit near here at clamp(19px, 1.6vw, 24px).
 - **Title** (500, 15.5 to 20px, -0.01em): tile titles 500 at 15.5px; list-view titles 500 at clamp(18px, 1.6vw, 24px).
@@ -201,7 +201,7 @@ A colourless chrome: neutral greys stepped from black to warm-white, with the lo
 - **Container:** content max 1760px, centred; side padding `pad` = clamp(16px, 3vw, 44px). Masthead is sticky, 76px (64px on phones), full bleed.
 - **Pages:** `/` (mosaic, then "O nosso trabalho": studio text, technical sheet and onward links to Trabalho and Contacto), `/trabalho/` (every project: work bar, grid or list, then the palette wall), `/estudio/` (studio text, technical sheet, showreel if set), `/contacto/` (email, details, form), and `/trabalho/<slug>/` per project. Old one-page anchors (`/#trabalho`, `/#estudio`, `/#contacto`, `#work`, `#project/<id>`) redirect to these pages.
 - **Page head:** inner pages open on a plain h1 (700, clamp(48px, 6.6vw, 112px), 0.92, -0.05em) with clamp 40 to 96px above and 28 to 56px below; no eyebrow, no intro line.
-- **Mosaic (first screen):** exactly one screen tall (100svh minus the masthead, at least 560px): the wall of covers takes all the height the one-line caption leaves; packed rows sit centred in the wall, so what whole rows cannot fill is split above and below (≈11 to 15px at common sizes). Without JavaScript the section is as tall as its wrapped rows.
+- **Mosaic (first screen):** exactly one screen tall (100svh minus the masthead, at least 560px): the wall of covers takes all the height the band leaves; the band (statement left, intro line right, bottom-aligned) closes it at the fold. Without JavaScript the section is as tall as its wrapped rows.
 - **Work grid:** 4 columns, 16px column gap, 40px row gap; 3 columns at 1280px, 2 at 960px (32px / 12px gaps), 1 at 600px.
 - **Two-column bands:** studio, contact and project head use a 1.3 : 1 (project 1.25 : 1) split with a clamp(40px, 7vw, 120px) gap, collapsing to one column at 960px.
 - **Project stills:** a 4-column packing grid with 16px / 40px gaps: landscape stills span 2, verticals span 1, and a landscape left alone on the last row spans all 4. An all-vertical set lays out in as many equal columns as stills (max 5); on phones it wraps two per row with an odd last still centred.
@@ -253,7 +253,7 @@ A definition list in hairline rows: term (14px muted) in a 0.8 fraction, value (
 - **Placeholder:** a muted grey, used once as a hint for the project field.
 
 ### Navigation
-Masthead: opaque ground, cream logo left (40px tall, 34px on phones), three lowercase links right in bold (700, 17px, 15px on phones) and full warm white with the hairline draw-in. Each link is a page (`/trabalho/`, `/estudio/`, `/contacto/`); the logo is the way home. The links sit on the baseline of the logo's lower line ("studios"), not centred between its two lines: 7px below centre (5.25px on phones), measured from pixels. The link of the current page gains the red dot to its left and `aria-current="page"`; on project pages "trabalho" carries the dot without `aria-current`. The home page shows no dot.
+Masthead: opaque ground, cream logo left (40px tall, 34px on phones), three lowercase links right in bold (700, 17px, 15px on phones) and full warm white with the hairline draw-in. Each link is a page (`/trabalho/`, `/estudio/`, `/contacto/`); the logo is the way home. The link of the current page gains the red dot to its left and `aria-current="page"`; on project pages "trabalho" carries the dot without `aria-current`. The home page shows no dot.
 
 ### Footer (the close)
 A hairline-topped band: the cream logo large (clamp 180 to 380px wide) on the left; email, telephone and social links on the right at clamp 17 to 21px in soft white. Below a second hairline: "zema studios · color grading · Lisboa" in muted and "Voltar ao topo" with a drawn up-arrow. Outside the contact page it is the only contact.
@@ -262,7 +262,7 @@ A hairline-topped band: the cream logo large (clamp 180 to 380px wide) on the le
 On `/trabalho/`, after the grid and a hairline: one 14px bar of proportional swatches per project, 6px apart, and nothing else: no visible heading (an h2 for assistive technology only), titles, years or codes. Each bar links to its project, with title, year and palette in its accessible name, and grows to 26px on hover or focus. Data comes from the same build-time measurement as the project palette.
 
 ### Living mosaic (signature)
-Every project's cover, featured first, in justified rows: each cell grows in proportion to its frame's ratio, so a row shares one height and no frame is cropped. site.js searches where each row breaks (covers in order, every row justified to the full width) for whole rows that fill the height at even row heights: rows within 0.8 to 1.25 of a preferred height (16:9 covers four to a line above 1100px, three to 600px, two below; never fewer than about four rows on a tall screen), allowed to vary more (0.72 to 1.4) only when even rows would leave over 6% empty. Covers that do not fit wait out of the page. Every 1.1s one visible tile (never the one under the pointer, never one of the last four) crossfades over 0.8s to the next frame of its project, chosen only among frames within 3% of the cover's ratio, so a cell never changes shape. Pointing at or focusing a tile shows its name inside the tile, at the owner's request: a solid chip of page ground in the lower-left corner (7px 11px padding, no blur, no gradient, no dimming of the frame) with the title (700, 13px, warm white) over format · year (12px, muted), fading in over 0.2s and gone at rest. It is the single sanctioned exception to "no text over an image", and it only exists while the visitor is pointing. Under reduced motion nothing swaps; with the tab hidden the swaps wait.
+Every project's cover, featured first, in justified rows: each cell grows in proportion to its frame's ratio, so a row shares one height and no frame is cropped. site.js picks the row height that leaves the least space under the last whole row (weighted toward three or four covers per line and about four rows on tall screens), and covers that do not fit wait out of the page. Every 1.1s one visible tile (never the one under the pointer, never one of the last four) crossfades over 0.8s to the next frame of its project, chosen only among frames within 3% of the cover's ratio, so a cell never changes shape. Pointing at or focusing a tile shows its name inside the tile, at the owner's request: a solid chip of page ground in the lower-left corner (7px 11px padding, no blur, no gradient, no dimming of the frame) with the title (700, 13px, warm white) over format · year (12px, muted), fading in over 0.2s and gone at rest. It is the single sanctioned exception to "no text over an image", and it only exists while the visitor is pointing. Under reduced motion nothing swaps; with the tab hidden the swaps wait.
 
 ### Project page
 - **Lead:** the first still at its native size and ratio, centred, capped at viewport height, captioned with its number and measured ratio like every other still; click opens the lightbox.

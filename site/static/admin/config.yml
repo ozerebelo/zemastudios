@@ -191,7 +191,7 @@ singletons:
       - name: intro
         label: Frase de apresentação
         widget: text
-        hint: A legenda curta por baixo do mosaico da página inicial (o que fazemos e onde). O número de projetos ao lado é calculado e atualiza-se sozinho.
+        hint: O título grande por baixo do mosaico da página inicial. Uma frase curta e verificável (ex. para quem fazemos cor). A linha ao lado é calculada a partir dos projetos e atualiza-se sozinha.
       - name: showreel
         label: Showreel
         widget: string

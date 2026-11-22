@@ -28,50 +28,33 @@
     mo.appendChild(spare);
     var lastW = 0, lastH = 0;
 
-    // Search where each row breaks: covers stay in order, every row is justified to the full width (its height is the
-    // width over the sum of its ratios), and the whole rows that fit should fill the height with as little left over as
-    // possible, at row heights close to the preferred one. Small enough (27 covers, rows within a height band) to run on resize.
+    // Greedy justified rows for a target height h: a row closes once its height (width over the sum of ratios) drops to h.
+    var rowsFor = function (W, g, h) {
+      var rows = [], row = [], sum = 0;
+      for (var i = 0; i < cells.length; i++) {
+        row.push(i); sum += ratios[i];
+        var rh = (W - (row.length - 1) * g) / sum;
+        if (rh <= h) { rows.push({ items: row, h: rh }); row = []; sum = 0; }
+      }
+      return rows;
+    };
     var pack = function () {
       var W = wall.clientWidth, H = wall.clientHeight;
       if (!W || !H || (W === lastW && H === lastH)) return;
       lastW = W; lastH = H;
       var g = parseFloat(getComputedStyle(mo).getPropertyValue("--gap")) || 6;
-      var perRow = W < 600 ? 2 : W < 1100 ? 3 : 4;
+      var perRow = W < 1100 ? 3 : 4;
       // Preferred row height: a 16:9 cover sits perRow to a line, but never fewer than about four rows on a tall screen.
       var pref = Math.min((W - (perRow - 1) * g) / perRow / 1.78, H / 3.6);
-      var lo, hi, wDev, N = cells.length;
-      var best = null, path = [], visits = 0;
-      var consider = function (used, dev) {
-        // Leftover space dominates; the average distance from the preferred height breaks near ties.
-        var score = (H - used) + (dev / path.length) * wDev;
-        if (!best || score < best.score) best = { score: score, rows: path.slice() };
-      };
-      var dfs = function (i, used, dev) {
-        if (++visits > 200000) return;
-        if (path.length) consider(used, dev);
-        var sum = 0;
-        for (var m = 1; i + m <= N && m <= 8; m++) {
-          sum += ratios[i + m - 1];
-          var rh = (W - (m - 1) * g) / sum;
-          if (rh > hi) continue;          // too tall: needs more covers in the row
-          if (rh < lo) break;             // too short: more covers only shrink it further
-          var add = rh + (path.length ? g : 0);
-          if (used + add > H) continue;   // does not fit; a fuller row (shorter) still might
-          var items = [];
-          for (var k = i; k < i + m; k++) items.push(k);
-          path.push({ items: items, h: rh });
-          dfs(i + m, used + add, dev + Math.abs(rh - pref));
-          path.pop();
-        }
-      };
-      // Even rows first; only if they leave more than 6% of the height empty, allow rows to differ a little more.
-      [[0.8, 1.25, 0.6], [0.72, 1.4, 0.3]].some(function (band) {
-        lo = pref * band[0]; hi = pref * band[1]; wDev = band[2]; best = null; visits = 0;
-        dfs(0, 0, 0);
-        if (!best) return false;
-        var used = best.rows.reduce(function (t, r, k) { return t + r.h + (k ? g : 0); }, 0);
-        return H - used <= H * 0.06;
-      });
+      var best = null;
+      for (var h = Math.round(pref * 0.6); h <= Math.round(pref * 1.7); h++) {
+        var rows = rowsFor(W, g, h), used = 0, n = 0;
+        while (n < rows.length && used + rows[n].h + (n ? g : 0) <= H) { used += rows[n].h + (n ? g : 0); n++; }
+        if (!n) continue;
+        // Least empty space under the last row wins; among near ties, the size closest to the preferred one.
+        var score = H - used + Math.abs(h - pref) * 0.35;
+        if (!best || score < best.score) best = { score: score, rows: rows.slice(0, n) };
+      }
       if (!best) return;
       var frag = document.createDocumentFragment(), shown = {};
       best.rows.forEach(function (r) {

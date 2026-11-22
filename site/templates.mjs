@@ -42,7 +42,7 @@ function facts(projects) {
   const list = parts.length > 1 ? `${parts.slice(0, -1).join(", ")} e ${parts[parts.length - 1]}` : parts[0] || "";
   const de = Math.min(...anos), ate = Math.max(...anos);
   const periodo = de === ate ? `em ${de}` : `entre ${de} e ${ate}`;
-  return { n: projects.length, list, periodo, anos: de === ate ? String(de) : `${de}–${ate}` };
+  return { n: projects.length, list, periodo };
 }
 
 const FICHA = [
@@ -230,7 +230,7 @@ function mosaic(ctx) {
   // The headline is the owner's sentence from the CMS; the line beside it is computed, so its numbers stay true.
   const head = String(site.intro || "").trim();
   const f = facts(projects);
-  const rest = `${f.n}\u00A0projetos, ${f.anos}`;
+  const rest = `Estúdio de color grading em Lisboa. ${f.n}\u00A0projetos ${f.periodo}: ${f.list}.`;
   return `<section class="mosaic" aria-label="Trabalhos">
     <div class="m-wall">${cells}</div>
     <div class="m-band">
