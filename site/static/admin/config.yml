@@ -59,14 +59,11 @@ collections:
     summary: "{{ano}} · {{titulo}} {{subtitulo}}"
     thumbnail: capa
     sortable_fields:
-      fields: [ano, titulo, formato]
+      fields: [data, ano, titulo, formato]
       default:
-        field: ano
+        field: data
         direction: descending
     view_filters:
-      - label: Em destaque
-        field: destaque
-        pattern: true
       - label: Escondidos
         field: publicado
         pattern: false
@@ -152,11 +149,14 @@ collections:
         widget: text
         required: false
         hint: Opcional. Factos curtos sobre o trabalho de cor (ex. entrega HDR, pipeline ACES).
-      - name: destaque
-        label: Em destaque
-        widget: boolean
-        default: false
-        hint: Aparece primeiro no mosaico da página inicial.
+      - name: data
+        label: Data de publicação
+        widget: datetime
+        format: YYYY-MM-DD
+        time_format: false
+        default: "{{now}}"
+        required: false
+        hint: Preenche-se sozinha com o dia em que cria o projeto. Os 6 projetos publicados mais recentemente ficam em destaque no início do site.
       - name: ordem
         label: Ordem dentro do ano
         widget: number

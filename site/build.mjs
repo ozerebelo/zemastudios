@@ -36,6 +36,9 @@ function fail(file, msg) {
   throw new Error(`${file}: ${msg}`);
 }
 
+/** How many of the most recently published projects lead the home page's mosaic. */
+const DESTAQUES = 6;
+
 async function loadProjects() {
   const dir = path.join(ROOT, "content/projetos");
   const files = (await readdir(dir)).filter((f) => f.endsWith(".json"));
@@ -50,10 +53,16 @@ async function loadProjects() {
     p.fotogramas = (p.fotogramas || []).filter(Boolean);
     if (!p.capa && !p.fotogramas.length) fail(f, "precisa de pelo menos uma imagem (capa ou fotogramas)");
     if (p.publicado === false) continue;
-    projects.push({ ...p, slug, ano: Number(p.ano), ordem: Number(p.ordem) || 0, capa: p.capa || p.fotogramas[0] });
+    const data = /^\d{4}-\d{2}-\d{2}/.test(p.data || "") ? String(p.data).slice(0, 10) : "";
+    projects.push({ ...p, slug, data, ano: Number(p.ano), ordem: Number(p.ordem) || 0, capa: p.capa || p.fotogramas[0] });
   }
-  // Newest first; within a year, lower "ordem" first.
-  projects.sort((a, b) => b.ano - a.ano || a.ordem - b.ordem || a.titulo.localeCompare(b.titulo, "pt"));
+  // Newest year first; within a year, the most recently published first (projects with no date come after,
+  // as they predate the field), then lower "ordem", then title.
+  projects.sort((a, b) => b.ano - a.ano || (b.data || "").localeCompare(a.data || "") || a.ordem - b.ordem || a.titulo.localeCompare(b.titulo, "pt"));
+  // Highlights are automatic: the most recently published projects, whatever their year.
+  const recent = projects.filter((p) => p.data).sort((a, b) => b.data.localeCompare(a.data)).slice(0, DESTAQUES);
+  for (const p of projects) p.destaque = recent.includes(p);
+  if (recent.length < DESTAQUES) for (const p of projects) if (!p.destaque && projects.filter((q) => q.destaque).length < DESTAQUES) p.destaque = true;
   return projects;
 }
 

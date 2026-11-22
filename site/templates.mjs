@@ -212,7 +212,8 @@ ${body}
  */
 function mosaic(ctx) {
   const { site, projects, img, reel } = ctx;
-  const list = [...projects.filter((p) => p.destaque), ...projects.filter((p) => !p.destaque)];
+  const byDate = (a, b) => (b.data || "").localeCompare(a.data || "");
+  const list = [...projects.filter((p) => p.destaque).sort(byDate), ...projects.filter((p) => !p.destaque)];
   const sizes = "(max-width: 760px) 50vw, 30vw";
   const cells = list
     .map((p, i) => {
