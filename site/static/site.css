@@ -256,7 +256,7 @@ main { max-width: var(--max); margin-inline: auto; }
 
 .lead { padding-inline: var(--pad); }
 .lead-fig figcaption { display: flex; justify-content: space-between; margin-top: 9px; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.lead-frame { display: flex; justify-content: center; cursor: zoom-in; }
+.still.lead-frame { display: flex; justify-content: center; cursor: zoom-in; } /* outranks ".still { display: block }" so a narrow lead centres */
 /* .still.lead-frame outranks ".still img { width: 100% }": the lead keeps its own ratio, capped by width and by the screen's height. */
 .still.lead-frame img { width: auto; height: auto; max-width: 100%; max-height: calc(100svh - var(--mast) - 40px); object-fit: contain; }
 .p-head {
