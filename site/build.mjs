@@ -15,7 +15,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
-import { renderHome, renderProject, renderNotFound, FORMATOS } from "./templates.mjs";
+import { renderHome, renderWork, renderStudio, renderContact, renderProject, renderNotFound, FORMATOS } from "./templates.mjs";
 import { ratioLabel, palette } from "./palette.mjs";
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
@@ -154,6 +154,9 @@ async function build() {
   });
   const ctx = { site, projects, img, redirects };
   await write("index.html", renderHome(ctx));
+  await write("trabalho/index.html", renderWork(ctx));
+  await write("estudio/index.html", renderStudio(ctx));
+  await write("contacto/index.html", renderContact(ctx));
   for (const [i, p] of projects.entries()) {
     const prev = projects[i - 1] || null;
     const next = projects[i + 1] || null;
@@ -161,7 +164,7 @@ async function build() {
   }
   await write("404.html", renderNotFound(ctx));
 
-  const urls = ["/", ...projects.map((p) => `/trabalho/${p.slug}/`)];
+  const urls = ["/", "/trabalho/", "/estudio/", "/contacto/", ...projects.map((p) => `/trabalho/${p.slug}/`)];
   await write(
     "sitemap.xml",
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls

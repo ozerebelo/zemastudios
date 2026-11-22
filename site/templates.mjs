@@ -144,7 +144,12 @@ ${head}
   <a class="brand" href="/"><img src="/logo.svg" alt="${esc(site.nome)}" width="104" height="48"></a>
   <nav aria-label="Principal">
     ${[["trabalho", "trabalho"], ["estudio", "estúdio"], ["contacto", "contacto"]]
-      .map(([id, label]) => `<a href="/#${id}" data-spy="${id}"${current === id ? ' class="on"' : ""}>${label}</a>`)
+      .map(([id, label]) => {
+        // The red dot marks the section; aria-current only where the link is this very page.
+        const on = current === id ? ' class="on"' : "";
+        const here = path === `/${id}/` ? ' aria-current="page"' : "";
+        return `<a href="/${id}/"${on}${here}>${label}</a>`;
+      })
       .join("\n    ")}
   </nav>
 </header>
@@ -193,7 +198,9 @@ function mosaic(ctx) {
       const same = frames(p, img).filter((f) => f.src !== im.src && f.width && Math.abs(f.width / f.height - r) / r < 0.03);
       const alt = same.length ? [im, ...same].map((f) => [f.src, f.srcset]) : null;
       const meta = [p.formato, p.ano].filter(Boolean).join(" · ");
-      return `<a class="m-cell" href="/trabalho/${esc(p.slug)}/" style="--r:${r.toFixed(4)}" aria-label="${esc(fullTitle(p))}" data-t="${esc(fullTitle(p))}" data-m="${esc(meta)}"${alt ? ` data-frames="${esc(JSON.stringify(alt))}"` : ""}>${picture(im, { alt: "", sizes, eager: i < 8, fade: i >= 8 })}</a>`;
+      // The name shows inside the tile only while it is pointed at or focused, on a solid chip in the corner.
+      const name = `<span class="m-name" aria-hidden="true"><b>${keep(p.titulo)}</b><span>${esc(meta)}</span></span>`;
+      return `<a class="m-cell" href="/trabalho/${esc(p.slug)}/" style="--r:${r.toFixed(4)}" aria-label="${esc(fullTitle(p))}"${alt ? ` data-frames="${esc(JSON.stringify(alt))}"` : ""}>${picture(im, { alt: "", sizes, eager: i < 8, fade: i >= 8 })}${name}</a>`;
     })
     .join("");
   const t = String(site.intro || "").trim();
@@ -204,7 +211,7 @@ function mosaic(ctx) {
     <div class="m-wall">${cells}</div>
     <div class="m-band">
       <div class="m-lead"><h1 class="m-h">${esc(head)}</h1>${reel ? `<button type="button" class="play-btn" data-embed="${esc(reel)}" data-title="Showreel">${PLAY} Ver showreel</button>` : ""}</div>
-      <div class="m-side"><p class="m-s">${esc(rest)}</p><p class="m-cap" aria-hidden="true"><b></b><span></span></p></div>
+      ${rest ? `<p class="m-side">${esc(rest)}</p>` : ""}
     </div>
   </section>`;
 }
@@ -250,9 +257,8 @@ function work(ctx) {
         </tr>`,
     )
     .join("\n        ");
-  return `<section id="trabalho" class="work" aria-labelledby="h-trabalho">
+  return `<section id="trabalho" class="work" aria-label="Todos os projetos">
     <div class="work-bar">
-      <h2 id="h-trabalho">Trabalho</h2>
       <div class="filters" role="group" aria-label="Filtrar por formato">
         ${filters}
       </div>
@@ -295,17 +301,23 @@ function paletteWall(ctx) {
   </section>`;
 }
 
-function studio(ctx) {
+/** The studio text beside the technical sheet; on the home page under a visible heading, on /estudio/ under the page title. */
+function studioGrid(ctx) {
   const { site } = ctx;
   const tech = (site.tecnico || []).filter((t) => t?.rotulo && t?.valor);
-  return `<section id="estudio" class="studio" aria-labelledby="h-estudio">
-    <h2 id="h-estudio" class="vh">Estúdio</h2>
-    <div class="studio-grid">
+  return `<div class="studio-grid">
       <div class="studio-text">${paragraphs(site.sobre?.texto)}</div>
       ${ficha(tech.map((t) => [esc(t.rotulo), esc(t.valor)]), "ficha-rows")}
-    </div>
-  </section>`;
+    </div>`;
 }
+
+/** Onward links in the large voice, each with a drawn arrow. */
+const onward = (links) =>
+  `<p class="onward">${links.map(([href, label]) => `<a href="${href}">${label} ${ARROW_RIGHT}</a>`).join("")}</p>`;
+
+/** Inner pages open on a plain title; a count, when given, sits raised beside it like the filter counts. */
+const pageHead = (title, count) =>
+  `<header class="page-head"><h1>${esc(title)}${count ? `<sup>${count}</sup>` : ""}</h1></header>`;
 
 function contact(ctx) {
   const c = ctx.site.contacto || {};
@@ -321,8 +333,7 @@ function contact(ctx) {
         <p class="form-status" role="status"></p>
       </form>`
     : "";
-  return `<section id="contacto" class="contact" aria-labelledby="h-contacto">
-    <h2 id="h-contacto" class="vh">Contacto</h2>
+  return `<section id="contacto" class="contact" aria-label="Contacto">
     <div class="contact-grid">
       <div class="contact-main">
         ${c.email ? `<p class="mail"><a href="mailto:${esc(c.email)}">${esc(c.email).replace("@", "@<wbr>")}</a></p>` : ""}
@@ -342,19 +353,20 @@ function contact(ctx) {
   </section>`;
 }
 
-/** First sentence in full white, the rest in the muted voice. */
 export function renderHome(ctx) {
   const { site, projects, redirects } = ctx;
   const reel = embedUrl(site.showreel);
   const firstFeatured = projects.find((p) => p.destaque) || projects[0];
-  // Old site used #project/<slug> and #work; send those links to the new pages.
-  const redirectScript = `<script>(function(){var m=${JSON.stringify(redirects)};function go(){var h=location.hash;if(h.indexOf("#project/")===0){var s=m[h.slice(9)];location.replace(s?"/trabalho/"+s+"/":"/#trabalho");}else if(h==="#work"){location.replace("/#trabalho");}}go();addEventListener("hashchange",go);})();</script>`;
+  // Older versions lived on one page: #project/<slug>, #work and the section anchors now go to their own pages.
+  const pages = { "#work": "/trabalho/", "#trabalho": "/trabalho/", "#cor": "/trabalho/#cor", "#estudio": "/estudio/", "#contacto": "/contacto/" };
+  const redirectScript = `<script>(function(){var m=${JSON.stringify(redirects)},p=${JSON.stringify(pages)};function go(){var h=location.hash;if(h.indexOf("#project/")===0){var s=m[h.slice(9)];location.replace(s?"/trabalho/"+s+"/":"/trabalho/");}else if(p[h]){location.replace(p[h]);}}go();addEventListener("hashchange",go);})();</script>`;
   const body = `
   ${mosaic({ ...ctx, reel })}
-  ${work(ctx)}
-  ${paletteWall(ctx)}
-  ${studio(ctx)}
-  ${contact(ctx)}`;
+  <section class="studio" aria-labelledby="h-nosso">
+    <h2 id="h-nosso" class="sec-h">O nosso trabalho</h2>
+    ${studioGrid(ctx)}
+    ${onward([["/trabalho/", "Ver todo o trabalho"], ["/contacto/", "Falar connosco"]])}
+  </section>`;
   return layout(ctx, {
     title: "",
     description: site.descricao,
@@ -363,6 +375,54 @@ export function renderHome(ctx) {
     body,
     head: redirectScript,
     bodyClass: "home",
+  });
+}
+
+export function renderWork(ctx) {
+  const { projects } = ctx;
+  const first = projects.find((p) => p.destaque) || projects[0];
+  return layout(ctx, {
+    title: "Trabalho",
+    description: `Todos os projetos de cor da ${ctx.site.nome}: séries, cinema, documentário, videoclips e publicidade.`,
+    path: "/trabalho/",
+    image: first ? ctx.img(first.capa)?.src : "",
+    body: `
+  ${pageHead("Trabalho")}
+  ${work(ctx)}
+  ${paletteWall(ctx)}`,
+    current: "trabalho",
+    bodyClass: "page-work",
+  });
+}
+
+export function renderStudio(ctx) {
+  const { site } = ctx;
+  const reel = embedUrl(site.showreel);
+  return layout(ctx, {
+    title: "Estúdio",
+    description: site.descricao,
+    path: "/estudio/",
+    body: `
+  ${pageHead("Estúdio")}
+  <section class="studio" aria-label="Sobre o estúdio">
+    ${studioGrid(ctx)}
+    ${reel ? `<p class="studio-reel"><button type="button" class="play-btn" data-embed="${esc(reel)}" data-title="Showreel">${PLAY} Ver showreel</button></p>` : ""}
+    ${onward([["/trabalho/", "Ver o trabalho"], ["/contacto/", "Falar connosco"]])}
+  </section>`,
+    current: "estudio",
+  });
+}
+
+export function renderContact(ctx) {
+  const { site } = ctx;
+  return layout(ctx, {
+    title: "Contacto",
+    description: site.contacto?.texto || site.descricao,
+    path: "/contacto/",
+    body: `
+  ${pageHead("Contacto")}
+  ${contact(ctx)}`,
+    current: "contacto",
   });
 }
 
@@ -415,7 +475,7 @@ export function renderProject(ctx, p, prev, next) {
     </div>
     <header class="p-head">
       <div class="p-title">
-        <p class="p-meta"><a href="/#trabalho">${ARROW_LEFT} Trabalho</a><span>${pad2(idx)} / ${pad2(projects.length)}</span></p>
+        <p class="p-meta"><a href="/trabalho/">${ARROW_LEFT} Trabalho</a><span>${pad2(idx)} / ${pad2(projects.length)}</span></p>
         <h1>${keep(p.titulo)}</h1>
         ${p.subtitulo ? `<p class="sub">${esc(p.subtitulo)}</p>` : ""}
         <p class="fmt">${fmtLine(p)} · ${p.ano}</p>
@@ -447,7 +507,7 @@ export function renderProject(ctx, p, prev, next) {
       }
       <p class="next-row">
         ${prev ? `<a class="prev-link" href="/trabalho/${esc(prev.slug)}/">${ARROW_LEFT} ${esc(prev.titulo)}</a>` : "<span></span>"}
-        <a class="prev-link" href="/#trabalho">Todo o trabalho</a>
+        <a class="prev-link" href="/trabalho/">Todo o trabalho</a>
       </p>
     </nav>
   </article>
@@ -476,6 +536,6 @@ export function renderNotFound(ctx) {
   return layout(ctx, {
     title: "Página não encontrada",
     path: "/404.html",
-    body: `<div class="notfound"><h1>Página não encontrada</h1><p>O endereço mudou ou foi escrito com um erro.</p><p><a href="/#trabalho">${ARROW_LEFT} Ver todo o trabalho</a></p></div>`,
+    body: `<div class="notfound"><h1>Página não encontrada</h1><p>O endereço mudou ou foi escrito com um erro.</p><p><a href="/trabalho/">${ARROW_LEFT} Ver todo o trabalho</a></p></div>`,
   });
 }

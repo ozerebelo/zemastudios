@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-22T15:48:34.184Z",
+  "generatedAt": "2026-11-22T16:06:22.080Z",
   "title": "Design System: zema studios",
   "extensions": {
     "colorMeta": {
@@ -312,7 +312,7 @@
       "name": "Masthead",
       "kind": "nav",
       "refersTo": "masthead",
-      "description": "Sticky opaque bar: logo left, bold lowercase links right in warm white; the section in view gets the red dot.",
+      "description": "Sticky opaque bar: logo left (home), bold lowercase page links right in warm white; the current page gets the red dot.",
       "html": "<header class=\"ds-mast\"><span class=\"ds-logo\">zema studios</span><nav><a href=\"#\" class=\"on\">trabalho</a><a href=\"#\">estúdio</a><a href=\"#\">contacto</a></nav></header>",
       "css": ".ds-mast { height: 76px; display: flex; align-items: center; justify-content: space-between; padding-inline: 32px; background: #0b0b0b; font: 700 17px/1.5 'Host Grotesk', system-ui, sans-serif; } .ds-logo { color: #e6e3d4; font-weight: 600; letter-spacing: -0.03em; } .ds-mast nav { display: flex; gap: 32px; } .ds-mast a { color: #ecebe7; letter-spacing: -0.015em; text-decoration: none; padding-bottom: 2px; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s; } .ds-mast a:hover { color: #ecebe7; background-size: 100% 1px; } .ds-mast a:focus-visible { outline: 1px solid #ecebe7; outline-offset: 4px; } .ds-mast nav a { position: relative; } .ds-mast nav a.on { color: #ecebe7; } .ds-mast nav a.on::before { content: ''; position: absolute; left: -12px; top: 50%; width: 5px; height: 5px; margin-top: -3px; border-radius: 50%; background: #e35443; }"
     },
@@ -335,14 +335,28 @@
       "name": "Living Mosaic",
       "kind": "custom",
       "refersTo": "mosaic-cell",
-      "description": "Landing wall: covers in justified rows, each cell growing by its frame's ratio so no frame is cropped; under it the band with the bold statement and the muted intro line, which names the tile under the pointer.",
-      "html": "<section class=\"ds-mo\"><div class=\"ds-row\"><a style=\"--r:1.7778\"></a><a style=\"--r:2.39\"></a><a style=\"--r:1.7778\"></a></div><div class=\"ds-row\"><a style=\"--r:2\"></a><a style=\"--r:1.7778\"></a><a style=\"--r:1.85\"></a></div><div class=\"ds-band\"><h1>Estúdio de color grading em Lisboa.</h1><p>Séries, cinema, documentário, videoclips e publicidade.</p></div></section>",
-      "css": ".ds-mo { width: 640px; background: #0b0b0b; font-family: 'Host Grotesk', system-ui, sans-serif; display: grid; gap: 6px; } .ds-row { display: flex; gap: 6px; } .ds-row a { flex: var(--r) 1 0; aspect-ratio: var(--r); background: #000; } .ds-band { display: flex; justify-content: space-between; align-items: end; gap: 24px; padding-top: 16px; } .ds-band h1 { margin: 0; font-size: 40px; line-height: 0.92; letter-spacing: -0.045em; font-weight: 700; color: #ecebe7; } .ds-band p { margin: 0; max-width: 22ch; text-align: right; font-size: 15px; color: #8f8e8a; }"
+      "description": "Landing wall: covers in justified rows, each cell growing by its frame's ratio so no frame is cropped; pointing at a tile shows its name on a solid chip in its lower-left corner. Under the wall, the band with the bold statement and the muted intro line.",
+      "html": "<section class=\"ds-mo\"><div class=\"ds-row\"><a style=\"--r:1.7778\"></a><a style=\"--r:2.39\" class=\"hover\"><span class=\"nm\"><b>Lisbon Noir</b><i>Série · 2026</i></span></a><a style=\"--r:1.7778\"></a></div><div class=\"ds-row\"><a style=\"--r:2\"></a><a style=\"--r:1.7778\"></a><a style=\"--r:1.85\"></a></div><div class=\"ds-band\"><h1>Estúdio de color grading em Lisboa.</h1><p>Séries, cinema, documentário, videoclips e publicidade.</p></div></section>",
+      "css": ".ds-mo { width: 640px; background: #0b0b0b; font-family: 'Host Grotesk', system-ui, sans-serif; display: grid; gap: 6px; } .ds-row { display: flex; gap: 6px; } .ds-row a { flex: var(--r) 1 0; aspect-ratio: var(--r); background: #000; } .ds-band { display: flex; justify-content: space-between; align-items: end; gap: 24px; padding-top: 16px; } .ds-band h1 { margin: 0; font-size: 40px; line-height: 0.92; letter-spacing: -0.045em; font-weight: 700; color: #ecebe7; } .ds-band p { margin: 0; max-width: 22ch; text-align: right; font-size: 15px; color: #8f8e8a; } .ds-row a { position: relative; } .ds-row .nm { position: absolute; left: 0; bottom: 0; display: grid; gap: 1px; padding: 7px 11px 8px; background: #0b0b0b; font-size: 13px; line-height: 1.3; } .ds-row .nm b { color: #ecebe7; font-weight: 700; } .ds-row .nm i { font-style: normal; font-size: 12px; color: #8f8e8a; }"
+    },
+    {
+      "name": "Page Head",
+      "kind": "custom",
+      "description": "Inner pages (Trabalho, Estúdio, Contacto) open on a plain bold title; no eyebrow, no intro line.",
+      "html": "<header class=\"ds-ph\"><h1>Trabalho</h1></header>",
+      "css": ".ds-ph { padding: 40px 32px 28px; background: #0b0b0b; font-family: 'Host Grotesk', system-ui, sans-serif; } .ds-ph h1 { margin: 0; font-size: 72px; line-height: 0.92; letter-spacing: -0.05em; font-weight: 700; color: #ecebe7; }"
+    },
+    {
+      "name": "Onward Links",
+      "kind": "custom",
+      "description": "Where to go next after reading, in the large voice, each with the line arrow; the arrow's gap widens on hover as the hairline draws in.",
+      "html": "<p class=\"ds-on\"><a href=\"#\">Ver todo o trabalho <svg viewBox=\"0 0 24 12\" aria-hidden=\"true\"><path d=\"M17 1l5 5-5 5M22 6H1\"/></svg></a><a href=\"#\">Falar connosco <svg viewBox=\"0 0 24 12\" aria-hidden=\"true\"><path d=\"M17 1l5 5-5 5M22 6H1\"/></svg></a></p>",
+      "css": ".ds-on { display: flex; gap: 56px; margin: 0; padding: 24px 32px; background: #0b0b0b; font: 500 24px/1.2 'Host Grotesk', system-ui, sans-serif; letter-spacing: -0.02em; } .ds-on a { display: inline-flex; align-items: center; gap: 14px; color: #ecebe7; text-decoration: none; padding-bottom: 4px; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: gap 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-size 0.35s cubic-bezier(0.16, 1, 0.3, 1); } .ds-on a:hover { gap: 20px; background-size: 100% 1px; } .ds-on svg { width: 1.4em; height: 0.7em; fill: none; stroke: currentColor; stroke-width: 1.3; }"
     }
   ],
   "narrative": {
     "northStar": "The Work, Large and True",
-    "overview": "The site is a neutral dark room for graded pictures. It opens on a living mosaic: every project's cover in justified rows that fill the first screen exactly, one tile at a time turning to another frame of its project, above the studio statement set large and bold. Then comes a dense grid of every project, then project pages where the stills run big. There is no metaphor and no costume: the craft lives in proportion, one well-tuned grotesk, hairlines, and the discipline of never touching a frame. The register is the category standard of dark post-production portfolios (Blacksmith, Electric Theatre Collective, Lol Crawley, Studio Fifteen, Okay), executed with care rather than reinvented.\n\nDensity is high where the work is (a 4-up grid of 27 projects, stills packed edge to edge in a 4-column grid) and generous everywhere else (section padding of 80 to 170px, one statement, one very large email address). Colour is withheld from the interface so it belongs entirely to the frames: the ground is an exactly neutral near-black, the only hue the chrome ever shows is the logo's red, and that only as a 5px dot.\n\nRejected on record by the owner: a light \"cinematheque programme\" world, ColorChecker / one-sheet / ikebana conceits, and generic dark portfolio templates. Stills only; no video loops.",
+    "overview": "The site is a neutral dark room for graded pictures. It opens on a living mosaic: every project's cover in justified rows that fill the first screen exactly, one tile at a time turning to another frame of its project, above the studio statement set large and bold. Under it, one block on how the studio works, and nothing else: the site is not one page. Every project lives on its own Trabalho page in a dense grid, the studio and contact each have a page, and project pages run the stills big. There is no metaphor and no costume: the craft lives in proportion, one well-tuned grotesk, hairlines, and the discipline of never touching a frame. The register is the category standard of dark post-production portfolios (Blacksmith, Electric Theatre Collective, Lol Crawley, Studio Fifteen, Okay), executed with care rather than reinvented.\n\nDensity is high where the work is (a 4-up grid of 27 projects, stills packed edge to edge in a 4-column grid) and generous everywhere else (section padding of 80 to 170px, one statement, one very large email address). Colour is withheld from the interface so it belongs entirely to the frames: the ground is an exactly neutral near-black, the only hue the chrome ever shows is the logo's red, and that only as a 5px dot.\n\nRejected on record by the owner: a light \"cinematheque programme\" world, ColorChecker / one-sheet / ikebana conceits, and generic dark portfolio templates. Stills only; no video loops.",
     "keyCharacteristics": [
       "Exactly neutral near-black ground; pure black only inside frame boxes.",
       "Frames shown whole: letterboxed on black, never cropped, filtered, dimmed or overlaid.",
@@ -400,13 +414,14 @@
       "Do write \"zema studios\" in lowercase everywhere."
     ],
     "donts": [
-      "Don't crop, filter, dim, tint or overlay a graded frame, and don't put text over an image.",
+      "Don't crop, filter, dim, tint or overlay a graded frame, and don't put text over an image; the one exception is the mosaic tile's name chip, shown only while pointed at or focused.",
       "Don't tint the ground or any surround toward a hue, and don't use red as a fill, text colour or button.",
       "Don't add shadows, cards or rounded corners beyond pill buttons and the active dot.",
       "Don't add eyebrows, kickers, taglines, marketing claims, or strings not drawn from content or fixed labels.",
       "Don't introduce a second typeface or uppercase letterspaced labels.",
       "Don't autoplay video or use video loops; stills only, embeds load on click.",
-      "Don't hide credits behind hover."
+      "Don't hide credits behind hover.",
+      "Don't bring the whole project grid back to the home page; the home page is the mosaic and one block, and everything else has its own page."
     ]
   }
 }

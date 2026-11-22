@@ -131,7 +131,7 @@ components:
 
 **Creative North Star: "The Work, Large and True"**
 
-The site is a neutral dark room for graded pictures. It opens on a living mosaic: every project's cover in justified rows that fill the first screen exactly, one tile at a time turning to another frame of its project, above the studio statement set large and bold. Then comes a dense grid of every project, then project pages where the stills run big. There is no metaphor and no costume: the craft lives in proportion, one well-tuned grotesk, hairlines, and the discipline of never touching a frame. The register is the category standard of dark post-production portfolios (Blacksmith, Electric Theatre Collective, Lol Crawley, Studio Fifteen, Okay), executed with care rather than reinvented.
+The site is a neutral dark room for graded pictures. It opens on a living mosaic: every project's cover in justified rows that fill the first screen exactly, one tile at a time turning to another frame of its project, above the studio statement set large and bold. Under it, one block on how the studio works, and nothing else: the site is not one page. Every project lives on its own Trabalho page in a dense grid, the studio and contact each have a page, and project pages run the stills big. There is no metaphor and no costume: the craft lives in proportion, one well-tuned grotesk, hairlines, and the discipline of never touching a frame. The register is the category standard of dark post-production portfolios (Blacksmith, Electric Theatre Collective, Lol Crawley, Studio Fifteen, Okay), executed with care rather than reinvented.
 
 Density is high where the work is (a 4-up grid of 27 projects, stills packed edge to edge in a 4-column grid) and generous everywhere else (section padding of 80 to 170px, one statement, one very large email address). Colour is withheld from the interface so it belongs entirely to the frames: the ground is an exactly neutral near-black, the only hue the chrome ever shows is the logo's red, and that only as a 5px dot.
 
@@ -166,7 +166,7 @@ A colourless chrome: neutral greys stepped from black to warm-white, with the lo
 ### Named Rules
 **The Neutral Surround Rule.** The ground and every grey are R = G = B (or within one warm step for text). Never tint the ground, a frame surround or a surface toward any hue; the grade must read against neutral.
 
-**The One Dot Rule.** Red appears in the interface only as the 5px active dot (and the text caret): on the active filter and view, and beside the nav link of the section in view. Its rarity is the point; it is the logo's i-dot, not a brand fill.
+**The One Dot Rule.** Red appears in the interface only as the 5px active dot (and the text caret): on the active filter and view, and beside the nav link of the current page. Its rarity is the point; it is the logo's i-dot, not a brand fill.
 
 **The Black Box Rule.** Pure black is reserved for the box behind a frame. Interface surfaces use the ground, never #000.
 
@@ -199,6 +199,8 @@ A colourless chrome: neutral greys stepped from black to warm-white, with the lo
 ## Layout
 
 - **Container:** content max 1760px, centred; side padding `pad` = clamp(16px, 3vw, 44px). Masthead is sticky, 76px (64px on phones), full bleed.
+- **Pages:** `/` (mosaic, then "O nosso trabalho": studio text, technical sheet and onward links to Trabalho and Contacto), `/trabalho/` (every project: work bar, grid or list, then the palette wall), `/estudio/` (studio text, technical sheet, showreel if set), `/contacto/` (email, details, form), and `/trabalho/<slug>/` per project. Old one-page anchors (`/#trabalho`, `/#estudio`, `/#contacto`, `#work`, `#project/<id>`) redirect to these pages.
+- **Page head:** inner pages open on a plain h1 (700, clamp(48px, 6.6vw, 112px), 0.92, -0.05em) with clamp 40 to 96px above and 28 to 56px below; no eyebrow, no intro line.
 - **Mosaic (first screen):** exactly one screen tall (100svh minus the masthead, at least 560px): the wall of covers takes all the height the band leaves; the band (statement left, intro line right, bottom-aligned) closes it at the fold. Without JavaScript the section is as tall as its wrapped rows.
 - **Work grid:** 4 columns, 16px column gap, 40px row gap; 3 columns at 1280px, 2 at 960px (32px / 12px gaps), 1 at 600px.
 - **Two-column bands:** studio, contact and project head use a 1.3 : 1 (project 1.25 : 1) split with a clamp(40px, 7vw, 120px) gap, collapsing to one column at 960px.
@@ -226,10 +228,11 @@ Two pills, used sparingly.
 - **Quiet controls** (lightbox close/prev/next): borderless, muted, brighten to text on hover.
 
 ### Links
-- **Hairline draw-in:** every text link (nav, footer, ficha, project meta, previous-project, 404, list titles) carries a 1px underline that draws in from the left over 0.35s. The email draws a 2px line over 0.5s. Tile titles use a 1px offset underline on hover.
+- **Onward links:** at the end of the home block and the studio page, the next places to go ("Ver todo o trabalho", "Falar connosco") at clamp(20px, 1.9vw, 28px), 500, each followed by the line arrow; the gap to the arrow widens from 14 to 20px on hover while the hairline draws in. The home block's heading "O nosso trabalho" is an h2 at clamp(32px, 3.6vw, 56px), 700.
+- **Hairline draw-in:** every text link (nav, onward links, footer, ficha, project meta, previous-project, 404, list titles) carries a 1px underline that draws in from the left over 0.35s. The email draws a 2px line over 0.5s. Tile titles use a 1px offset underline on hover.
 
 ### Work bar (filters and views)
-Sticky under the masthead on the ground, with a hairline bottom. Contains the "Trabalho" heading (15px, 500), format filters with superscript tabular counts, and Grelha / Lista toggles pushed right. Inactive toggles are muted; the active one turns text and gains the 5px red dot before its label. The chosen view is remembered per visitor.
+On `/trabalho/`, under the page title; sticky under the masthead on the ground, with a hairline bottom. Contains format filters with superscript tabular counts, and Grelha / Lista toggles pushed right. Inactive toggles are muted; the active one turns text and gains the 5px red dot before its label. The chosen view is remembered per visitor.
 
 ### Tiles (grid view)
 - **Frame:** 16:9 frame-black box, image contained (letterboxed), 0 radius.
@@ -248,16 +251,16 @@ A definition list in hairline rows: term (14px muted) in a 0.8 fraction, value (
 - **Placeholder:** a muted grey, used once as a hint for the project field.
 
 ### Navigation
-Masthead: opaque ground, cream logo left (40px tall, 34px on phones), three lowercase links right in bold (700, 17px, 15px on phones) and full warm white with the hairline draw-in. The link of the section in view gains the red dot to its left (scaling in over 0.35s, `aria-current="location"`); on project pages "trabalho" carries it.
+Masthead: opaque ground, cream logo left (40px tall, 34px on phones), three lowercase links right in bold (700, 17px, 15px on phones) and full warm white with the hairline draw-in. Each link is a page (`/trabalho/`, `/estudio/`, `/contacto/`); the logo is the way home. The link of the current page gains the red dot to its left and `aria-current="page"`; on project pages "trabalho" carries the dot without `aria-current`. The home page shows no dot.
 
 ### Footer (the close)
-A hairline-topped band: the cream logo large (clamp 180 to 380px wide) on the left; email, telephone and social links on the right at clamp 17 to 21px in soft white. Below a second hairline: "zema studios · color grading · Lisboa" in muted and "Voltar ao topo" with a drawn up-arrow. On project pages it is the only contact.
+A hairline-topped band: the cream logo large (clamp 180 to 380px wide) on the left; email, telephone and social links on the right at clamp 17 to 21px in soft white. Below a second hairline: "zema studios · color grading · Lisboa" in muted and "Voltar ao topo" with a drawn up-arrow. Outside the contact page it is the only contact.
 
 ### The colour of each project (signature)
-Between the work and the studio, after a hairline: one 14px bar of proportional swatches per project, 6px apart, and nothing else: no visible heading (an h2 for assistive technology only), titles, years or codes. Each bar links to its project, with title, year and palette in its accessible name, and grows to 26px on hover or focus. Data comes from the same build-time measurement as the project palette.
+On `/trabalho/`, after the grid and a hairline: one 14px bar of proportional swatches per project, 6px apart, and nothing else: no visible heading (an h2 for assistive technology only), titles, years or codes. Each bar links to its project, with title, year and palette in its accessible name, and grows to 26px on hover or focus. Data comes from the same build-time measurement as the project palette.
 
 ### Living mosaic (signature)
-Every project's cover, featured first, in justified rows: each cell grows in proportion to its frame's ratio, so a row shares one height and no frame is cropped. site.js picks the row height that leaves the least space under the last whole row (weighted toward three or four covers per line and about four rows on tall screens), and covers that do not fit wait out of the page. Every 1.1s one visible tile (never the one under the pointer, never one of the last four) crossfades over 0.8s to the next frame of its project, chosen only among frames within 3% of the cover's ratio, so a cell never changes shape. Pointing at or focusing a tile replaces the intro line in the band with the project's title (700, warm white) and format · year (muted). Under reduced motion nothing swaps; with the tab hidden the swaps wait.
+Every project's cover, featured first, in justified rows: each cell grows in proportion to its frame's ratio, so a row shares one height and no frame is cropped. site.js picks the row height that leaves the least space under the last whole row (weighted toward three or four covers per line and about four rows on tall screens), and covers that do not fit wait out of the page. Every 1.1s one visible tile (never the one under the pointer, never one of the last four) crossfades over 0.8s to the next frame of its project, chosen only among frames within 3% of the cover's ratio, so a cell never changes shape. Pointing at or focusing a tile shows its name inside the tile, at the owner's request: a solid chip of page ground in the lower-left corner (7px 11px padding, no blur, no gradient, no dimming of the frame) with the title (700, 13px, warm white) over format · year (12px, muted), fading in over 0.2s and gone at rest. It is the single sanctioned exception to "no text over an image", and it only exists while the visitor is pointing. Under reduced motion nothing swaps; with the tab hidden the swaps wait.
 
 ### Project page
 - **Lead:** the first still at its native size and ratio, centred, capped at viewport height, captioned with its number and measured ratio like every other still; click opens the lightbox.
@@ -289,7 +292,8 @@ One ease for drawn and spatial movement, cubic-bezier(0.16, 1, 0.3, 1); plain ea
 - **Do** write "zema studios" in lowercase everywhere.
 
 ### Don't:
-- **Don't** crop, filter, dim, tint or overlay a graded frame, and don't put text over an image.
+- **Don't** crop, filter, dim, tint or overlay a graded frame, and don't put text over an image; the one exception is the mosaic tile's name chip, shown only while pointed at or focused.
+- **Don't** bring the whole project grid back to the home page; the home page is the mosaic and one block, and everything else has its own page.
 - **Don't** tint the ground or any surround toward a hue, and don't use red as a fill, text colour or button.
 - **Don't** add shadows, cards or rounded corners beyond pill buttons and the active dot.
 - **Don't** add eyebrows, kickers, taglines, marketing claims, or strings not drawn from content or fixed labels.

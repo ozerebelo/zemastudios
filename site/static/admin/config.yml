@@ -132,7 +132,7 @@ collections:
       - name: capa
         label: Imagem de capa
         widget: image
-        hint: Aparece na grelha e no carrossel. Exporte JPEG de qualidade máxima, até 4K.
+        hint: Aparece no mosaico da página inicial e na grelha do Trabalho. Exporte JPEG de qualidade máxima, até 4K.
       - name: fotogramas
         label: Fotogramas
         widget: image
@@ -156,7 +156,7 @@ collections:
         label: Em destaque
         widget: boolean
         default: false
-        hint: Aparece no carrossel no topo da página inicial.
+        hint: Aparece primeiro no mosaico da página inicial.
       - name: ordem
         label: Ordem dentro do ano
         widget: number
@@ -191,7 +191,7 @@ singletons:
       - name: intro
         label: Frase de apresentação
         widget: text
-        hint: O texto grande logo a seguir às imagens do topo.
+        hint: Por baixo do mosaico da página inicial. A primeira frase (até ao primeiro ponto) fica em grande; o resto aparece ao lado, mais pequeno.
       - name: showreel
         label: Showreel
         widget: string
@@ -204,7 +204,7 @@ singletons:
           - name: texto
             label: Texto
             widget: text
-            hint: Deixe uma linha em branco entre parágrafos.
+            hint: Aparece em "O nosso trabalho" na página inicial e na página Estúdio. Deixe uma linha em branco entre parágrafos.
       - name: tecnico
         label: Ficha técnica
         label_singular: Linha

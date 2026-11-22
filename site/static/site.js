@@ -17,26 +17,6 @@
     else { img.addEventListener("load", show); img.addEventListener("error", show); }
   });
 
-  // ---------------------------------------------------------- nav: the red dot follows the section in view
-  var spyLinks = document.querySelectorAll(".mast [data-spy]");
-  var spyTargets = Array.prototype.map.call(spyLinks, function (a) { return document.getElementById(a.dataset.spy); }).filter(Boolean);
-  if (spyTargets.length) {
-    var ticking = false;
-    var mark = function () {
-      ticking = false;
-      // The last section whose top has passed the upper third of the screen is the current one.
-      var current = "";
-      spyTargets.forEach(function (t) { if (t.getBoundingClientRect().top < window.innerHeight * 0.35) current = t.id; });
-      spyLinks.forEach(function (a) {
-        var on = a.dataset.spy === current;
-        a.classList.toggle("on", on);
-        if (on) a.setAttribute("aria-current", "location"); else a.removeAttribute("aria-current");
-      });
-    };
-    window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(mark); } }, { passive: true });
-    mark();
-  }
-
   // ---------------------------------------------------------- mosaic: whole rows fill the first screen
   var mo = document.querySelector(".mosaic");
   if (mo) {
@@ -92,31 +72,20 @@
     if (window.ResizeObserver) new ResizeObserver(function () { requestAnimationFrame(pack); }).observe(wall);
     else window.addEventListener("resize", function () { requestAnimationFrame(pack); });
 
-    // Pointing at a tile names it in the band.
-    var cap = mo.querySelector(".m-cap");
-    var naming = function (c) {
-      if (c) { cap.firstChild.textContent = c.dataset.t; cap.lastChild.textContent = c.dataset.m; }
-      mo.classList.toggle("m-naming", !!c);
-    };
-    cells.forEach(function (c) {
-      c.addEventListener("mouseenter", function () { naming(c); });
-      c.addEventListener("mouseleave", function () { naming(null); });
-      c.addEventListener("focus", function () { naming(c); });
-      c.addEventListener("blur", function () { naming(null); });
-    });
-
     // One tile at a time turns to another frame of its project, crossfading over the one it replaces.
     if (!reduceMotion) {
       var recent = [];
       var turn = function () {
         if (document.hidden) return;
-        var pool = cells.filter(function (c) { return c.dataset.frames && c.parentNode !== spare && recent.indexOf(c) < 0 && !c.matches(":hover"); });
+        var pool = cells.filter(function (c) { return c.dataset.frames && c.parentNode !== spare && recent.indexOf(c) < 0 && !c.matches(":hover") && c !== document.activeElement; });
         if (!pool.length) return;
         var c = pool[Math.floor(Math.random() * pool.length)];
         recent.push(c); if (recent.length > 4) recent.shift();
         var list = c._frames || (c._frames = JSON.parse(c.dataset.frames));
         c._k = ((c._k || 0) + 1) % list.length;
-        var cur = c.querySelector("img:last-child");
+        var shown = c.querySelectorAll("img");
+        var cur = shown[shown.length - 1];
+        var name = c.querySelector(".m-name");
         var next = document.createElement("img");
         next.className = "m-in";
         next.alt = "";
@@ -125,7 +94,7 @@
         next.src = list[c._k][0];
         var swap = function () {
           if (!next.naturalWidth) return;
-          c.appendChild(next);
+          c.insertBefore(next, name); // under the name chip, over the frame it replaces
           requestAnimationFrame(function () {
             requestAnimationFrame(function () {
               next.classList.remove("m-in");
