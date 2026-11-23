@@ -350,7 +350,7 @@ function work(ctx) {
 }
 
 /** The studio text beside the technical sheet; on the home page under a visible heading, on /estudio/ under the page title. */
-function studioGrid(ctx) {
+function studioGrid(ctx, after = "") {
   const { site, img } = ctx;
   const tech = (site.tecnico || []).filter((t) => t?.rotulo && t?.valor);
   const foto = site.sobre?.foto ? img(site.sobre.foto) : null;
@@ -360,11 +360,11 @@ function studioGrid(ctx) {
   return foto
     ? `<div class="studio-grid has-photo">
       <figure class="studio-photo">${picture(foto, { alt: site.sobre.foto_alt || "", sizes: "(max-width: 960px) 100vw, 36vw", fade: true })}</figure>
-      <div class="studio-body">${text}${sheet}</div>
+      <div class="studio-body">${text}${sheet}${after}</div>
     </div>`
     : `<div class="studio-grid">
       ${text}
-      ${sheet}
+      <div>${sheet}${after}</div>
     </div>`;
 }
 
@@ -421,8 +421,7 @@ export function renderHome(ctx) {
   ${mosaic({ ...ctx, reel })}
   <section class="studio" aria-labelledby="h-nosso">
     <h2 id="h-nosso" class="sec-h">${esc(site.sobre?.titulo || "O nosso trabalho")}</h2>
-    ${studioGrid(ctx)}
-    ${onward([["/trabalho/", "Ver todo o trabalho"], ["/contacto/", "Pedir orçamento"]])}
+    ${studioGrid(ctx, onward([["/trabalho/", "Ver todo o trabalho"], ["/contacto/", "Pedir orçamento"]]))}
   </section>`;
   return layout(ctx, {
     title: "",
@@ -462,9 +461,7 @@ export function renderStudio(ctx) {
   ${pageHead("Estúdio")}
   <section class="studio" aria-labelledby="h-sobre">
     <h2 id="h-sobre" class="sec-h">${esc(site.sobre?.titulo || "O nosso trabalho")}</h2>
-    ${studioGrid(ctx)}
-    ${reel ? `<p class="studio-reel"><button type="button" class="play-btn" data-embed="${esc(reel)}" data-title="Showreel">${PLAY} Ver showreel</button></p>` : ""}
-    ${onward([["/trabalho/", "Ver todo o trabalho"], ["/contacto/", "Pedir orçamento"]])}
+    ${studioGrid(ctx, (reel ? `<p class="studio-reel"><button type="button" class="play-btn" data-embed="${esc(reel)}" data-title="Showreel">${PLAY} Ver showreel</button></p>` : "") + onward([["/trabalho/", "Ver todo o trabalho"], ["/contacto/", "Pedir orçamento"]]))}
   </section>`,
     current: "estudio",
   });

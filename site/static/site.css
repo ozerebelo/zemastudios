@@ -32,6 +32,9 @@
   --pad: clamp(16px, 3vw, 44px);
   --max: 1760px;
   --mast: 88px;
+  /* the page grid: 12 columns between the side paddings; --s is the one vertical step inside a block */
+  --gut: clamp(20px, 3vw, 48px);
+  --s: clamp(28px, 3vw, 44px);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   color-scheme: dark;
 }
@@ -113,10 +116,11 @@ main { max-width: var(--max); margin-inline: auto; }
 .m-row .m-cell { flex: var(--r) 1 0; }
 .m-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity 0.8s ease; }
 .m-cell img.m-in { opacity: 0; }
-.m-band { display: flex; justify-content: space-between; align-items: end; gap: 30px; padding: 22px 0 26px; }
+.m-band { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gut); align-items: end; padding: 22px 0 26px; }
+.m-lead { grid-column: 1 / 9; }
 .m-h { font-size: clamp(40px, 5.2vw, 88px); line-height: 0.92; letter-spacing: -0.045em; font-weight: 700; text-wrap: balance; }
 .m-lead .play-btn { margin-top: 22px; }
-.m-side { flex: 0 0 auto; width: 28ch; max-width: 40%; text-align: right; font-size: 17px; line-height: 1.35; color: var(--muted); padding-bottom: 6px; }
+.m-side { grid-column: 9 / 13; max-width: 34ch; font-size: 17px; line-height: 1.35; color: var(--muted); padding-bottom: 6px; }
 /* A tile names itself only while pointed at or focused: a solid chip of page ground in its lower corner, no blur, no gradient. */
 .m-name {
   position: absolute; left: 0; bottom: 0; z-index: 1; max-width: 100%;
@@ -134,11 +138,13 @@ main { max-width: var(--max); margin-inline: auto; }
 .page-head { padding: clamp(40px, 6vw, 96px) var(--pad) clamp(28px, 4vw, 56px); }
 .page-head h1 { font-size: clamp(48px, 6.6vw, 112px); line-height: 0.92; letter-spacing: -0.05em; font-weight: 700; }
 .page-head sup { font-size: 0.24em; font-weight: 500; letter-spacing: 0; color: var(--muted); vertical-align: top; margin-left: 0.2em; position: relative; top: 0.35em; font-variant-numeric: tabular-nums; }
-.home .studio { padding-top: clamp(32px, 4vw, 64px); }
-.sec-h { font-size: clamp(32px, 3.6vw, 56px); line-height: 1; letter-spacing: -0.04em; font-weight: 700; margin-bottom: clamp(20px, 2.2vw, 32px); }
-.studio-reel { margin-top: clamp(28px, 3vw, 40px); }
+.home .studio { padding-top: calc(var(--s) - 6px); }
+.sec-h { font-size: clamp(32px, 3.6vw, 56px); line-height: 1; letter-spacing: -0.04em; font-weight: 700; margin-bottom: var(--s); }
+/* the studio block opens on a hairline, then its heading: the same band pattern as the footer */
+.studio .sec-h { border-top: 1px solid var(--line); padding-top: var(--s); }
+.studio-reel { margin-top: var(--s); }
 /* Onward links: where to go after reading, in the large voice, each with its arrow. */
-.onward { display: flex; flex-wrap: wrap; gap: 14px clamp(32px, 5vw, 72px); margin-top: clamp(32px, 3.5vw, 52px); font-size: clamp(20px, 1.9vw, 28px); letter-spacing: -0.02em; font-weight: 500; }
+.onward { display: flex; flex-wrap: wrap; gap: 14px clamp(32px, 5vw, 72px); margin-top: var(--s); font-size: clamp(20px, 1.9vw, 28px); letter-spacing: -0.02em; font-weight: 500; }
 .onward a { display: inline-flex; align-items: center; gap: 14px; padding-bottom: 4px; transition: gap 0.35s var(--ease), background-size 0.35s var(--ease); }
 .onward a:hover { gap: 20px; }
 
@@ -196,12 +202,18 @@ main { max-width: var(--max); margin-inline: auto; }
 .contact { padding: 0 var(--pad) clamp(56px, 6vw, 96px); }
 .studio-grid, .contact-grid { border-top: 1px solid var(--line); padding-top: clamp(28px, 3vw, 44px); }
 .studio-grid, .contact-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(40px, 7vw, 120px); align-items: start; }
-/* With the studio photo: the photo on the left at its own 4:5, text and technical sheet stacked on the right. */
-.studio-grid.has-photo { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 5vw, 88px); }
-.studio-photo { margin: 0; }
-.studio-photo img { display: block; width: 100%; height: auto; }
-.studio-body .ficha-rows { margin-top: clamp(32px, 4vw, 56px); }
-.studio-text p { font-size: clamp(22px, 2.1vw, 32px); line-height: 1.28; letter-spacing: -0.02em; max-width: 32ch; margin-bottom: 0.7em; font-weight: 400; }
+.studio .studio-grid { border-top: 0; padding-top: 0; }
+/* With the studio photo, on the page grid: photo in columns 1-4, filling the height of the column beside it (a crop of
+   the studio photo, never of a graded frame); text, technical sheet and onward links in columns 5-12, the sheet's values
+   on column 9 like the line beside the home headline, the links closing the column on the photo's bottom edge. */
+.studio-grid.has-photo { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 0 var(--gut); align-items: stretch; }
+.studio-photo { margin: 0; grid-column: 1 / 5; position: relative; min-height: 100%; }
+.studio-photo img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
+.studio-body { grid-column: 5 / 13; display: flex; flex-direction: column; }
+.studio-body .ficha-rows { margin-top: calc(var(--s) - 0.7em); }
+.studio-body .ficha-rows > div { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--gut); }
+.studio-body .onward { margin-top: auto; padding-top: var(--s); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--gut); justify-items: start; }
+.studio-text p { font-size: clamp(22px, 2.1vw, 32px); line-height: 1.28; letter-spacing: -0.02em; max-width: 34ch; margin-bottom: 0.7em; font-weight: 400; }
 .studio-text p + p { color: var(--muted); }
 
 .ficha-rows { display: grid; border-top: 1px solid var(--line); }
@@ -344,7 +356,9 @@ address.foot-links a { padding-bottom: 0; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 12px; }
   .studio-grid, .studio-grid.has-photo, .contact-grid, .p-head, .foot-top { grid-template-columns: minmax(0, 1fr); }
   .foot-cols { margin-bottom: 0; }
-  .studio-photo { max-width: 440px; }
+  .studio-photo, .studio-body { grid-column: 1 / -1; }
+  .studio-photo { max-width: 440px; aspect-ratio: 4 / 5; min-height: 0; margin-bottom: var(--s); }
+  .m-lead, .m-side { grid-column: 1 / -1; }
   .next-link { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 760px) {
@@ -352,8 +366,8 @@ address.foot-links a { padding-bottom: 0; }
   /* On phones the project lead runs edge to edge: more image, still no crop. */
   .lead { padding-inline: 0; }
   .mosaic { --gap: 4px; }
-  .m-band { flex-direction: column; align-items: start; gap: 12px; padding: 18px 0 22px; }
-  .m-side { width: auto; max-width: none; text-align: left; font-size: 16px; padding-bottom: 0; }
+  .m-band { row-gap: 12px; padding: 18px 0 22px; }
+  .m-side { max-width: none; font-size: 16px; padding-bottom: 0; }
   /* Vertical sets on phones: two per row, an odd last still centred instead of orphaned. */
   .stills-tall { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px 10px; }
   .stills-tall .cell { flex: 0 0 calc(50% - 5px); }
@@ -370,6 +384,7 @@ address.foot-links a { padding-bottom: 0; }
   .lb-n { bottom: 22px; }
 }
 @media (max-width: 600px) {
+  .studio-body .onward { display: flex; flex-direction: column; align-items: start; gap: 14px; }
   .grid { grid-template-columns: minmax(0, 1fr); }
   .foot-base { flex-direction: column; }
   .foot-cols { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; }
