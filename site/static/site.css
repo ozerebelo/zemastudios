@@ -306,7 +306,7 @@ main { max-width: var(--max); margin-inline: auto; }
 
 .foot { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
 .foot-top {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 7vw, 120px); align-items: end;
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(64px, 9vw, 180px); align-items: end;
   border-top: 1px solid var(--line); padding-block: clamp(56px, 7vw, 110px) clamp(40px, 4.5vw, 64px);
 }
 /* pulled left by the same share as the masthead logo (2.4px of 86.7px), so the letters, not the SVG box, start on the content edge */
@@ -314,7 +314,7 @@ main { max-width: var(--max); margin-inline: auto; }
 .foot-brand { display: block; width: var(--logo-w); transform: translateX(-2.77%); }
 .foot-brand img { width: 100%; height: auto; }
 /* Three short columns that end on the logo's baseline, so the right side carries weight and lines up with something. */
-.foot-cols { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(24px, 3vw, 56px); align-items: start;
+.foot-cols { display: grid; grid-auto-flow: column; grid-auto-columns: max-content; justify-content: space-between; column-gap: clamp(28px, 3.6vw, 80px); align-items: start;
   /* the logo SVG keeps 10% of its width as empty space under the letters: raise the columns so the last link sits on the logo baseline */
   margin-bottom: calc(var(--logo-w) * 0.1013 - 9px); }
 .foot-col { display: grid; gap: 14px; align-content: start; }
@@ -322,6 +322,9 @@ main { max-width: var(--max); margin-inline: auto; }
 .foot-links { display: grid; gap: 6px; font-size: clamp(16px, 1.2vw, 19px); letter-spacing: -0.01em; }
 .foot-links a { color: var(--soft); padding-bottom: 2px; }
 .foot-links a:hover { color: var(--text); }
+/* the address: lines at the same pitch as the list items (measured: 1.5em + 6px), first line on their first baseline */
+address.foot-links { font-style: normal; display: block; line-height: calc(1.5em + 6px); margin-top: -3px; }
+address.foot-links a { padding-bottom: 0; }
 .foot-base {
   display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px;
   border-top: 1px solid var(--line); padding-block: 18px 30px; font-size: 13px; color: var(--muted);
@@ -369,7 +372,7 @@ main { max-width: var(--max); margin-inline: auto; }
 @media (max-width: 600px) {
   .grid { grid-template-columns: minmax(0, 1fr); }
   .foot-base { flex-direction: column; }
-  .foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; }
+  .foot-cols { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; }
   .foot-cols > :first-child { grid-column: 1 / -1; }
 }
 @media (prefers-reduced-motion: reduce) {

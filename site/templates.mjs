@@ -122,6 +122,10 @@ const fullTitle = (p) => (p.subtitulo ? `${p.titulo}, ${p.subtitulo}` : p.titulo
 const frames = (p, img) => (p.fotogramas.length ? p.fotogramas : [p.capa]).map(img).filter(Boolean);
 const people = (p) => [p.realizacao && `Realização ${esc(p.realizacao)}`, p.fotografia && `Fotografia ${esc(p.fotografia)}`].filter(Boolean).join(" · ");
 
+/** The studio address as lines, and a map link: the one set in the CMS, or a Google Maps search for the address. */
+const addressLines = (s) => String(s || "").split(/\n+/).map((l) => l.trim()).filter(Boolean);
+const mapHref = (c) => c.mapa || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLines(c.morada).join(", "))}`;
+
 function ficha(rows, cls = "") {
   const items = rows.filter(([, v]) => v);
   return items.length ? `<dl class="ficha${cls ? " " + cls : ""}">${items.map(([l, v]) => `<div><dt>${l}</dt><dd>${v}</dd></div>`).join("")}</dl>` : "";
@@ -145,6 +149,7 @@ function layout(ctx, { title, description, path, image, body, head = "", bodyCla
   const canonical = site.url + path;
   const og = image ? site.url + image : "";
   const c = site.contacto || {};
+  const morada = addressLines(c.morada);
   return `<!doctype html>
 <html lang="pt-PT">
 <head>
@@ -194,6 +199,10 @@ ${body}
           ${c.telefone ? `<li><a href="${esc(telHref(c.telefone))}">${esc(c.telefone)}</a></li>` : ""}
         </ul>
       </nav>
+      ${morada.length ? `<div class="foot-col">
+        <p class="foot-h">Morada</p>
+        <address class="foot-links"><a href="${esc(mapHref(c))}" rel="noopener" target="_blank">${morada.map(esc).join("<br>")}</a></address>
+      </div>` : ""}
       ${c.instagram || c.vimeo ? `<nav class="foot-col" aria-label="Redes">
         <p class="foot-h">Redes</p>
         <ul class="foot-links">
@@ -379,7 +388,7 @@ function contact(ctx) {
             ["Telefone", c.telefone ? `<a href="${esc(telHref(c.telefone))}">${esc(c.telefone)}</a>` : ""],
             ["Instagram", c.instagram ? `<a href="${esc(c.instagram)}" rel="me">${esc(ig)}</a>` : ""],
             ["Vimeo", c.vimeo ? `<a href="${esc(c.vimeo)}" rel="me">Vimeo</a>` : ""],
-            ["Sala", "Lisboa"],
+            ["Morada", addressLines(c.morada).length ? `<a href="${esc(mapHref(c))}" rel="noopener" target="_blank">${addressLines(c.morada).map(esc).join("<br>")}</a>` : ""],
           ],
           "ficha-rows",
         )}

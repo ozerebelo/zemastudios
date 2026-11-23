@@ -236,6 +236,8 @@ singletons:
           - { name: texto, label: Texto, widget: text }
           - { name: email, label: Email, widget: string }
           - { name: telefone, label: Telefone, widget: string, required: false }
+          - { name: morada, label: Morada, widget: text, required: false, hint: "Uma linha por linha da morada, como deve aparecer no site." }
+          - { name: mapa, label: Link do mapa, widget: string, required: false, hint: "Link do Google Maps do estúdio. Vazio: o site procura a morada no Google Maps." }
           - { name: instagram, label: Instagram (link), widget: string, required: false }
           - { name: vimeo, label: Vimeo (link), widget: string, required: false }
           - name: formspree
