@@ -28,6 +28,7 @@ DoP: @…
 - 3 to 4 stories per post, published the same day as the post.
 - Each story is a collage of **3 stills stacked edge to edge** on a 1080x1920 canvas (each still fills its third; the sides are trimmed slightly, as in the archive). No text burned in.
 - **The hero is also the first still of the first story** (its top third). Deal the other stills across the stories (a portrait, an exterior, a detail in each) rather than three of a kind.
+- **In each story the interview shot goes at the bottom** (`--stories` sets the layout by hand, top to bottom).
 - **Every story mentions @zerebeloo and @mariablbraga.**
 - The account often adds one more story that shares the post itself; that is done in the app.
 
@@ -35,5 +36,6 @@ DoP: @…
 
 - `site/` → `node ../tools/instagram/prepare-post.mjs <slug> --stills 1,2,5,… [--type "TV Show"] [--handles handles.json] --out <dir>` writes the carousel, `legenda.txt`, the stories, `stories/mencoes.txt` and a preview sheet.
 - `tools/stills/` proposes and exports stills from episode files.
+- `tools/instagram/publish.mjs` publishes a prepared folder (images served temporarily from zemastudios.com/ig/…); `--check` verifies first. Stories go out only if the API accepts the mentions as user tags.
 - Publishing is public and a feed post cannot be deleted through the API: always show the owner the carousel, caption and stories and publish only after an explicit "publica".
 - The Meta access token lives in the cloud environment's network secrets (never in files, commits, memory or chat). If it is missing or refused, ask the owner to enter it through the secure credential form.

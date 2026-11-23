@@ -7,6 +7,8 @@
  * --stills   positions in the project's "fotogramas" list (1 = the hero), in carousel order. Up to 10:
  *            the Instagram API publishes carousels of at most 10 items.
  * --type     the caption's second line: TV Show, Documentary, Short Film, Commercial, Music Video.
+ * --stories  optional explicit layout, top to bottom: "1,6,12;8,13,2;10,17,4" (fotogramas positions per story).
+ *            Without it the hero opens story 1 and the rest are dealt in turn. Interviews go at the bottom.
  * --handles  JSON map from a credited name to its @handle; names without one are written plainly,
  *            as the account already does ("Prod. Company: Advogado do Diabo & Miratecarts").
  *
@@ -65,10 +67,15 @@ const W = 1080, H = 1920, band = H / 3;
 // The hero opens the post and the first story (top third). The other frames are dealt across the stories in
 // turn, so each story mixes portraits, exteriors and details instead of three of a kind.
 const nStories = Math.min(4, Math.floor(src.length / 3));
-const groups = Array.from({ length: nStories }, () => []);
+let groups = Array.from({ length: nStories }, () => []);
 const rest = src.slice(1);
 groups[0].push(src[0]);
 for (let j = 0, r = 0; j < 3; j++) for (let k = 0; k < nStories; k++) if (!(j === 0 && k === 0)) groups[k].push(rest[r++]);
+if (opt("--stories")) {
+  const still = (n) => { const f = p.fotogramas[n - 1]; if (!f) throw new Error(`não há fotograma ${n}`); return path.join(SITE, f.replace(/^\//, "")); };
+  groups = opt("--stories").split(";").map((g) => g.split(",").map((n) => still(Number(n.trim()))));
+  if (groups.some((g) => g.length !== 3)) { console.error("cada story leva 3 stills"); process.exit(1); }
+}
 const stories = [];
 for (const group of groups) {
   const parts = await Promise.all(group.map((f, k) =>
