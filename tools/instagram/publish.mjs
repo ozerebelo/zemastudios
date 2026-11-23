@@ -52,8 +52,12 @@ const stories = (await readdir(path.join(dir, "stories"))).filter((f) => f.endsW
 const mentions = ((await readFile(path.join(dir, "stories", "mencoes.txt"), "utf8")).match(/@[\w.]+/g) || []).map((m) => m.slice(1));
 const url = (f) => new URL(f, base).href;
 
+// The cloud session's proxy may not allow the site's own host; then the images can't be checked from here
+// (verify them through the Netlify API instead) and Instagram, which fetches them itself, reports any missing one.
 for (const f of [...carousel.map((c) => "carrossel/" + c), ...stories.map((s) => "stories/" + s)]) {
-  const r = await fetch(url(f), { method: "HEAD" });
+  let r;
+  try { r = await fetch(url(f), { method: "HEAD" }); } catch (e) { console.warn(`aviso: não foi possível verificar ${url(f)} daqui (${e.cause?.message || e.message})`); continue; }
+  if (r.status === 403 && /agent proxy/i.test(r.statusText)) { console.warn(`aviso: o proxy desta sessão não deixa verificar ${url(f)}`); continue; }
   if (!r.ok || !(r.headers.get("content-type") || "").startsWith("image/jpeg")) throw new Error(`imagem não acessível: ${url(f)} (${r.status})`);
 }
 console.log(`${carousel.length} imagens do carrossel e ${stories.length} stories acessíveis; menções: ${mentions.map((m) => "@" + m).join(" ")}`);
