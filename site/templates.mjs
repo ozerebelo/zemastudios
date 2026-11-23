@@ -212,7 +212,7 @@ ${body}
     </div>
   </div>
   <div class="foot-base">
-    <p>© ${new Date().getFullYear()} ${esc(site.nome)} · color grading · Lisboa</p>
+    <p>© ${new Date().getFullYear()} ${esc(site.nome)} · color grading</p>
     <a class="foot-top-link" href="#topo">Voltar ao topo <svg class="ico ico-up" viewBox="0 0 12 24" aria-hidden="true"><path d="M1 7l5-5 5 5M6 2v21"/></svg></a>
   </div>
 </footer>
