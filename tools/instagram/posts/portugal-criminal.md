@@ -18,7 +18,7 @@ Director: Ricardo Freitas
 DoP: Marco Fernandes
 ```
 
-Estado: por publicar. O dono pediu para publicar o post e as stories; falta o token da Meta nas definições do ambiente (Network secrets, host graph.facebook.com).
+Estado: post publicado a 2026-11-23 (https://www.instagram.com/p/DgGK8sRoHuQ/, 10 imagens). Stories não publicadas pela API: a conta @mariablbraga é privada e a API recusa a menção (erro 2207018); publicar na app com as menções.
 
 Imagens já online (deploy 6b048bdf, 2026-11-23) em `https://zemastudios.com/ig/2026-11-23-portugal-criminal/` (`carrossel/01–10.jpg`, `stories/story-1–3.jpg`), conferidas por SHA-1 na API da Netlify. Atenção: `build.mjs` apaga `site/dist/ig/`; antes de qualquer outro deploy, regenerar e copiar `carrossel/` e `stories/` para lá de novo enquanto o post não estiver publicado.
 

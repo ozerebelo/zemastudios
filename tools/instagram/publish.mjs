@@ -35,6 +35,13 @@ async function graph(method, url, params) {
   if (!r.ok || j.error) throw new Error(`${method} ${url.split("?")[0]}: ${r.status} ${JSON.stringify(j.error || j)}`);
   return j;
 }
+// Instagram sometimes times out fetching an image on the first try (subcode 2207003); try again a few times.
+async function create(params) {
+  for (let i = 1; ; i++) {
+    try { return await graph("POST", `/${ig.id}/media`, params); }
+    catch (e) { if (i >= 4 || !/2207003|is_transient":true/.test(e.message)) throw e; console.warn(`  nova tentativa (${i}) para ${params.image_url}`); await new Promise((ok) => setTimeout(ok, 5000 * i)); }
+  }
+}
 async function ready(id) {
   for (let i = 0; i < 60; i++) {
     const s = await graph("GET", `/${id}?fields=status_code,status`);
@@ -78,7 +85,7 @@ if (check) process.exit(0);
 if (what === "post" || what === "all") {
   if (carousel.length > 10) throw new Error("máximo de 10 imagens por carrossel");
   const children = [];
-  for (const c of carousel) children.push((await graph("POST", `/${ig.id}/media`, { image_url: url("carrossel/" + c), is_carousel_item: "true" })).id);
+  for (const c of carousel) children.push((await create({ image_url: url("carrossel/" + c), is_carousel_item: "true" })).id);
   for (const id of children) await ready(id);
   const box = await graph("POST", `/${ig.id}/media`, { media_type: "CAROUSEL", children: children.join(","), caption });
   await ready(box.id);
@@ -91,7 +98,7 @@ if (what === "stories" || what === "all") {
   // create every story first, with the mentions as user tags; publish only if all of them were accepted
   const boxes = [];
   for (const s of stories) {
-    const box = await graph("POST", `/${ig.id}/media`, { media_type: "STORIES", image_url: url("stories/" + s), user_tags: mentions.map((username) => ({ username })) });
+    const box = await create({ media_type: "STORIES", image_url: url("stories/" + s), user_tags: mentions.map((username) => ({ username })) });
     boxes.push(box.id);
   }
   for (const id of boxes) await ready(id);
