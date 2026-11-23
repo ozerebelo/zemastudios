@@ -33,6 +33,16 @@ const CONTAGEM = {
   publicidade: ["campanha", "campanhas"],
 };
 
+/** How each category is named in running prose ("projetos de séries, cinema e publicidade"). */
+const GENERO = {
+  series: "séries",
+  cinema: "cinema",
+  documentario: "documentário",
+  videoclip: "videoclips",
+  entretenimento: "entretenimento",
+  publicidade: "publicidade",
+};
+
 /**
  * Facts for running copy, computed from the published projects so a line like
  * "27 projetos entre 2021 e 2026: 15 séries, ..." can never go stale or overstate.
@@ -45,7 +55,9 @@ function facts(projects) {
   const list = parts.length > 1 ? `${parts.slice(0, -1).join(", ")} e ${parts[parts.length - 1]}` : parts[0] || "";
   const de = Math.min(...anos), ate = Math.max(...anos);
   const periodo = de === ate ? `em ${de}` : `entre ${de} e ${ate}`;
-  return { n: projects.length, list, periodo };
+  const g = CATEGORIAS.filter(([k]) => counts[k]).map(([k]) => GENERO[k]);
+  const generos = g.length > 1 ? `${g.slice(0, -1).join(", ")} e ${g[g.length - 1]}` : g[0] || "";
+  return { n: projects.length, list, periodo, desde: de, generos };
 }
 
 const FICHA = [
@@ -261,7 +273,7 @@ function mosaic(ctx) {
   // The headline is the owner's sentence from the CMS; the line beside it is computed, so its numbers stay true.
   const head = String(site.intro || "").trim();
   const f = facts(projects);
-  const rest = `Estúdio de color grading em Lisboa. ${f.n}\u00A0projetos ${f.periodo}: ${f.list}.`;
+  const rest = `Estúdio de color grading em Lisboa. Desde ${f.desde}, demos cor a ${f.n}\u00A0projetos de ${f.generos}.`;
   return `<section class="mosaic" aria-label="Trabalhos">
     <div class="m-wall">${cells}</div>
     <div class="m-band">
@@ -410,7 +422,7 @@ export function renderHome(ctx) {
   <section class="studio" aria-labelledby="h-nosso">
     <h2 id="h-nosso" class="sec-h">${esc(site.sobre?.titulo || "O nosso trabalho")}</h2>
     ${studioGrid(ctx)}
-    ${onward([["/trabalho/", `Ver os ${projects.length} projetos`], ["/contacto/", "Pedir orçamento"]])}
+    ${onward([["/trabalho/", "Ver todo o trabalho"], ["/contacto/", "Pedir orçamento"]])}
   </section>`;
   return layout(ctx, {
     title: "",
@@ -452,7 +464,7 @@ export function renderStudio(ctx) {
     <h2 id="h-sobre" class="sec-h">${esc(site.sobre?.titulo || "O nosso trabalho")}</h2>
     ${studioGrid(ctx)}
     ${reel ? `<p class="studio-reel"><button type="button" class="play-btn" data-embed="${esc(reel)}" data-title="Showreel">${PLAY} Ver showreel</button></p>` : ""}
-    ${onward([["/trabalho/", `Ver os ${ctx.projects.length} projetos`], ["/contacto/", "Pedir orçamento"]])}
+    ${onward([["/trabalho/", "Ver todo o trabalho"], ["/contacto/", "Pedir orçamento"]])}
   </section>`,
     current: "estudio",
   });

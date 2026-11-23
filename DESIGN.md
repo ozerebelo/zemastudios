@@ -74,7 +74,7 @@ spacing:
   pad: "clamp(16px, 3vw, 44px)"
   gutter: "16px"
   row-gap: "40px"
-  mast: "76px"
+  mast: "88px"
   mast-phone: "64px"
   max: "1760px"
 components:
@@ -198,7 +198,7 @@ A colourless chrome: neutral greys stepped from black to warm-white, with the lo
 
 ## Layout
 
-- **Container:** content max 1760px, centred; side padding `pad` = clamp(16px, 3vw, 44px). Masthead is sticky, 76px (64px on phones), full bleed.
+- **Container:** content max 1760px, centred; side padding `pad` = clamp(16px, 3vw, 44px). Masthead is sticky, 88px (72px on phones), full bleed: 24px of air above the 40px logo (owner: the logo sat too close to the top, 2026-11-23).
 - **Pages:** `/` (mosaic, then "O nosso trabalho": studio text, technical sheet and onward links to Trabalho and Contacto), `/trabalho/` (every project: work bar, grid or list; the measured palettes appear only on each project's own page), `/estudio/` (studio text, technical sheet, showreel if set), `/contacto/` (email, details, form), and `/trabalho/<slug>/` per project. Old one-page anchors (`/#trabalho`, `/#estudio`, `/#contacto`, `#work`, `#project/<id>`) redirect to these pages.
 - **Page head:** inner pages open on a plain h1 (700, clamp(48px, 6.6vw, 112px), 0.92, -0.05em) with clamp 40 to 96px above and 28 to 56px below; no eyebrow, no intro line.
 - **Mosaic (first screen):** exactly one screen tall (100svh minus the masthead, at least 560px): the wall of covers takes all the height the band leaves; the band (statement left, intro line right, bottom-aligned) closes it at the fold. Without JavaScript the section is as tall as its wrapped rows.
@@ -229,7 +229,7 @@ Two pills, used sparingly.
 
 ### Links
 - **Studio photo:** in "O nosso trabalho" and on /estudio/, the black-and-white studio photo (two colorists from behind, facing the screens; the owner's own photo, cropped by request to 4:5) sits in the left column at 0.8fr with the text and technical sheet stacked on the right; on one-column layouts it caps at 440px. It is not a graded frame, so it carries no black box. Set from the CMS (`sobre.foto`, `sobre.foto_alt`).
-- **Copy voice:** factual, about the craft (owner's choice, 2026-11-22): what the studio does and how, never client or brand names outside each project's own credits. The line beside the home h1 is computed from the published projects ("27 projetos entre 2021 e 2026: 15 séries, …"), with numbers bound to their nouns by non-breaking spaces; hyphenated words never split in paragraphs.
+- **Copy voice:** factual, about the craft (owner's choice, 2026-11-22): what the studio does and how, never client or brand names outside each project's own credits. The line beside the home h1 is computed from the published projects ("Estúdio de color grading em Lisboa. Desde 2021, demos cor a 36 projetos de séries, cinema, …": first year, count and the formats present, no per-format inventory; owner, 2026-11-23), with numbers bound to their nouns by non-breaking spaces; hyphenated words never split in paragraphs.
 - **Onward links:** at the end of the home block and the studio page, the next places to go ("Ver todo o trabalho", "Falar connosco") at clamp(20px, 1.9vw, 28px), 500, each followed by the line arrow; the gap to the arrow widens from 14 to 20px on hover while the hairline draws in. The home block's heading "O nosso trabalho" is an h2 at clamp(32px, 3.6vw, 56px), 700.
 - **Hairline draw-in:** every text link (nav, onward links, footer, ficha, project meta, previous-project, 404, list titles) carries a 1px underline that draws in from the left over 0.35s. The email draws a 2px line over 0.5s. Tile titles use a 1px offset underline on hover.
 

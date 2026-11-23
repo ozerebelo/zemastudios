@@ -75,5 +75,7 @@ Get qualified enquiries (format, duration, camera, delivery date) from DOPs, dir
 ## Learnings
 - 2026-11-22: owner called the earlier copy generic and "slop". A client-led rewrite (Prime Video, RTP, brands) was rejected: "não é o que pretendo". Chosen direction: "Ofício, factual": what the studio does and how, concrete facts about the room and process, no adjectives. Numbers beside the headline are computed from the content.
 
+- 2026-11-23: owner called the studio copy "péssimo" and the inventory line beside the headline uninteresting. New studio copy: title "A cor é o último passo antes do ecrã."; text on the two colorists, grading shot by shot until delivery, episode-to-episode consistency ("Numa série, o último episódio tem de bater certo com o primeiro."), sessions with the DOP and director in the room or remote, SDR/HDR/DCP deliveries. Technical facts live only in the sheet, not repeated in the text. Onward link "Ver todo o trabalho".
+
 ## Changelog
 - v1 (2026-11-22): created from site content during the copy review.
