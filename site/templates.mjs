@@ -11,6 +11,7 @@ export const FORMATOS = {
   "Videoclip": "videoclip",
   "Publicidade": "publicidade",
   "Conteúdo de marca": "publicidade",
+  "Entretenimento": "entretenimento",
 };
 
 const CATEGORIAS = [
@@ -18,6 +19,7 @@ const CATEGORIAS = [
   ["cinema", "Cinema"],
   ["documentario", "Documentário"],
   ["videoclip", "Videoclips"],
+  ["entretenimento", "Entretenimento"],
   ["publicidade", "Publicidade"],
 ];
 
@@ -27,6 +29,7 @@ const CONTAGEM = {
   cinema: ["filme", "filmes"],
   documentario: ["documentário", "documentários"],
   videoclip: ["videoclip", "videoclips"],
+  entretenimento: ["programa de entretenimento", "programas de entretenimento"],
   publicidade: ["campanha", "campanhas"],
 };
 
