@@ -11,9 +11,9 @@ Whenever the owner asks for Instagram posts, follow this format exactly. It is t
 
 ### Feed post (carousel)
 
-- Images: the project's stills at their own 16:9, never cropped, at most 2160 px wide. Open with the hero. 6 to 13 stills on the account; **at most 10** when publishing through the API (its carousel limit).
+- Images: the project's stills at their own 16:9, never cropped, at most 2160 px wide. **Always open with the hero the owner names** (the project's cover on the site). 6 to 13 stills on the account; **at most 10** when publishing through the API (its carousel limit).
 - Mix portraits or interviews, details, exteriors and wides; no burned-in subtitles or graphics; nothing that gives away key story moments.
-- Caption, one credit per line, @handles where known, plain names where not (as in "Prod. Company: Advogado do Diabo & Miratecarts"). Never guess a handle: ask the owner.
+- Caption, one credit per line, @handles where known (`tools/instagram/handles.json`, from the account's own posts; add new ones the owner gives), plain names where not (as in "Prod. Company: Advogado do Diabo & Miratecarts"). Never guess a handle: ask the owner.
 
 ```
 <Title> - <Episode or subtitle>      (or "@brand - <Title>" for commercials)
@@ -27,7 +27,7 @@ DoP: @…
 
 - 3 to 4 stories per post, published the same day as the post.
 - Each story is a collage of **3 stills stacked edge to edge** on a 1080x1920 canvas (each still fills its third; the sides are trimmed slightly, as in the archive). No text burned in.
-- Mix the stills across stories (a portrait, an exterior, a detail in each) rather than three of a kind.
+- **The hero is also the first still of the first story** (its top third). Deal the other stills across the stories (a portrait, an exterior, a detail in each) rather than three of a kind.
 - **Every story mentions @zerebeloo and @mariablbraga.**
 - The account often adds one more story that shares the post itself; that is done in the app.
 

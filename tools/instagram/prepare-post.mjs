@@ -28,7 +28,8 @@ const SITE = path.resolve(process.cwd());
 const p = JSON.parse(await readFile(path.join(SITE, "content/projetos", slug + ".json"), "utf8"));
 const picks = opt("--stills").split(",").map((n) => Number(n.trim()));
 if (picks.length > 10) { console.error("o Instagram publica no máximo 10 imagens por carrossel pela API"); process.exit(1); }
-const handles = opt("--handles") ? JSON.parse(await readFile(opt("--handles"), "utf8")) : {};
+const shared = JSON.parse(await readFile(new URL("./handles.json", import.meta.url), "utf8")); // known @handles, from the account's own posts
+const handles = { ...shared, ...(opt("--handles") ? JSON.parse(await readFile(opt("--handles"), "utf8")) : {}) };
 const TYPE = { "Série": "TV Show", "Documentário": "Documentary", "Curta-metragem": "Short Film", "Longa-metragem": "Feature Film", "Publicidade": "Commercial", "Conteúdo de marca": "Branded Content", "Videoclip": "Music Video", "Entretenimento": "TV Show" };
 const type = opt("--type", TYPE[p.formato] || p.formato);
 const OUT = path.resolve(opt("--out", `./instagram/${new Date().toISOString().slice(0, 10)}-${slug}`));
@@ -61,11 +62,13 @@ for (const [i, f] of src.entries()) {
 
 // stories: three stills per story, stacked, each covering a 1080x640 band (sides trimmed a little, as in the archive)
 const W = 1080, H = 1920, band = H / 3;
-// The carousel's other frames (the hero opens the post, so stories start elsewhere), dealt across the stories
-// in turn (1st, 4th, 7th / 2nd, 5th, 8th / ...) so each story mixes portraits, exteriors and details.
+// The hero opens the post and the first story (top third). The other frames are dealt across the stories in
+// turn, so each story mixes portraits, exteriors and details instead of three of a kind.
+const nStories = Math.min(4, Math.floor(src.length / 3));
+const groups = Array.from({ length: nStories }, () => []);
 const rest = src.slice(1);
-const nStories = Math.min(4, Math.floor(rest.length / 3));
-const groups = Array.from({ length: nStories }, (_, k) => [0, 1, 2].map((j) => rest[k + j * nStories]));
+groups[0].push(src[0]);
+for (let j = 0, r = 0; j < 3; j++) for (let k = 0; k < nStories; k++) if (!(j === 0 && k === 0)) groups[k].push(rest[r++]);
 const stories = [];
 for (const group of groups) {
   const parts = await Promise.all(group.map((f, k) =>
