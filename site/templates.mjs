@@ -138,7 +138,7 @@ function palette(p) {
 
 function layout(ctx, { title, description, path, image, body, head = "", bodyClass = "", current = "" }) {
   const { site } = ctx;
-  const docTitle = title ? `${title} · ${site.nome}` : `${site.nome} · color grading, Lisboa`;
+  const docTitle = title ? `${title} · ${site.nome}` : `${site.nome} · color grading`;
   const canonical = site.url + path;
   const og = image ? site.url + image : "";
   const c = site.contacto || {};
