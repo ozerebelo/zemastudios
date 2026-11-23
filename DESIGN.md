@@ -199,7 +199,7 @@ A colourless chrome: neutral greys stepped from black to warm-white, with the lo
 ## Layout
 
 - **Container:** content max 1760px, centred; side padding `pad` = clamp(16px, 3vw, 44px). Masthead is sticky, 76px (64px on phones), full bleed.
-- **Pages:** `/` (mosaic, then "O nosso trabalho": studio text, technical sheet and onward links to Trabalho and Contacto), `/trabalho/` (every project: work bar, grid or list, then the palette wall), `/estudio/` (studio text, technical sheet, showreel if set), `/contacto/` (email, details, form), and `/trabalho/<slug>/` per project. Old one-page anchors (`/#trabalho`, `/#estudio`, `/#contacto`, `#work`, `#project/<id>`) redirect to these pages.
+- **Pages:** `/` (mosaic, then "O nosso trabalho": studio text, technical sheet and onward links to Trabalho and Contacto), `/trabalho/` (every project: work bar, grid or list; the measured palettes appear only on each project's own page), `/estudio/` (studio text, technical sheet, showreel if set), `/contacto/` (email, details, form), and `/trabalho/<slug>/` per project. Old one-page anchors (`/#trabalho`, `/#estudio`, `/#contacto`, `#work`, `#project/<id>`) redirect to these pages.
 - **Page head:** inner pages open on a plain h1 (700, clamp(48px, 6.6vw, 112px), 0.92, -0.05em) with clamp 40 to 96px above and 28 to 56px below; no eyebrow, no intro line.
 - **Mosaic (first screen):** exactly one screen tall (100svh minus the masthead, at least 560px): the wall of covers takes all the height the band leaves; the band (statement left, intro line right, bottom-aligned) closes it at the fold. Without JavaScript the section is as tall as its wrapped rows.
 - **Work grid:** 4 columns, 16px column gap, 40px row gap; 3 columns at 1280px, 2 at 960px (32px / 12px gaps), 1 at 600px.
@@ -245,7 +245,7 @@ On `/trabalho/`, under the page title; sticky under the masthead on the ground, 
 A full-width table of hairline rows: title (clamp 18 to 24px, 500) with subtitle muted inline, format, director, DOP, measured ratio, year right-aligned in tabular numerals. Column heads 13px muted.
 
 ### Ficha rows (credits and technical sheet)
-A definition list in hairline rows: term (14px muted) in a 0.8 fraction, value (15px text) in 1.2, 13px vertical padding, a hairline top on the group and below each row. Used for the studio technical sheet, contact details and every project's credits (Realização, Direção de fotografia, Produção, Agência, Cliente / exibição, Cor, Proporção, Fotogramas).
+A definition list in hairline rows: term (14px muted) in a 0.8 fraction, value (15px text) in 1.2, 13px vertical padding, a hairline top on the group and below each row. Used for the studio technical sheet, contact details and every project's credits (Realização, Direção de fotografia, Produção, Agência, Cliente, Cor; credits only, no technical counts).
 
 ### Inputs / Fields
 - **Style:** transparent, no box, 0 radius, a single 1px hairline underline, 17px text, 9px vertical padding; label above at 13px muted.

@@ -102,7 +102,7 @@ collections:
           - Publicidade
           - Conteúdo de marca
       - name: cliente
-        label: Cliente / exibição
+        label: Cliente
         widget: string
         required: false
         hint: Plataforma, canal ou marca. Ex. Prime Video, RTP, Betclic.

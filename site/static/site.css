@@ -189,14 +189,6 @@ main { max-width: var(--max); margin-inline: auto; }
 .list td { color: var(--muted); }
 .c-ano { text-align: right !important; padding-right: 0 !important; font-variant-numeric: tabular-nums; }
 
-/* ------------------------------------------------------------ the colour of each project */
-
-.pwall { padding: 0 var(--pad) clamp(90px, 11vw, 170px); }
-.pw-list { border-top: 1px solid var(--line); padding-top: clamp(36px, 5vw, 64px); display: grid; gap: 6px; }
-.pw-list a { display: block; padding-block: 2px; }
-.pw-bar { display: flex; height: 14px; transition: height 0.35s var(--ease); }
-.pw-bar span { min-width: 2px; }
-.pw-list a:hover .pw-bar, .pw-list a:focus-visible .pw-bar { height: 26px; }
 
 /* ------------------------------------------------------------ studio, contact */
 

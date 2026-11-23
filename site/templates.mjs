@@ -53,7 +53,7 @@ const FICHA = [
   ["fotografia", "Direção de fotografia"],
   ["producao", "Produção"],
   ["agencia", "Agência"],
-  ["cliente", "Cliente / exibição"],
+  ["cliente", "Cliente"],
   ["cor", "Cor"],
 ];
 
@@ -310,25 +310,6 @@ function work(ctx) {
   </section>`;
 }
 
-/** Every grade's measured palette, stacked: the colour of the body of work at a glance. */
-function paletteWall(ctx) {
-  const { projects } = ctx;
-  const withColour = projects.filter((p) => p.paleta?.length);
-  if (!withColour.length) return "";
-  return `<section id="cor" class="pwall" aria-labelledby="h-cor">
-    <h2 id="h-cor" class="vh">A cor de cada projeto</h2>
-    <ol class="pw-list">
-      ${withColour
-        .map(
-          (p) => `<li><a href="/trabalho/${esc(p.slug)}/" aria-label="${esc(fullTitle(p))}, ${p.ano}: paleta ${paletteLabel(p)}">
-        <span class="pw-bar">${swatches(p)}</span>
-      </a></li>`,
-        )
-        .join("\n      ")}
-    </ol>
-  </section>`;
-}
-
 /** The studio text beside the technical sheet; on the home page under a visible heading, on /estudio/ under the page title. */
 function studioGrid(ctx) {
   const { site, img } = ctx;
@@ -395,7 +376,7 @@ export function renderHome(ctx) {
   const reel = embedUrl(site.showreel);
   const firstFeatured = projects.find((p) => p.destaque) || projects[0];
   // Older versions lived on one page: #project/<slug>, #work and the section anchors now go to their own pages.
-  const pages = { "#work": "/trabalho/", "#trabalho": "/trabalho/", "#cor": "/trabalho/#cor", "#estudio": "/estudio/", "#contacto": "/contacto/" };
+  const pages = { "#work": "/trabalho/", "#trabalho": "/trabalho/", "#cor": "/trabalho/", "#estudio": "/estudio/", "#contacto": "/contacto/" };
   const redirectScript = `<script>(function(){var m=${JSON.stringify(redirects)},p=${JSON.stringify(pages)};function go(){var h=location.hash;if(h.indexOf("#project/")===0){var s=m[h.slice(9)];location.replace(s?"/trabalho/"+s+"/":"/trabalho/");}else if(p[h]){location.replace(p[h]);}}go();addEventListener("hashchange",go);})();</script>`;
   const body = `
   ${mosaic({ ...ctx, reel })}
@@ -425,8 +406,7 @@ export function renderWork(ctx) {
     image: first ? ctx.img(first.capa)?.src : "",
     body: `
   ${pageHead("Trabalho")}
-  ${work(ctx)}
-  ${paletteWall(ctx)}`,
+  ${work(ctx)}`,
     current: "trabalho",
     bodyClass: "page-work",
   });
@@ -520,7 +500,7 @@ export function renderProject(ctx, p, prev, next) {
         ${embed ? `<div class="trailer"><button type="button" class="play-btn" data-embed="${esc(embed)}" data-title="Trailer de ${esc(fullTitle(p))}">${PLAY} Ver trailer</button></div>` : ""}
       </div>
       <div class="p-side">
-        ${ficha([...FICHA.map(([k, l]) => [l, esc(p[k] || "")]), ["Proporção", esc(p.proporcao)], ["Fotogramas", String(total)]], "ficha-rows")}
+        ${ficha(FICHA.map(([k, l]) => [l, esc(p[k] || "")]), "ficha-rows")}
         ${palette(p)}
       </div>
     </header>
