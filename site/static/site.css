@@ -306,12 +306,20 @@ main { max-width: var(--max); margin-inline: auto; }
 
 .foot { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
 .foot-top {
-  display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(40px, 7vw, 120px); align-items: end;
-  border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 90px) clamp(36px, 4vw, 56px);
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 7vw, 120px); align-items: end;
+  border-top: 1px solid var(--line); padding-block: clamp(56px, 7vw, 110px) clamp(40px, 4.5vw, 64px);
 }
-.foot-brand { display: block; width: clamp(180px, 24vw, 380px); }
+/* pulled left by the same share as the masthead logo (2.4px of 86.7px), so the letters, not the SVG box, start on the content edge */
+.foot-top { --logo-w: clamp(180px, 24vw, 380px); }
+.foot-brand { display: block; width: var(--logo-w); transform: translateX(-2.77%); }
 .foot-brand img { width: 100%; height: auto; }
-.foot-links { display: grid; gap: 8px; font-size: clamp(17px, 1.4vw, 21px); letter-spacing: -0.01em; }
+/* Three short columns that end on the logo's baseline, so the right side carries weight and lines up with something. */
+.foot-cols { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(24px, 3vw, 56px); align-items: start;
+  /* the logo SVG keeps 10% of its width as empty space under the letters: raise the columns so the last link sits on the logo baseline */
+  margin-bottom: calc(var(--logo-w) * 0.1013 - 9px); }
+.foot-col { display: grid; gap: 14px; align-content: start; }
+.foot-h { font-size: 13px; color: var(--muted); }
+.foot-links { display: grid; gap: 6px; font-size: clamp(16px, 1.2vw, 19px); letter-spacing: -0.01em; }
 .foot-links a { color: var(--soft); padding-bottom: 2px; }
 .foot-links a:hover { color: var(--text); }
 .foot-base {
@@ -332,6 +340,7 @@ main { max-width: var(--max); margin-inline: auto; }
 @media (max-width: 960px) {
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 12px; }
   .studio-grid, .studio-grid.has-photo, .contact-grid, .p-head, .foot-top { grid-template-columns: minmax(0, 1fr); }
+  .foot-cols { margin-bottom: 0; }
   .studio-photo { max-width: 440px; }
   .next-link { grid-template-columns: minmax(0, 1fr); }
 }
@@ -360,6 +369,8 @@ main { max-width: var(--max); margin-inline: auto; }
 @media (max-width: 600px) {
   .grid { grid-template-columns: minmax(0, 1fr); }
   .foot-base { flex-direction: column; }
+  .foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; }
+  .foot-cols > :first-child { grid-column: 1 / -1; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }

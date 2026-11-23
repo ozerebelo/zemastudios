@@ -186,15 +186,33 @@ ${body}
 <footer class="foot">
   <div class="foot-top">
     <a class="foot-brand" href="/" aria-label="${esc(site.nome)}, início"><img src="/logo.svg" alt="" width="104" height="48"></a>
-    <ul class="foot-links">
-      ${c.email ? `<li><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></li>` : ""}
-      ${c.telefone ? `<li><a href="${esc(telHref(c.telefone))}">${esc(c.telefone)}</a></li>` : ""}
-      ${c.instagram ? `<li><a href="${esc(c.instagram)}" rel="me">Instagram</a></li>` : ""}
-      ${c.vimeo ? `<li><a href="${esc(c.vimeo)}" rel="me">Vimeo</a></li>` : ""}
-    </ul>
+    <div class="foot-cols">
+      <nav class="foot-col" aria-label="Contacto">
+        <p class="foot-h">Contacto</p>
+        <ul class="foot-links">
+          ${c.email ? `<li><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></li>` : ""}
+          ${c.telefone ? `<li><a href="${esc(telHref(c.telefone))}">${esc(c.telefone)}</a></li>` : ""}
+        </ul>
+      </nav>
+      ${c.instagram || c.vimeo ? `<nav class="foot-col" aria-label="Redes">
+        <p class="foot-h">Redes</p>
+        <ul class="foot-links">
+          ${c.instagram ? `<li><a href="${esc(c.instagram)}" rel="me">Instagram</a></li>` : ""}
+          ${c.vimeo ? `<li><a href="${esc(c.vimeo)}" rel="me">Vimeo</a></li>` : ""}
+        </ul>
+      </nav>` : ""}
+      <nav class="foot-col" aria-label="Páginas">
+        <p class="foot-h">Páginas</p>
+        <ul class="foot-links">
+          <li><a href="/trabalho/">Trabalho</a></li>
+          <li><a href="/estudio/">Estúdio</a></li>
+          <li><a href="/contacto/">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
   </div>
   <div class="foot-base">
-    <p>${esc(site.nome)} · color grading · Lisboa</p>
+    <p>© ${new Date().getFullYear()} ${esc(site.nome)} · color grading · Lisboa</p>
     <a class="foot-top-link" href="#topo">Voltar ao topo <svg class="ico ico-up" viewBox="0 0 12 24" aria-hidden="true"><path d="M1 7l5-5 5 5M6 2v21"/></svg></a>
   </div>
 </footer>
