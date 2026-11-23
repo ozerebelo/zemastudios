@@ -35,11 +35,6 @@
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   color-scheme: dark;
 }
-/* Ground trials in the brand blue (owner's request, 2026-11-23). Off by default; ?fundo=azul or ?fundo=azul-escuro
-   turns one on and is remembered, ?fundo=preto goes back. Frame boxes stay pure black: letterboxing is part of the frame.
-   Greys are re-tuned toward the blue so small text keeps AA contrast (muted 6.3:1 and 6.9:1). */
-:root[data-fundo="azul"] { --bg: #102c51; --line: #24426b; --pill: #355580; --soft: #dfe2e8; --muted: #a3afc2; --dim: #96a3b8; --lb: #0b1f3a; }
-:root[data-fundo="azul-escuro"] { --bg: #0a1b33; --line: #1d3352; --pill: #2b4468; --soft: #dfe2e8; --muted: #98a5ba; --dim: #8a98ae; --lb: #06111f; }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scrollbar-color: var(--pill) var(--bg); scroll-padding-top: calc(var(--mast) + 12px); }
@@ -303,8 +298,8 @@ main { max-width: var(--max); margin-inline: auto; }
 
 /* ------------------------------------------------------------ lightbox */
 
-.lightbox { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: var(--lb, #050505); color: var(--text); }
-.lightbox::backdrop { background: var(--lb, #050505); }
+.lightbox { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #050505; color: var(--text); }
+.lightbox::backdrop { background: #050505; }
 .lightbox[open] { display: grid; place-items: center; }
 .lightbox img { max-width: calc(100vw - 150px); max-height: calc(100dvh - 120px); width: auto; height: auto; }
 .lightbox button { position: absolute; background: none; border: 0; color: var(--muted); cursor: pointer; padding: 14px 18px; font-size: 15px; transition: color 0.2s; }

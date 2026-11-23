@@ -157,7 +157,6 @@ function layout(ctx, { title, description, path, image, body, head = "", bodyCla
 <meta property="og:url" content="${esc(canonical)}">
 ${og ? `<meta property="og:image" content="${esc(og)}">\n<meta name="twitter:card" content="summary_large_image">` : ""}
 <meta name="theme-color" content="#0b0b0b">
-<script>(function(){try{var q=new URLSearchParams(location.search).get("fundo"),k="zema-fundo";if(q!==null)localStorage.setItem(k,q);var f=q!==null?q:localStorage.getItem(k),c={"azul":"#102c51","azul-escuro":"#0a1b33"};if(c[f]){document.documentElement.setAttribute("data-fundo",f);document.querySelector('meta[name="theme-color"]').content=c[f];}}catch(e){}})();</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/host-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/site.css">
