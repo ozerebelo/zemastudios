@@ -14,6 +14,7 @@ import { readFile, writeFile, mkdir, readdir, cp, rm, stat } from "node:fs/promi
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 import sharp from "sharp";
 import { renderHome, renderWork, renderStudio, renderContact, renderProject, renderNotFound, FORMATOS } from "./templates.mjs";
 import { ratioLabel, palette } from "./palette.mjs";
@@ -161,7 +162,11 @@ async function build() {
     for (const f of frames) if (f.ratio) counts.set(f.ratio, (counts.get(f.ratio) || 0) + 1);
     p.proporcao = [...counts].sort((a, b) => b[1] - a[1]).map(([r]) => r).join(" · ");
   });
-  const ctx = { site, projects, img, redirects };
+  // Each version of the stylesheet and script gets its own URL (?v=<content hash>), so a page never meets an older
+  // cached copy after a deploy, and both can be cached for a year.
+  const v = async (f) => createHash("sha1").update(await readFile(path.join(ROOT, "static", f))).digest("hex").slice(0, 10);
+  const assets = { css: `/site.css?v=${await v("site.css")}`, js: `/site.js?v=${await v("site.js")}` };
+  const ctx = { site, projects, img, redirects, assets };
   await write("index.html", renderHome(ctx));
   await write("trabalho/index.html", renderWork(ctx));
   await write("estudio/index.html", renderStudio(ctx));

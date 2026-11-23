@@ -167,7 +167,7 @@ ${og ? `<meta property="og:image" content="${esc(og)}">\n<meta name="twitter:car
 <meta name="theme-color" content="#0b0b0b">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/host-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="${esc(ctx.assets?.css || "/site.css")}">
 ${head}
 </head>
 <body${bodyClass ? ` class="${bodyClass}"` : ""}>
@@ -225,7 +225,7 @@ ${body}
     <a class="foot-top-link" href="#topo">Voltar ao topo <svg class="ico ico-up" viewBox="0 0 12 24" aria-hidden="true"><path d="M1 7l5-5 5 5M6 2v21"/></svg></a>
   </div>
 </footer>
-<script src="/site.js" defer></script>
+<script src="${esc(ctx.assets?.js || "/site.js")}" defer></script>
 </body>
 </html>
 `;
