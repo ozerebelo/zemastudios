@@ -3,7 +3,11 @@
  * Publishes a post prepared by prepare-post.mjs on @zemastudios.grading through the Instagram Graph API
  * (graph.facebook.com, token from a Facebook Login for a Page linked to the Instagram professional account).
  *
- *   node publish.mjs <prepared-dir> --base-url https://zemastudios.com/ig/<folder>/ [--what post|stories|all] [--check]
+ *   node publish.mjs <prepared-dir> --base-url https://zemastudios.com/ig/<folder>/ [--what post|stories|all] [--check] [--api facebook|instagram]
+ *
+ * --api facebook (default): graph.facebook.com, token from Facebook Login; the Instagram account must be linked to a
+ *   Facebook Page the token can see. --api instagram: graph.instagram.com, token from "Instagram API with Instagram
+ *   Login" (no Page needed); the network secret is then saved for host graph.instagram.com.
  *
  * The images must already be reachable at --base-url (carrossel/NN.jpg, stories/story-N.jpg): Instagram
  * downloads them from there. --check only resolves the account and verifies every URL, publishing nothing.
@@ -20,7 +24,8 @@ const base = opt("--base-url");
 const what = opt("--what", "all");
 const check = args.includes("--check");
 if (!dir || !base) { console.error("uso: node publish.mjs <pasta> --base-url https://…/ [--what post|stories|all] [--check]"); process.exit(1); }
-const G = "https://graph.facebook.com";
+const API = opt("--api", "facebook");
+const G = API === "instagram" ? "https://graph.instagram.com/v21.0" : "https://graph.facebook.com/v21.0";
 const auth = { Authorization: `Bearer ${process.env.META_TOKEN || "proxy-injected"}` };
 
 async function graph(method, url, params) {
@@ -40,10 +45,17 @@ async function ready(id) {
   throw new Error(`contentor ${id} não ficou pronto`);
 }
 
-// the Instagram professional account linked to one of the token's Pages
-const pages = await graph("GET", "/me/accounts?fields=name,instagram_business_account{id,username}");
-const ig = pages.data.map((p) => p.instagram_business_account).find((a) => a && a.username === "zemastudios.grading");
-if (!ig) throw new Error("a conta zemastudios.grading não está ligada a nenhuma Página deste token: " + JSON.stringify(pages.data.map((p) => [p.name, p.instagram_business_account?.username])));
+// the Instagram professional account: the token's own account (Instagram Login) or the one linked to one of its Pages
+let ig;
+if (API === "instagram") {
+  const me = await graph("GET", "/me?fields=user_id,username");
+  ig = { id: me.user_id, username: me.username };
+  if (ig.username !== "zemastudios.grading") throw new Error(`este token é da conta @${ig.username}, não da zemastudios.grading`);
+} else {
+  const pages = await graph("GET", "/me/accounts?fields=name,instagram_business_account{id,username}");
+  ig = pages.data.map((p) => p.instagram_business_account).find((a) => a && a.username === "zemastudios.grading");
+  if (!ig) throw new Error("a conta zemastudios.grading não está ligada a nenhuma Página deste token (use --api instagram com um token do login do Instagram): " + JSON.stringify(pages.data.map((p) => [p.name, p.instagram_business_account?.username])));
+}
 console.log(`conta: @${ig.username} (${ig.id})`);
 
 const caption = (await readFile(path.join(dir, "legenda.txt"), "utf8")).trim();
@@ -71,7 +83,7 @@ if (what === "post" || what === "all") {
   const box = await graph("POST", `/${ig.id}/media`, { media_type: "CAROUSEL", children: children.join(","), caption });
   await ready(box.id);
   const post = await graph("POST", `/${ig.id}/media_publish`, { creation_id: box.id });
-  const link = await graph("GET", `/${post.id}?fields=permalink`);
+  const link = await graph("GET", `/${post.id}?fields=permalink`).catch(() => ({ permalink: post.id }));
   console.log(`post publicado: ${link.permalink}`);
 }
 

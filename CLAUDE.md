@@ -38,4 +38,4 @@ DoP: @…
 - `tools/stills/` proposes and exports stills from episode files.
 - `tools/instagram/publish.mjs` publishes a prepared folder (images served temporarily from zemastudios.com/ig/…); `--check` verifies first. Stories go out only if the API accepts the mentions as user tags.
 - Publishing is public and a feed post cannot be deleted through the API: always show the owner the carousel, caption and stories and publish only after an explicit "publica".
-- The Meta access token lives in the cloud environment's network secrets (never in files, commits, memory or chat). If it is missing or refused, ask the owner to enter it through the secure credential form.
+- The Meta access token lives in the cloud environment's network secrets (never in files, commits, memory or chat). If it is missing or refused, ask the owner to enter it through the secure credential form. The account is not linked to a Facebook Page (Business "Zema studios" has none), so a Facebook Login token sees no account: use `--api instagram` with a token from "Instagram API with Instagram Login", saved for host graph.instagram.com (value only the token, prefix Bearer).
