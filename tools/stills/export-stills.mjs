@@ -13,7 +13,9 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { readFile, mkdir } from "node:fs/promises";
 import path from "node:path";
-import sharp from "sharp";
+// sharp is resolved from the folder the script runs in (site/), not from this file's folder.
+import { createRequire } from "node:module";
+const sharp = createRequire(path.join(process.cwd(), "noop.js"))("sharp");
 
 const run = promisify(execFile);
 const args = process.argv.slice(2);

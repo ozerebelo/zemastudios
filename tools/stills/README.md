@@ -2,7 +2,7 @@
 
 Propõe e exporta stills a partir dos ficheiros de vídeo dos episódios, para posts e para o site.
 
-Precisa de `ffmpeg`/`ffprobe` e do `sharp` (já instalado em `site/`). Corre a partir da pasta `site/` para o `sharp` ser encontrado:
+Precisa de `ffmpeg`/`ffprobe` e do `sharp` (já instalado em `site/`). Corre a partir da pasta `site/`: os scripts carregam o `sharp` da pasta onde são corridos.
 
 ```bash
 cd site
