@@ -1,0 +1,86 @@
+diff --git a/site/static/site.css b/site/static/site.css
+index 7c3fc0d..b798516 100644
+--- a/site/static/site.css
++++ b/site/static/site.css
+@@ -306,17 +306,21 @@ main { max-width: var(--max); margin-inline: auto; }
+ 
+ .foot { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+ .foot-top {
+-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 7vw, 120px); align-items: end;
++  --logo-w: clamp(180px, 24vw, 380px);
++  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: clamp(32px, 4vw, 72px); align-items: end;
+   border-top: 1px solid var(--line); padding-block: clamp(56px, 7vw, 110px) clamp(40px, 4.5vw, 64px);
+ }
+-/* pulled left by the same share as the masthead logo (2.4px of 86.7px), so the letters, not the SVG box, start on the content edge */
+-.foot-top { --logo-w: clamp(180px, 24vw, 380px); }
++/* Pulled left by the same share as the masthead logo (2.4px of 86.7px), so the letters, not the SVG box, start on the content edge. */
+ .foot-brand { display: block; width: var(--logo-w); transform: translateX(-2.77%); }
+ .foot-brand img { width: 100%; height: auto; }
+-/* Three short columns that end on the logo's baseline, so the right side carries weight and lines up with something. */
+-.foot-cols { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(24px, 3vw, 56px); align-items: start;
+-  /* the logo SVG keeps 10% of its width as empty space under the letters: raise the columns so the last link sits on the logo baseline */
++/* The logo's letters fill 0.9% to 36% of its width from the top; the rest of its box is empty. The latest cover matches the
++   letters' height and sits on their baseline, at its own ratio. */
++.foot-still { justify-self: end; display: block; height: calc(var(--logo-w) * 0.3513); margin-bottom: calc(var(--logo-w) * 0.1013); background: var(--frame); }
++.foot-still img { height: 100%; width: auto; display: block; }
++/* Short columns whose labels share one line and whose last link sits on the logo baseline. */
++.foot-cols { display: grid; grid-auto-flow: column; grid-auto-columns: max-content; column-gap: clamp(28px, 3.2vw, 64px); align-items: start;
+   margin-bottom: calc(var(--logo-w) * 0.1013 - 9px); }
++.fl-meta { color: var(--muted); font-size: 14px; padding-top: 2px; }
+ .foot-col { display: grid; gap: 14px; align-content: start; }
+ .foot-h { font-size: 13px; color: var(--muted); }
+ .foot-links { display: grid; gap: 6px; font-size: clamp(16px, 1.2vw, 19px); letter-spacing: -0.01em; }
+@@ -340,7 +344,10 @@ main { max-width: var(--max); margin-inline: auto; }
+ @media (max-width: 960px) {
+   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 12px; }
+   .studio-grid, .studio-grid.has-photo, .contact-grid, .p-head, .foot-top { grid-template-columns: minmax(0, 1fr); }
+-  .foot-cols { margin-bottom: 0; }
++  .foot-cols { margin-bottom: 0; grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; }
++  .foot-cols > :nth-child(-n + 2) { grid-column: 1 / -1; }
++  .foot-still { justify-self: start; height: auto; width: min(100%, 440px); margin-bottom: -14px; }
++  .foot-still img { width: 100%; height: auto; }
+   .studio-photo { max-width: 440px; }
+   .next-link { grid-template-columns: minmax(0, 1fr); }
+ }
+@@ -369,8 +376,6 @@ main { max-width: var(--max); margin-inline: auto; }
+ @media (max-width: 600px) {
+   .grid { grid-template-columns: minmax(0, 1fr); }
+   .foot-base { flex-direction: column; }
+-  .foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; }
+-  .foot-cols > :first-child { grid-column: 1 / -1; }
+ }
+ @media (prefers-reduced-motion: reduce) {
+   *, *::before, *::after { transition: none !important; animation: none !important; }
+diff --git a/site/templates.mjs b/site/templates.mjs
+index 9475a4a..a6bd683 100644
+--- a/site/templates.mjs
++++ b/site/templates.mjs
+@@ -145,6 +145,12 @@ function layout(ctx, { title, description, path, image, body, head = "", bodyCla
+   const canonical = site.url + path;
+   const og = image ? site.url + image : "";
+   const c = site.contacto || {};
++  // The most recently published project, for the footer: its cover at its own ratio, never cropped.
++  const latest = [...(ctx.projects || [])].filter((p) => p.data).sort((a, b) => b.data.localeCompare(a.data))[0];
++  const latestImg = latest && ctx.img ? ctx.img(latest.capa) : null;
++  const latestStill = latestImg
++    ? `<a class="foot-still" href="/trabalho/${esc(latest.slug)}/" tabindex="-1" aria-hidden="true">${picture(latestImg, { alt: "", sizes: "320px", fade: true })}</a>`
++    : "";
+   return `<!doctype html>
+ <html lang="pt-PT">
+ <head>
+@@ -186,7 +192,15 @@ ${body}
+ <footer class="foot">
+   <div class="foot-top">
+     <a class="foot-brand" href="/" aria-label="${esc(site.nome)}, início"><img src="/logo.svg" alt="" width="104" height="48"></a>
++    ${latestStill}
+     <div class="foot-cols">
++      ${latest ? `<div class="foot-col foot-latest">
++        <p class="foot-h">Último trabalho</p>
++        <ul class="foot-links">
++          <li><a href="/trabalho/${esc(latest.slug)}/">${keep(latest.titulo)}</a></li>
++          <li class="fl-meta">${keep(latest.formato || "")} · ${latest.ano}</li>
++        </ul>
++      </div>` : ""}
+       <nav class="foot-col" aria-label="Contacto">
+         <p class="foot-h">Contacto</p>
+         <ul class="foot-links">
