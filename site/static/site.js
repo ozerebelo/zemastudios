@@ -241,4 +241,36 @@
         .then(function () { submit.disabled = false; });
     });
   }
+
+  // ---------------------------------------------------------- editorial opening: one frame at a time from the recent work
+  var hero = document.querySelector(".ed-hero[data-hero]");
+  if (hero && !reduceMotion) {
+    var list = []; try { list = JSON.parse(hero.dataset.hero); } catch (e) {}
+    var box = hero.querySelector(".ed-hero-frame"), ticks = hero.querySelectorAll(".ed-ticks i");
+    var num = hero.querySelector(".ed-now b"), nt = hero.querySelector(".ed-now-t"), nm = hero.querySelector(".ed-now-m");
+    var k = 0, total = list.length;
+    var show = function () {
+      if (document.hidden || box.matches(":hover")) return;
+      k = (k + 1) % total;
+      var d = list[k], next = new Image();
+      next.alt = ""; next.srcset = d.srcset; next.sizes = "(max-width: 960px) 100vw, 70vw"; next.src = d.src;
+      next.style.position = "absolute"; next.style.inset = "0"; next.style.opacity = "0";
+      var swap = function () {
+        box.appendChild(next);
+        requestAnimationFrame(function () { requestAnimationFrame(function () {
+          next.style.opacity = "1";
+          setTimeout(function () {
+            Array.prototype.forEach.call(box.querySelectorAll("img"), function (im) { if (im !== next) im.remove(); });
+            next.style.position = ""; next.style.inset = "";
+          }, 950);
+        }); });
+        box.href = d.href; box.setAttribute("aria-label", d.t);
+        ticks.forEach(function (t, j) { t.classList.toggle("on", j === k); });
+        num.textContent = String(k + 1).padStart(2, "0") + "/" + String(total).padStart(2, "0");
+        nt.textContent = d.t; nm.textContent = d.m;
+      };
+      if (next.decode) next.decode().then(swap, function () {}); else next.onload = swap;
+    };
+    if (total > 1) setInterval(show, 4500);
+  }
 })();

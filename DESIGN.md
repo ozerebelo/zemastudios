@@ -304,3 +304,7 @@ One ease for drawn and spatial movement, cubic-bezier(0.16, 1, 0.3, 1); plain ea
 - **Don't** introduce a second typeface or uppercase letterspaced labels.
 - **Don't** autoplay video or use video loops; stills only, embeds load on click.
 - **Don't** hide credits behind hover.
+
+## Editorial version (trial, 2026-11-24)
+
+Built with `TEMA=claro VERSAO=editorial` from site/ (draft deploys only; the default build is unchanged). Owner's reference: an editorial colourist portfolio (pedroesilva.com). What it takes from it: dark bands for the header, the opening, the process and the footer around the warm off-white; index rows between sections ("◆ (01) · (O estúdio) · © year" on a hairline, diamond in orange); line links with an orange corner mark; nav and footer pages numbered in small superscripts; the latest projects as cards that stack while scrolling, with a sticky title and call on the left and "Todos os projetos" on the right; the process told as three steps with large numerals, a frame and the step (Sessão, Cor, Entrega, from the studio text); the footer leading with "Tem um projeto?" and the email large. What it does not take: text over images and blurred copies of frames behind them (house rules: graded frames whole, never cropped, filtered or written over). The opening shows the six latest covers one at a time beside the intro, at their own ratio, with a tick per project and the current title under them; it stops under reduced motion.

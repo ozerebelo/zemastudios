@@ -165,10 +165,12 @@ function layout(ctx, { title, description, path, image, body, head = "", bodyCla
   const og = image ? site.url + image : "";
   const c = site.contacto || {};
   // The light trial uses the logo in its own blue; the dark site keeps the cream logo.
-  const logo = ctx.tema === "claro" ? "/logo-azul.svg" : "/logo.svg";
+  // The editorial version sets its header and footer on a dark band, so it keeps the cream logo.
+  const logo = ctx.tema === "claro" && ctx.versao !== "editorial" ? "/logo-azul.svg" : "/logo.svg";
+  const ed = ctx.versao === "editorial";
   const morada = addressLines(c.morada);
   return `<!doctype html>
-<html lang="pt-PT"${ctx.tema ? ` data-tema="${esc(ctx.tema)}"` : ""}>
+<html lang="pt-PT"${ctx.tema ? ` data-tema="${esc(ctx.tema)}"` : ""}${ctx.versao ? ` data-versao="${esc(ctx.versao)}"` : ""}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -193,11 +195,11 @@ ${head}
   <a class="brand" href="/"><img src="${logo}" alt="${esc(site.nome)}" width="104" height="48"></a>
   <nav aria-label="Principal">
     ${[["trabalho", "trabalho"], ["estudio", "estúdio"], ["contacto", "contacto"]]
-      .map(([id, label]) => {
+      .map(([id, label], k) => {
         // The red dot marks the section; aria-current only where the link is this very page.
         const on = current === id ? ' class="on"' : "";
         const here = path === `/${id}/` ? ' aria-current="page"' : "";
-        return `<a href="/${id}/"${on}${here}>${label}</a>`;
+        return `<a href="/${id}/"${on}${here}>${label}${ed ? `<sup aria-hidden="true">${pad2(k + 1)}</sup>` : ""}</a>`;
       })
       .join("\n    ")}
   </nav>
@@ -205,7 +207,7 @@ ${head}
 <main id="conteudo">
 ${body}
 </main>
-<footer class="foot">
+${ed ? edFooter(ctx, { c, morada, logo }) : `<footer class="foot">
   <div class="foot-top">
     <a class="foot-brand" href="/" aria-label="${esc(site.nome)}, início"><img src="${logo}" alt="" width="104" height="48"></a>
     <div class="foot-cols">
@@ -242,6 +244,7 @@ ${body}
     <a class="foot-top-link" href="#topo">Voltar ao topo <svg class="ico ico-up" viewBox="0 0 12 24" aria-hidden="true"><path d="M1 7l5-5 5 5M6 2v21"/></svg></a>
   </div>
 </footer>
+`}
 <script src="${esc(ctx.assets?.js || "/site.js")}" defer></script>
 </body>
 </html>
@@ -417,6 +420,7 @@ function contact(ctx) {
 
 export function renderHome(ctx) {
   const { site, projects, redirects } = ctx;
+  if (ctx.versao === "editorial") return renderHomeEditorial(ctx);
   const reel = embedUrl(site.showreel);
   const firstFeatured = projects.find((p) => p.destaque) || projects[0];
   // Older versions lived on one page: #project/<slug>, #work and the section anchors now go to their own pages.
@@ -453,6 +457,114 @@ export function renderWork(ctx) {
     current: "trabalho",
     bodyClass: "page-work",
   });
+}
+
+// ---------------------------------------------------------------- editorial version (VERSAO=editorial)
+// Inspired by an editorial colourist portfolio: a dark opening frame with the intro beside it, index rows between
+// sections, a centred statement, selected work as stacking cards, a numbered process, a dark closing footer.
+// The house rules still hold: graded frames at their own ratio, never cropped, blurred or written over.
+
+const YEAR = new Date().getFullYear();
+/** The index row that opens a section: number, name, year, on a hairline. */
+const edMeta = (n, name) => `<div class="ed-meta"><span><i class="ed-dia" aria-hidden="true"></i>(${pad2(n)})</span><span>(${esc(name)})</span><span>© ${YEAR}</span></div>`;
+/** A link drawn as a line with a corner mark, the version's call to action. */
+const edLink = (href, label, cls = "") => `<a class="ed-link${cls ? " " + cls : ""}" href="${href}"><span>${esc(label)}</span></a>`;
+
+function renderHomeEditorial(ctx) {
+  const { site, projects, img } = ctx;
+  const featured = projects.filter((p) => p.destaque).slice(0, 6);
+  const covers = featured.map((p) => ({ p, im: img(p.capa) })).filter((x) => x.im);
+  const first = covers[0];
+  const heroData = covers.map(({ p, im }) => ({ src: im.src, srcset: im.srcset, w: im.width, h: im.height, t: p.titulo, m: [p.formato, p.ano].filter(Boolean).join(" · "), href: `/trabalho/${p.slug}/` }));
+  const ticks = covers.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("");
+  const services = ["Color grading", "Sessões na sala ou à distância", "Entregas em SDR, HDR e DCP"];
+
+  const hero = first ? `<section class="ed-hero ed-dark" aria-label="Abertura" data-hero="${esc(JSON.stringify(heroData))}">
+    <div class="ed-hero-side">
+      <h1 class="ed-intro">${stopped(site.intro || "")}</h1>
+      ${edLink("/trabalho/", "Ver o trabalho")}
+      <ul class="ed-services">${services.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
+    </div>
+    <a class="ed-hero-frame" href="${heroData[0].href}" aria-label="${esc(fullTitle(first.p))}">${picture(first.im, { alt: "", sizes: "(max-width: 960px) 100vw, 70vw", eager: true })}</a>
+    <div class="ed-hero-bar">
+      <span>© ${YEAR}</span>
+      <span class="ed-ticks" aria-hidden="true">${ticks}</span>
+      <span class="ed-now"><b>${pad2(1)}/${pad2(covers.length)}</b> <span class="ed-now-t">${esc(first.p.titulo)}</span> <span class="ed-now-m">${esc(heroData[0].m)}</span></span>
+    </div>
+  </section>` : "";
+
+  const statement = `<section class="ed-sec ed-statement" aria-labelledby="h-ed-sobre">
+    ${edMeta(1, "O estúdio")}
+    <h2 id="h-ed-sobre" class="ed-big">${stopped(site.sobre?.titulo || "")}</h2>
+    ${studioGrid(ctx, `<p class="ed-cta-row">${edLink("/estudio/", "Conhecer o estúdio")}${edLink("/contacto/", "Pedir orçamento")}</p>`)}
+  </section>`;
+
+  const cards = covers.map(({ p, im }, i) => `<article class="ed-card" style="--i:${i}">
+      <a href="/trabalho/${esc(p.slug)}/" class="ed-card-frame" aria-label="${esc(fullTitle(p))}">${picture(im, { alt: "", sizes: "(max-width: 960px) 100vw, 56vw", fade: true })}</a>
+      <p class="ed-card-cap"><span>(${pad2(i + 1)})</span><span><b>${keep(p.titulo)}</b><em>${esc([p.formato, p.cliente].filter(Boolean).join(" · "))}</em></span><span>© ${p.ano}</span></p>
+    </article>`).join("\n    ");
+  const work = `<section class="ed-sec ed-work" aria-labelledby="h-ed-work">
+    ${edMeta(2, "Trabalho selecionado")}
+    <div class="ed-work-grid">
+      <div class="ed-work-side"><h2 id="h-ed-work" class="ed-work-h">Últimos trabalhos</h2>${edLink("/contacto/", "Pedir orçamento")}</div>
+      <div class="ed-cards">${cards}</div>
+      <div class="ed-work-all"><a class="ed-all" href="/trabalho/"><span class="ed-plus" aria-hidden="true"></span><span>Todos os projetos</span></a></div>
+    </div>
+  </section>`;
+
+  // the process: three steps told from the studio text, each beside a frame from a recent project
+  const stills = featured.map((p) => frames(p, img)[1] || frames(p, img)[0]).filter(Boolean);
+  const steps = [
+    ["Sessão", "Com quem filmou", "O diretor de fotografia e o realizador acompanham as sessões connosco, na sala ou à distância."],
+    ["Cor", "Plano a plano", "Acertamos a cor plano a plano. Numa série, o último episódio tem de bater certo com o primeiro."],
+    ["Entrega", "SDR, HDR ou DCP", "Entregamos as versões que cada destino pede, até à entrega final."],
+  ];
+  const process = `<section class="ed-sec ed-dark ed-process" aria-labelledby="h-ed-proc">
+    ${edMeta(3, "Processo")}
+    <h2 id="h-ed-proc" class="vh">Processo</h2>
+    <ol class="ed-steps">${steps.map(([t, sub, d], i) => `<li>
+      <span class="ed-num" aria-hidden="true">${pad2(i + 1)}</span>
+      <figure class="ed-step-frame">${stills[i + 1] ? picture(stills[i + 1], { alt: "", sizes: "(max-width: 960px) 100vw, 30vw", fade: true }) : ""}</figure>
+      <div class="ed-step-text"><h3>${esc(t)}</h3><p class="ed-step-sub">${esc(sub)}</p><p>${esc(d)}</p></div>
+    </li>`).join("")}</ol>
+  </section>`;
+
+  return layout(ctx, {
+    title: "",
+    description: site.descricao,
+    path: "/",
+    image: first ? first.im.src : "",
+    body: hero + statement + work + process,
+    bodyClass: "home ed-home",
+  });
+}
+
+/** The editorial footer: the invitation and the email large on the left, the numbered pages on the right. */
+function edFooter(ctx, { c, morada, logo }) {
+  const { site } = ctx;
+  const pages = [["/", "Início"], ["/trabalho/", "Trabalho"], ["/estudio/", "Estúdio"], ["/contacto/", "Contacto"]];
+  return `<footer class="ed-foot ed-dark">
+  <div class="ed-foot-top">
+    <div class="ed-foot-call">
+      <p class="ed-foot-ask">Tem um projeto?</p>
+      ${c.email ? `<p class="ed-foot-mail"><a href="mailto:${esc(c.email)}">${esc(c.email).replace("@", '<span class="stop">@</span><wbr>')}</a></p>` : ""}
+      ${edLink("/contacto/", "Pedir orçamento")}
+    </div>
+    <div class="ed-foot-side">
+      <nav aria-label="Páginas"><ul class="ed-foot-nav">${pages.map(([h, l], i) => `<li><a href="${h}">${l}<sup aria-hidden="true">${pad2(i + 1)}</sup></a></li>`).join("")}</ul></nav>
+      <div class="ed-foot-facts">
+        ${c.telefone ? `<p><a href="${esc(telHref(c.telefone))}">${esc(c.telefone)}</a></p>` : ""}
+        ${morada.length ? `<address><a href="${esc(mapHref(c))}" rel="noopener" target="_blank">${morada.map(esc).join("<br>")}</a></address>` : ""}
+      </div>
+    </div>
+  </div>
+  <div class="ed-foot-base">
+    <a class="ed-foot-brand" href="/" aria-label="${esc(site.nome)}, início"><img src="${logo}" alt="" width="104" height="48"></a>
+    <p class="ed-foot-social">${c.instagram ? `<a href="${esc(c.instagram)}" rel="me">Instagram</a>` : ""}${c.vimeo ? `<a href="${esc(c.vimeo)}" rel="me">Vimeo</a>` : ""}</p>
+    <p>© ${YEAR} ${esc(site.nome)} · color grading</p>
+    <a class="foot-top-link" href="#topo">Voltar ao topo <svg class="ico ico-up" viewBox="0 0 12 24" aria-hidden="true"><path d="M1 7l5-5 5 5M6 2v21"/></svg></a>
+  </div>
+</footer>`;
 }
 
 export function renderStudio(ctx) {
