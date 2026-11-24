@@ -127,6 +127,8 @@ components:
 
 # Design System: zema studios
 
+> **Since 2026-11-24 the site is built in the logo's colours** (owner's choice): ground #F2EEE4, text the logo's blue #102C51, orange accents (round full stops, arrows, link underlines, the email's @, contact labels in #B03B28). The rest of this file describes the black site it grew from (still built with `TEMA=preto`); tokens and rules for the cream version live in site.css under `[data-tema="claro"]`.
+
 ## Overview
 
 **Creative North Star: "The Work, Large and True"**
