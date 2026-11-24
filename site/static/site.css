@@ -44,7 +44,7 @@
    is never cropped; on a light ground black bars read as a border); the
    lightbox stays dark, so graded images are still judged on black. */
 :root[data-tema="claro"] {
-  --bg: #ECE6D6; --line: #D6CDB8; --pill: #B3AC9B; --frame: #ECE6D6;
+  --bg: #F2EEE4; --line: #DCD5C5; --pill: #B5AFA0; --frame: #F2EEE4; /* a step whiter than #ECE6D6 (owner, 2026-11-24) */
   --text: #102C51; --soft: #1F3B62; --muted: #4F5F76; --dim: #56667D;
   /* the orange accent: headline full stops, arrows, link underlines, selection and focus (graphics and large type only) */
   --stop: var(--red); --arrow: var(--red); --line-hover: var(--red); --page-stop: inline;

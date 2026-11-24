@@ -181,7 +181,7 @@ function layout(ctx, { title, description, path, image, body, head = "", bodyCla
 <meta property="og:description" content="${esc(description || site.descricao)}">
 <meta property="og:url" content="${esc(canonical)}">
 ${og ? `<meta property="og:image" content="${esc(og)}">\n<meta name="twitter:card" content="summary_large_image">` : ""}
-<meta name="theme-color" content="${ctx.tema === "claro" ? "#ECE6D6" : ctx.tema === "azul" ? "#0F2645" : "#0b0b0b"}">
+<meta name="theme-color" content="${ctx.tema === "claro" ? "#F2EEE4" : ctx.tema === "azul" ? "#0F2645" : "#0b0b0b"}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/host-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${esc(ctx.assets?.css || "/site.css")}">
