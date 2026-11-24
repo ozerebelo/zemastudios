@@ -50,19 +50,29 @@
   --stop: var(--red); --arrow: var(--red); --line-hover: var(--red); --page-stop: inline;
   color-scheme: light;
 }
-:root[data-tema="claro"] ::selection { background: var(--red); color: #fff; }
-:root[data-tema="claro"] :focus-visible { outline-color: var(--red); }
+/* Dark trial, the inverse of the light one (owner, 2026-11-24), built with TEMA=azul: ground a deep take on the logo's
+   blue, text the logo's cream (13:1), greys tinted blue (6.7:1), the same orange accents (the logo's orange reads 4.4:1
+   here; contact labels use a lighter step, #F0715F, 5.7:1). Letterbox in the ground colour; the lightbox stays black. */
+:root[data-tema="azul"] {
+  --bg: #0F2645; --line: #24406A; --pill: #3A5680; --frame: #0F2645;
+  --text: #ECE6D6; --soft: #D9D2C0; --muted: #9CA6B6; --dim: #A7AFBD;
+  --stop: var(--red); --arrow: var(--red); --line-hover: var(--red); --page-stop: inline;
+  color-scheme: dark;
+}
+:root:is([data-tema="claro"], [data-tema="azul"]) ::selection { background: var(--red); color: #fff; }
+:root:is([data-tema="claro"], [data-tema="azul"]) :focus-visible { outline-color: var(--red); }
 /* Contact labels (footer column titles, the contact page's rows) in bold orange: a darker step of the logo's orange,
    #B03B28, which reads at small sizes (4.8:1 on the ground; the logo's own orange is 3:1, for large type only). */
 :root[data-tema="claro"] .foot-h, :root[data-tema="claro"] .contact-main .ficha-rows dt { color: #B03B28; font-weight: 700; }
+:root[data-tema="azul"] .foot-h, :root[data-tema="azul"] .contact-main .ficha-rows dt { color: #F0715F; font-weight: 700; }
 /* Headline full stops as a small round dot, like the one in the logo, instead of the typeface's square period. */
-:root[data-tema="claro"] :is(.m-h, .sec-h, .page-head h1) .stop {
+:root:is([data-tema="claro"], [data-tema="azul"]) :is(.m-h, .sec-h, .page-head h1) .stop {
   display: inline-block; width: 0.14em; height: 0.14em; margin-left: 0.04em; border-radius: 50%;
   background: var(--red); color: transparent; overflow: hidden; line-height: 0; vertical-align: baseline;
 }
 /* the section heading is set tighter (-0.04em) and ends on round letters (ã): its dot gets more air (owner: "muito colado") */
-:root[data-tema="claro"] h2.sec-h .stop { margin-left: 0.12em; }
-:root[data-tema="claro"] .lightbox { color: #ecebe7; }
+:root:is([data-tema="claro"], [data-tema="azul"]) h2.sec-h .stop { margin-left: 0.12em; }
+:root:is([data-tema="claro"], [data-tema="azul"]) .lightbox { color: #ecebe7; }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scrollbar-color: var(--pill) var(--bg); scroll-padding-top: calc(var(--mast) + 12px); }
