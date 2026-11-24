@@ -278,7 +278,7 @@ function mosaic(ctx) {
   // The headline is the owner's sentence from the CMS; the line beside it is computed, so its numbers stay true.
   const head = String(site.intro || "").trim();
   const f = facts(projects);
-  const rest = `Estúdio de color grading em Lisboa. Desde ${f.desde}, demos cor a ${f.n}\u00A0projetos de ${f.generos}.`;
+  const rest = `Estúdio de color grading em Lisboa. Desde ${f.desde}, demos cor a vários projetos de ${f.generos}.`;
   return `<section class="mosaic" aria-label="Trabalhos">
     <div class="m-wall">${cells}</div>
     <div class="m-band">
