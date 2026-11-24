@@ -47,28 +47,28 @@
       if (!W || !H || (W === lastW && H === lastH)) { mo.style.height = held[0]; wall.style.height = held[1]; return; }
       lastW = W; lastH = H;
       var g = parseFloat(getComputedStyle(mo).getPropertyValue("--gap")) || 6;
-      // Phones get two covers to a line in about three rows: fewer, larger frames instead of a crowd of thumbnails.
+      // Fewer, larger frames instead of a crowd of thumbnails (owner, 2026-11-24: "num monitor mais pequeno fica
+      // demasiado cheio"): about four 16:9 covers to a line in about three rows on a desktop, three on a tablet,
+      // two on a phone.
       var phone = W < 600;
       var perRow = phone ? 2 : W < 1100 ? 3 : 4;
-      // Preferred row height: a 16:9 cover sits perRow to a line, but never fewer than about four rows on a tall screen.
-      var pref = Math.min((W - (perRow - 1) * g) / perRow / 1.78, H / (phone ? 2.6 : small ? 3.2 : 3.6));
+      var pref = Math.min((W - (perRow - 1) * g) / perRow / 1.78, H / (phone ? 2.6 : W < 1100 ? 3.2 : 3));
       var best = null;
-      // On phones the search stays near two-to-a-line (a lower row would squeeze in a third cover); a gap under the
-      // last row is the lesser evil there, so it weighs less against the preferred size.
-      var small = W < 1100; // phones and tablets: hold the per-line count, judge rows by their real height
-      var lo = small ? 0.92 : 0.6, hi = small ? 1.6 : 1.7, pull = small ? 1.2 : 0.35;
+      // The search stays near the preferred size (a lower row would squeeze in more covers), and rows are judged by
+      // their real average height; a gap under the last row is the lesser evil, so the mosaic then shrinks to it.
+      var lo = 0.92, hi = 1.6, pull = 1.2, maxRows = W < 1100 ? 6 : 4; // a big screen grows the covers, not their number
       for (var h = Math.round(pref * lo); h <= Math.round(pref * hi); h++) {
         var rows = rowsFor(W, g, h), used = 0, n = 0;
-        while (n < rows.length && used + rows[n].h + (n ? g : 0) <= H) { used += rows[n].h + (n ? g : 0); n++; }
+        while (n < rows.length && n < maxRows && used + rows[n].h + (n ? g : 0) <= H) { used += rows[n].h + (n ? g : 0); n++; }
         if (!n) continue;
         // Least empty space under the last row wins; among near ties, the size closest to the preferred one.
         // On phones the rows' real average height is compared (a search height can still yield rows of three small covers).
-        var size = small ? (used - (n - 1) * g) / n : h;
+        var size = (used - (n - 1) * g) / n;
         var score = H - used + Math.abs(size - pref) * pull;
         if (!best || score < best.score) best = { score: score, rows: rows.slice(0, n), used: used };
       }
       if (!best) return;
-      if (W < 1100) { mo.style.height = "auto"; wall.style.height = Math.ceil(best.used) + "px"; }
+      mo.style.height = "auto"; wall.style.height = Math.ceil(best.used) + "px";
       var frag = document.createDocumentFragment(), shown = {};
       best.rows.forEach(function (r) {
         var line = document.createElement("div");
