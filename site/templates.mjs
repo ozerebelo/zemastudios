@@ -166,7 +166,7 @@ function layout(ctx, { title, description, path, image, body, head = "", bodyCla
   const c = site.contacto || {};
   // The light trial uses the logo in its own blue; the dark site keeps the cream logo.
   // The editorial version sets its header and footer on a dark band, so it keeps the cream logo.
-  const logo = ctx.tema === "claro" && ctx.versao !== "editorial" ? "/logo-azul.svg" : "/logo.svg";
+  const logo = ctx.versao === "editorial" ? "/logo-branco.svg" : ctx.tema === "claro" ? "/logo-azul.svg" : "/logo.svg";
   const ed = ctx.versao === "editorial";
   const morada = addressLines(c.morada);
   return `<!doctype html>
@@ -459,110 +459,129 @@ export function renderWork(ctx) {
   });
 }
 
-// ---------------------------------------------------------------- editorial version (VERSAO=editorial)
-// Inspired by an editorial colourist portfolio: a dark opening frame with the intro beside it, index rows between
-// sections, a centred statement, selected work as stacking cards, a numbered process, a dark closing footer.
-// The house rules still hold: graded frames at their own ratio, never cropped, blurred or written over.
+// ---------------------------------------------------------------- editorial version (VERSAO=editorial, TEMA=pb)
+// The owner's reference is an editorial colourist portfolio; for this version the owner lifted the house rule on
+// frames (2026-11-24): covers may fill the screen, carry marks and text, and lend a blurred copy as a backdrop.
+// The concept: the site as a grading monitor. Viewfinder marks and a running timecode over full-bleed frames, a
+// statement that resolves word by word, the facts of the room as a spec strip, the latest grades stacking like
+// cards on a desk, the process told by a numeral that holds while its steps pass, a full-bleed close cut on a slant.
 
 const YEAR = new Date().getFullYear();
-/** The index row that opens a section: number, name, year, on a hairline. */
-const edMeta = (n, name) => `<div class="ed-meta"><span><i class="ed-dia" aria-hidden="true"></i>(${pad2(n)})</span><span>(${esc(name)})</span><span>© ${YEAR}</span></div>`;
-/** A link drawn as a line with a corner mark, the version's call to action. */
-const edLink = (href, label, cls = "") => `<a class="ed-link${cls ? " " + cls : ""}" href="${href}"><span>${esc(label)}</span></a>`;
+const YY = String(YEAR).slice(2);
+const xMeta = (n, name) => `<div class="x-meta"><span><i class="x-dia" aria-hidden="true"></i>(${pad2(n)})</span><span>(${esc(name)})</span><span>© ${YEAR}</span></div>`;
+const xLink = (href, label, cls = "") => `<a class="x-link${cls ? " " + cls : ""}" href="${href}"><span>${esc(label)}</span><i aria-hidden="true"></i></a>`;
+const xCross = (cls) => `<i class="x-cross ${cls}" aria-hidden="true"></i>`;
+const words = (t) => esc(t).split(/\s+/).map((w) => `<span class="w">${w}</span>`).join(" ");
 
 function renderHomeEditorial(ctx) {
   const { site, projects, img } = ctx;
   const featured = projects.filter((p) => p.destaque).slice(0, 6);
   const covers = featured.map((p) => ({ p, im: img(p.capa) })).filter((x) => x.im);
   const first = covers[0];
-  const heroData = covers.map(({ p, im }) => ({ src: im.src, srcset: im.srcset, w: im.width, h: im.height, t: p.titulo, m: [p.formato, p.ano].filter(Boolean).join(" · "), href: `/trabalho/${p.slug}/` }));
-  const ticks = covers.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("");
-  const services = ["Color grading", "Sessões na sala ou à distância", "Entregas em SDR, HDR e DCP"];
+  const slides = covers.map(({ p, im }) => ({ src: im.src, srcset: im.srcset, t: p.titulo, m: [p.formato, p.ano].filter(Boolean).join(" · "), href: `/trabalho/${p.slug}/` }));
 
-  const hero = first ? `<section class="ed-hero ed-dark" aria-label="Abertura" data-hero="${esc(JSON.stringify(heroData))}">
-    <div class="ed-hero-side">
-      <h1 class="ed-intro">${stopped(site.intro || "")}</h1>
-      ${edLink("/trabalho/", "Ver o trabalho")}
-      <ul class="ed-services">${services.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
+  const hero = first ? `<section class="x-hero" aria-label="Abertura" data-slides="${esc(JSON.stringify(slides))}">
+    <a class="x-hero-media" href="${slides[0].href}" tabindex="-1" aria-hidden="true">${picture(first.im, { alt: "", sizes: "100vw", eager: true })}</a>
+    <div class="x-hero-veil" aria-hidden="true"></div>
+    <div class="x-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    ${xCross("c1")}${xCross("c2")}${xCross("c3")}${xCross("c4")}
+    <div class="x-hero-copy">
+      <h1 class="x-hero-h">Somos dois coloristas em Lisboa. Trabalhamos com realizadores e diretores de fotografia, na sala ou à distância<span class="stop">.</span></h1>
+      ${xLink("/trabalho/", "Ver o trabalho")}
     </div>
-    <a class="ed-hero-frame" href="${heroData[0].href}" aria-label="${esc(fullTitle(first.p))}">${picture(first.im, { alt: "", sizes: "(max-width: 960px) 100vw, 70vw", eager: true })}</a>
-    <div class="ed-hero-bar">
-      <span>© ${YEAR}</span>
-      <span class="ed-ticks" aria-hidden="true">${ticks}</span>
-      <span class="ed-now"><b>${pad2(1)}/${pad2(covers.length)}</b> <span class="ed-now-t">${esc(first.p.titulo)}</span> <span class="ed-now-m">${esc(heroData[0].m)}</span></span>
+    <ul class="x-hero-services"><li>Color grading</li><li>Sessões na sala ou à distância</li><li>Entregas em SDR, HDR e DCP</li></ul>
+    <div class="x-hero-bar">
+      <span class="x-yr">© ${YEAR}</span>
+      <span class="x-ruler" aria-hidden="true">${covers.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</span>
+      <span class="x-tc" aria-hidden="true"><b class="x-rec"></b><span class="x-tc-v">01:00:00:00</span></span>
+      <a class="x-now" href="${slides[0].href}"><b>${pad2(1)}/${pad2(covers.length)}</b> <span class="x-now-t">${esc(first.p.titulo)}</span> <span class="x-now-m">${esc(slides[0].m)}</span></a>
     </div>
   </section>` : "";
 
-  const statement = `<section class="ed-sec ed-statement" aria-labelledby="h-ed-sobre">
-    ${edMeta(1, "O estúdio")}
-    <h2 id="h-ed-sobre" class="ed-big">${stopped(site.sobre?.titulo || "")}</h2>
-    ${studioGrid(ctx, `<p class="ed-cta-row">${edLink("/estudio/", "Conhecer o estúdio")}${edLink("/contacto/", "Pedir orçamento")}</p>`)}
+  const tech = (site.tecnico || []).filter((t) => t?.rotulo && t?.valor);
+  const short = { "Gestão de cor": "ACES · DWG", "Origem": "Qualquer câmara", "Entregas": "SDR · HDR · DCP" };
+  const statement = `<section class="x-sec x-white x-statement" aria-labelledby="h-x-sobre">
+    ${xMeta(1, "O estúdio")}
+    <h2 id="h-x-sobre" class="x-state" data-words>${words("A cor é o último passo antes do ecrã. Acertamos cada plano, do primeiro ao último episódio, até à entrega.")}</h2>
+    <dl class="x-spec">${tech.map((t) => `<div><dt>${esc(t.rotulo)}</dt><dd>${esc(short[t.rotulo] || t.valor)}</dd></div>`).join("")}</dl>
   </section>`;
 
-  const cards = covers.map(({ p, im }, i) => `<article class="ed-card" style="--i:${i}">
-      <a href="/trabalho/${esc(p.slug)}/" class="ed-card-frame" aria-label="${esc(fullTitle(p))}">${picture(im, { alt: "", sizes: "(max-width: 960px) 100vw, 56vw", fade: true })}</a>
-      <p class="ed-card-cap"><span>(${pad2(i + 1)})</span><span><b>${keep(p.titulo)}</b><em>${esc([p.formato, p.cliente].filter(Boolean).join(" · "))}</em></span><span>© ${p.ano}</span></p>
-    </article>`).join("\n    ");
-  const work = `<section class="ed-sec ed-work" aria-labelledby="h-ed-work">
-    ${edMeta(2, "Trabalho selecionado")}
-    <div class="ed-work-grid">
-      <div class="ed-work-side"><h2 id="h-ed-work" class="ed-work-h">Últimos trabalhos</h2>${edLink("/contacto/", "Pedir orçamento")}</div>
-      <div class="ed-cards">${cards}</div>
-      <div class="ed-work-all"><a class="ed-all" href="/trabalho/"><span class="ed-plus" aria-hidden="true"></span><span>Todos os projetos</span></a></div>
+  const cards = covers.map(({ p, im }, i) => `<article class="x-card" style="--i:${i}">
+      <a class="x-card-box" href="/trabalho/${esc(p.slug)}/" aria-label="${esc(fullTitle(p))}">
+        <span class="x-card-bg" style="background-image:url('${esc(im.src)}')" aria-hidden="true"></span>
+        <span class="x-card-pic">${picture(im, { alt: "", sizes: "(max-width: 960px) 80vw, 34vw", fade: true })}</span>
+      </a>
+      <p class="x-card-cap"><span>(${pad2(i + 1)})</span><span><b>${keep(p.titulo)}</b><em>${esc(p.formato || "")}</em></span><span>© ${p.ano}</span></p>
+    </article>`).join("\n      ");
+  const work = `<section class="x-sec x-white x-work" aria-labelledby="h-x-work">
+    ${xMeta(2, "Trabalho selecionado")}
+    <div class="x-work-grid">
+      <div class="x-work-side"><h2 id="h-x-work" class="x-work-h">Cor ${YY}</h2>${xLink("/contacto/", "Pedir orçamento")}</div>
+      <div class="x-cards">${cards}</div>
+      <div class="x-work-all"><a class="x-all" href="/trabalho/"><span class="x-plus" aria-hidden="true"></span><span>Todos os projetos</span></a></div>
     </div>
   </section>`;
 
-  // the process: three steps told from the studio text, each beside a frame from a recent project
-  const stills = featured.map((p) => frames(p, img)[1] || frames(p, img)[0]).filter(Boolean);
+  const stills = featured.map((p) => frames(p, img)[2] || frames(p, img)[0]).filter(Boolean);
   const steps = [
     ["Sessão", "Com quem filmou", "O diretor de fotografia e o realizador acompanham as sessões connosco, na sala ou à distância."],
     ["Cor", "Plano a plano", "Acertamos a cor plano a plano. Numa série, o último episódio tem de bater certo com o primeiro."],
     ["Entrega", "SDR, HDR ou DCP", "Entregamos as versões que cada destino pede, até à entrega final."],
   ];
-  const process = `<section class="ed-sec ed-dark ed-process" aria-labelledby="h-ed-proc">
-    ${edMeta(3, "Processo")}
-    <h2 id="h-ed-proc" class="vh">Processo</h2>
-    <ol class="ed-steps">${steps.map(([t, sub, d], i) => `<li>
-      <span class="ed-num" aria-hidden="true">${pad2(i + 1)}</span>
-      <figure class="ed-step-frame">${stills[i + 1] ? picture(stills[i + 1], { alt: "", sizes: "(max-width: 960px) 100vw, 30vw", fade: true }) : ""}</figure>
-      <div class="ed-step-text"><h3>${esc(t)}</h3><p class="ed-step-sub">${esc(sub)}</p><p>${esc(d)}</p></div>
-    </li>`).join("")}</ol>
+  const process = `<section class="x-sec x-black x-process" aria-labelledby="h-x-proc">
+    ${xMeta(3, "Processo")}
+    <div class="x-proc-head"><h2 id="h-x-proc" class="vh">Processo</h2>${xLink("/estudio/", "Conhecer o estúdio")}<span class="x-marks" aria-hidden="true">${xCross("m")}${xCross("m small")}${xCross("m")}</span></div>
+    <div class="x-proc">
+      <div class="x-proc-num" aria-hidden="true"><span class="x-digits">${steps.map((_, i) => `<b>${pad2(i + 1)}</b>`).join("")}</span></div>
+      <ol class="x-steps">${steps.map(([t, sub, d], i) => `<li data-step="${i}">
+        <figure class="x-step-pic">${stills[i + 1] ? picture(stills[i + 1], { alt: "", sizes: "(max-width: 960px) 100vw, 30vw", fade: true }) : ""}</figure>
+        <div class="x-step-text"><h3>${esc(t)}</h3><p class="x-step-sub">${esc(sub)}</p><p>${esc(d)}</p></div>
+      </li>`).join("")}</ol>
+    </div>
   </section>`;
+
+  const closer = covers[1] || first;
+  const close = closer ? `<section class="x-close" aria-labelledby="h-x-close">
+    <div class="x-close-media" aria-hidden="true">${picture(closer.im, { alt: "", sizes: "100vw", fade: true })}</div>
+    <div class="x-close-copy">
+      ${xCross("k1")}${xCross("k2")}${xCross("k3")}${xCross("k4")}
+      <h2 id="h-x-close" class="x-close-h">Tem um projeto em mãos?</h2>
+      ${xLink("/contacto/", "Pedir orçamento")}
+    </div>
+  </section>` : "";
 
   return layout(ctx, {
     title: "",
     description: site.descricao,
     path: "/",
     image: first ? first.im.src : "",
-    body: hero + statement + work + process,
-    bodyClass: "home ed-home",
+    body: hero + statement + work + process + close,
+    bodyClass: "home x-home",
   });
 }
 
-/** The editorial footer: the invitation and the email large on the left, the numbered pages on the right. */
+/** Footer: the invitation and the email large, the numbered pages, the facts, a ruler. */
 function edFooter(ctx, { c, morada, logo }) {
   const { site } = ctx;
   const pages = [["/", "Início"], ["/trabalho/", "Trabalho"], ["/estudio/", "Estúdio"], ["/contacto/", "Contacto"]];
-  return `<footer class="ed-foot ed-dark">
-  <div class="ed-foot-top">
-    <div class="ed-foot-call">
-      <p class="ed-foot-ask">Tem um projeto?</p>
-      ${c.email ? `<p class="ed-foot-mail"><a href="mailto:${esc(c.email)}">${esc(c.email).replace("@", '<span class="stop">@</span><wbr>')}</a></p>` : ""}
-      ${edLink("/contacto/", "Pedir orçamento")}
+  return `<footer class="x-foot x-black">
+  <div class="x-foot-top">
+    <div class="x-foot-call">
+      <p class="x-foot-ask">Vamos trabalhar juntos</p>
+      ${c.email ? `<p class="x-foot-mail"><a href="mailto:${esc(c.email)}">${esc(c.email).replace("@", "@<wbr>")}</a></p>` : ""}
+      ${xLink("/contacto/", "Pedir orçamento")}
     </div>
-    <div class="ed-foot-side">
-      <nav aria-label="Páginas"><ul class="ed-foot-nav">${pages.map(([h, l], i) => `<li><a href="${h}">${l}<sup aria-hidden="true">${pad2(i + 1)}</sup></a></li>`).join("")}</ul></nav>
-      <div class="ed-foot-facts">
-        ${c.telefone ? `<p><a href="${esc(telHref(c.telefone))}">${esc(c.telefone)}</a></p>` : ""}
-        ${morada.length ? `<address><a href="${esc(mapHref(c))}" rel="noopener" target="_blank">${morada.map(esc).join("<br>")}</a></address>` : ""}
-      </div>
-    </div>
+    <nav class="x-foot-nav" aria-label="Páginas"><ul>${pages.map(([h, l], i) => `<li><a href="${h}">${l}<sup aria-hidden="true">${pad2(i + 1)}</sup></a></li>`).join("")}</ul></nav>
   </div>
-  <div class="ed-foot-base">
-    <a class="ed-foot-brand" href="/" aria-label="${esc(site.nome)}, início"><img src="${logo}" alt="" width="104" height="48"></a>
-    <p class="ed-foot-social">${c.instagram ? `<a href="${esc(c.instagram)}" rel="me">Instagram</a>` : ""}${c.vimeo ? `<a href="${esc(c.vimeo)}" rel="me">Vimeo</a>` : ""}</p>
-    <p>© ${YEAR} ${esc(site.nome)} · color grading</p>
-    <a class="foot-top-link" href="#topo">Voltar ao topo <svg class="ico ico-up" viewBox="0 0 12 24" aria-hidden="true"><path d="M1 7l5-5 5 5M6 2v21"/></svg></a>
+  <div class="x-foot-mid">
+    <a class="x-foot-brand" href="/" aria-label="${esc(site.nome)}, início"><img src="${logo}" alt="" width="104" height="48"></a>
+    ${c.telefone ? `<p><a href="${esc(telHref(c.telefone))}">${esc(c.telefone)}</a></p>` : ""}
+    ${morada.length ? `<address><a href="${esc(mapHref(c))}" rel="noopener" target="_blank">${morada.map(esc).join("<br>")}</a></address>` : ""}
+    <span class="x-marks" aria-hidden="true">${xCross("m")}${xCross("m small")}${xCross("m")}</span>
+  </div>
+  <div class="x-foot-base">
+    <p class="x-foot-social">${c.instagram ? `<a href="${esc(c.instagram)}" rel="me">Instagram</a>` : ""}${c.vimeo ? `<a href="${esc(c.vimeo)}" rel="me">Vimeo</a>` : ""}<a href="#topo">Voltar ao topo ↑</a></p>
+    <p class="x-foot-yr">© ${YEAR} ${esc(site.nome)}<span class="x-ruler" aria-hidden="true">${"<i></i>".repeat(12)}</span>color grading</p>
   </div>
 </footer>`;
 }

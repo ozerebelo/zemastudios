@@ -242,35 +242,69 @@
     });
   }
 
-  // ---------------------------------------------------------- editorial opening: one frame at a time from the recent work
-  var hero = document.querySelector(".ed-hero[data-hero]");
-  if (hero && !reduceMotion) {
-    var list = []; try { list = JSON.parse(hero.dataset.hero); } catch (e) {}
-    var box = hero.querySelector(".ed-hero-frame"), ticks = hero.querySelectorAll(".ed-ticks i");
-    var num = hero.querySelector(".ed-now b"), nt = hero.querySelector(".ed-now-t"), nm = hero.querySelector(".ed-now-m");
-    var k = 0, total = list.length;
-    var show = function () {
-      if (document.hidden || box.matches(":hover")) return;
-      k = (k + 1) % total;
-      var d = list[k], next = new Image();
-      next.alt = ""; next.srcset = d.srcset; next.sizes = "(max-width: 960px) 100vw, 70vw"; next.src = d.src;
-      next.style.position = "absolute"; next.style.inset = "0"; next.style.opacity = "0";
-      var swap = function () {
-        box.appendChild(next);
+  // ---------------------------------------------------------- editorial version: the grading monitor
+  var xh = document.querySelector(".x-hero[data-slides]");
+  if (xh) {
+    var mast = document.querySelector(".mast");
+    // the header is clear over the opening frame and turns solid once the frame has passed under it
+    if (mast && window.IntersectionObserver) {
+      new IntersectionObserver(function (e) { mast.classList.toggle("solid", !e[0].isIntersecting); }, { rootMargin: "-" + (mast.offsetHeight + 1) + "px 0px 0px 0px" }).observe(xh);
+    }
+    var slides = []; try { slides = JSON.parse(xh.dataset.slides); } catch (e) {}
+    var media = xh.querySelector(".x-hero-media"), rticks = xh.querySelectorAll(".x-ruler i");
+    var nowA = xh.querySelector(".x-now"), nowB = nowA.querySelector("b"), nowT = nowA.querySelector(".x-now-t"), nowM = nowA.querySelector(".x-now-m");
+    var firstImg = media.querySelector("img");
+    if (firstImg) requestAnimationFrame(function () { requestAnimationFrame(function () { firstImg.classList.add("in"); }); });
+    var at = 0;
+    var advance = function () {
+      if (document.hidden || slides.length < 2) return;
+      at = (at + 1) % slides.length;
+      var d = slides[at], im = new Image();
+      im.alt = ""; im.sizes = "100vw"; im.srcset = d.srcset; im.src = d.src; im.style.opacity = "0";
+      var go = function () {
+        media.appendChild(im);
         requestAnimationFrame(function () { requestAnimationFrame(function () {
-          next.style.opacity = "1";
-          setTimeout(function () {
-            Array.prototype.forEach.call(box.querySelectorAll("img"), function (im) { if (im !== next) im.remove(); });
-            next.style.position = ""; next.style.inset = "";
-          }, 950);
+          im.style.opacity = "1"; im.classList.add("in");
+          setTimeout(function () { Array.prototype.forEach.call(media.querySelectorAll("img"), function (x) { if (x !== im) x.remove(); }); }, 1500);
         }); });
-        box.href = d.href; box.setAttribute("aria-label", d.t);
-        ticks.forEach(function (t, j) { t.classList.toggle("on", j === k); });
-        num.textContent = String(k + 1).padStart(2, "0") + "/" + String(total).padStart(2, "0");
-        nt.textContent = d.t; nm.textContent = d.m;
+        media.href = d.href; nowA.href = d.href;
+        rticks.forEach(function (t, j) { t.classList.toggle("on", j === at); });
+        nowB.textContent = String(at + 1).padStart(2, "0") + "/" + String(slides.length).padStart(2, "0");
+        nowT.textContent = d.t; nowM.textContent = d.m;
       };
-      if (next.decode) next.decode().then(swap, function () {}); else next.onload = swap;
+      if (im.decode) im.decode().then(go, function () {}); else im.onload = go;
     };
-    if (total > 1) setInterval(show, 4500);
+    if (!reduceMotion) setInterval(advance, 5200);
+    // a timecode running at 25 frames per second from 01:00:00:00, as on a grading monitor
+    var tc = xh.querySelector(".x-tc-v");
+    if (tc && !reduceMotion) {
+      var t0 = performance.now(), p2 = function (n) { return String(n).padStart(2, "0"); };
+      var tick = function (now) {
+        var f = Math.floor((now - t0) / 40), fr = f % 25, sec = Math.floor(f / 25);
+        tc.textContent = p2(1 + Math.floor(sec / 3600)) + ":" + p2(Math.floor(sec / 60) % 60) + ":" + p2(sec % 60) + ":" + p2(fr);
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+  }
+  // the statement resolves word by word as it crosses the screen
+  var st = document.querySelector("[data-words]");
+  if (st) {
+    var ws = st.querySelectorAll(".w");
+    var light = function () {
+      var r = st.getBoundingClientRect(), vh = window.innerHeight;
+      var p = reduceMotion ? 1 : Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (r.height + vh * 0.35)));
+      var n = Math.round(p * ws.length);
+      ws.forEach(function (w, j) { w.classList.toggle("on", j < n); });
+    };
+    light(); window.addEventListener("scroll", function () { requestAnimationFrame(light); }, { passive: true });
+  }
+  // the process numeral follows the step in the middle of the screen
+  var proc = document.querySelector(".x-proc");
+  if (proc && window.IntersectionObserver) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) proc.style.setProperty("--step", e.target.dataset.step); });
+    }, { rootMargin: "-45% 0px -45% 0px" });
+    proc.querySelectorAll("[data-step]").forEach(function (li) { io.observe(li); });
   }
 })();
