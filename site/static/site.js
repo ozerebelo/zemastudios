@@ -39,23 +39,36 @@
       return rows;
     };
     var pack = function () {
+      // Small screens shrink the mosaic to its last row after packing (no gap above the headline); measure the space
+      // the CSS gives it, then put the shrink back if nothing changed.
+      var held = [mo.style.height, wall.style.height];
+      mo.style.height = ""; wall.style.height = "";
       var W = wall.clientWidth, H = wall.clientHeight;
-      if (!W || !H || (W === lastW && H === lastH)) return;
+      if (!W || !H || (W === lastW && H === lastH)) { mo.style.height = held[0]; wall.style.height = held[1]; return; }
       lastW = W; lastH = H;
       var g = parseFloat(getComputedStyle(mo).getPropertyValue("--gap")) || 6;
-      var perRow = W < 1100 ? 3 : 4;
+      // Phones get two covers to a line in about three rows: fewer, larger frames instead of a crowd of thumbnails.
+      var phone = W < 600;
+      var perRow = phone ? 2 : W < 1100 ? 3 : 4;
       // Preferred row height: a 16:9 cover sits perRow to a line, but never fewer than about four rows on a tall screen.
-      var pref = Math.min((W - (perRow - 1) * g) / perRow / 1.78, H / 3.6);
+      var pref = Math.min((W - (perRow - 1) * g) / perRow / 1.78, H / (phone ? 2.6 : small ? 3.2 : 3.6));
       var best = null;
-      for (var h = Math.round(pref * 0.6); h <= Math.round(pref * 1.7); h++) {
+      // On phones the search stays near two-to-a-line (a lower row would squeeze in a third cover); a gap under the
+      // last row is the lesser evil there, so it weighs less against the preferred size.
+      var small = W < 1100; // phones and tablets: hold the per-line count, judge rows by their real height
+      var lo = small ? 0.92 : 0.6, hi = small ? 1.6 : 1.7, pull = small ? 1.2 : 0.35;
+      for (var h = Math.round(pref * lo); h <= Math.round(pref * hi); h++) {
         var rows = rowsFor(W, g, h), used = 0, n = 0;
         while (n < rows.length && used + rows[n].h + (n ? g : 0) <= H) { used += rows[n].h + (n ? g : 0); n++; }
         if (!n) continue;
         // Least empty space under the last row wins; among near ties, the size closest to the preferred one.
-        var score = H - used + Math.abs(h - pref) * 0.35;
-        if (!best || score < best.score) best = { score: score, rows: rows.slice(0, n) };
+        // On phones the rows' real average height is compared (a search height can still yield rows of three small covers).
+        var size = small ? (used - (n - 1) * g) / n : h;
+        var score = H - used + Math.abs(size - pref) * pull;
+        if (!best || score < best.score) best = { score: score, rows: rows.slice(0, n), used: used };
       }
       if (!best) return;
+      if (W < 1100) { mo.style.height = "auto"; wall.style.height = Math.ceil(best.used) + "px"; }
       var frag = document.createDocumentFragment(), shown = {};
       best.rows.forEach(function (r) {
         var line = document.createElement("div");

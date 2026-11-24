@@ -52,6 +52,9 @@
 }
 :root[data-tema="claro"] ::selection { background: var(--red); color: #fff; }
 :root[data-tema="claro"] :focus-visible { outline-color: var(--red); }
+/* Contact labels (footer column titles, the contact page's rows) in bold orange: a darker step of the logo's orange,
+   #B03B28, which reads at small sizes (4.8:1 on the ground; the logo's own orange is 3:1, for large type only). */
+:root[data-tema="claro"] .foot-h, :root[data-tema="claro"] .contact-main .ficha-rows dt { color: #B03B28; font-weight: 700; }
 /* Headline full stops as a small round dot, like the one in the logo, instead of the typeface's square period. */
 :root[data-tema="claro"] :is(.m-h, .sec-h, .page-head h1) .stop {
   display: inline-block; width: 0.14em; height: 0.14em; margin-left: 0.04em; border-radius: 50%;
@@ -384,6 +387,7 @@ address.foot-links a { padding-bottom: 0; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 12px; }
   .studio-grid, .studio-grid.has-photo, .contact-grid, .p-head, .foot-top { grid-template-columns: minmax(0, 1fr); }
   .foot-cols { margin-bottom: 0; }
+  .foot-top { gap: 36px; }
   .studio-photo, .studio-body { grid-column: 1 / -1; }
   .studio-photo { max-width: 440px; aspect-ratio: 4 / 5; min-height: 0; margin-bottom: var(--s); }
   .m-lead, .m-side { grid-column: 1 / -1; }
