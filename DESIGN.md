@@ -304,9 +304,3 @@ One ease for drawn and spatial movement, cubic-bezier(0.16, 1, 0.3, 1); plain ea
 - **Don't** introduce a second typeface or uppercase letterspaced labels.
 - **Don't** autoplay video or use video loops; stills only, embeds load on click.
 - **Don't** hide credits behind hover.
-
-## Editorial version (trial, 2026-11-24)
-
-Built with `VERSAO=editorial` from site/ (draft deploys only; the default build is unchanged). The first pass was judged "banal, too close to the current site"; this second pass starts over. Owner's choices: black and white with the logo's orange as the one accent, and, for this version only, the frame rule lifted (covers fill the screen, carry marks and text, and lend a blurred copy as a backdrop).
-
-Concept: the site as a grading monitor. Opening: the six latest covers full-bleed, one at a time with a slow push-in, under viewfinder corners and crosshairs, a running 25 fps timecode with a blinking record dot, a ruler with one tick per cover, the intro and services over the frame, the header clear until the frame has passed. Studio: one statement that resolves word by word on scroll, then the room's facts as a four-column spec strip. Work: "COR 26" sticky on the left, the latest covers as cards that stack while scrolling (each frame floating on a blurred copy of itself), "Todos os projetos" with a black plus tile on the right. Process on black: a large numeral that holds and rolls to the next number as each step (Sessão, Cor, Entrega) passes. Close: one more cover full-bleed with "Tem um projeto em mãos?", cut on a slant by the black footer (email large, numbered pages, the facts, a ruler).
