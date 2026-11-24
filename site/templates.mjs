@@ -138,6 +138,9 @@ const people = (p) => [p.realizacao && `Realização ${esc(p.realizacao)}`, p.fo
 const addressLines = (s) => String(s || "").split(/\n+/).map((l) => l.trim()).filter(Boolean);
 const mapHref = (c) => c.mapa || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLines(c.morada).join(", "))}`;
 
+/** A heading's closing full stop in its own span, so a theme can colour it (the light trial paints it orange). */
+const stopped = (t) => esc(t).replace(/\.$/, '<span class="stop">.</span>');
+
 function ficha(rows, cls = "") {
   const items = rows.filter(([, v]) => v);
   return items.length ? `<dl class="ficha${cls ? " " + cls : ""}">${items.map(([l, v]) => `<div><dt>${l}</dt><dd>${v}</dd></div>`).join("")}</dl>` : "";
@@ -279,7 +282,7 @@ function mosaic(ctx) {
   return `<section class="mosaic" aria-label="Trabalhos">
     <div class="m-wall">${cells}</div>
     <div class="m-band">
-      <div class="m-lead"><h1 class="m-h">${esc(head)}</h1>${reel ? `<button type="button" class="play-btn" data-embed="${esc(reel)}" data-title="Showreel">${PLAY} Ver showreel</button>` : ""}</div>
+      <div class="m-lead"><h1 class="m-h">${stopped(head)}</h1>${reel ? `<button type="button" class="play-btn" data-embed="${esc(reel)}" data-title="Showreel">${PLAY} Ver showreel</button>` : ""}</div>
       ${rest ? `<p class="m-side">${esc(rest)}</p>` : ""}
     </div>
   </section>`;
@@ -376,7 +379,7 @@ const onward = (links) =>
 
 /** Inner pages open on a plain title; a count, when given, sits raised beside it like the filter counts. */
 const pageHead = (title, count) =>
-  `<header class="page-head"><h1>${esc(title)}${count ? `<sup>${count}</sup>` : ""}</h1></header>`;
+  `<header class="page-head"><h1>${esc(title)}<span class="stop page-stop" aria-hidden="true">.</span>${count ? `<sup>${count}</sup>` : ""}</h1></header>`;
 
 function contact(ctx) {
   const c = ctx.site.contacto || {};
@@ -395,7 +398,7 @@ function contact(ctx) {
   return `<section id="contacto" class="contact" aria-label="Contacto">
     <div class="contact-grid">
       <div class="contact-main">
-        ${c.email ? `<p class="mail"><a href="mailto:${esc(c.email)}">${esc(c.email).replace("@", "@<wbr>")}</a></p>` : ""}
+        ${c.email ? `<p class="mail"><a href="mailto:${esc(c.email)}">${esc(c.email).replace("@", '<span class="stop">@</span><wbr>')}</a></p>` : ""}
         ${paragraphs(c.texto)}
         ${ficha(
           [
@@ -422,7 +425,7 @@ export function renderHome(ctx) {
   const body = `
   ${mosaic({ ...ctx, reel })}
   <section class="studio" aria-labelledby="h-nosso">
-    <h2 id="h-nosso" class="sec-h">${esc(site.sobre?.titulo || "O nosso trabalho")}</h2>
+    <h2 id="h-nosso" class="sec-h">${stopped(site.sobre?.titulo || "O nosso trabalho")}</h2>
     ${studioGrid(ctx, onward([["/trabalho/", "Ver todo o trabalho"], ["/contacto/", "Pedir orçamento"]]))}
   </section>`;
   return layout(ctx, {
@@ -462,7 +465,7 @@ export function renderStudio(ctx) {
     body: `
   ${pageHead("Estúdio")}
   <section class="studio" aria-labelledby="h-sobre">
-    <h2 id="h-sobre" class="sec-h">${esc(site.sobre?.titulo || "O nosso trabalho")}</h2>
+    <h2 id="h-sobre" class="sec-h">${stopped(site.sobre?.titulo || "O nosso trabalho")}</h2>
     ${studioGrid(ctx, (reel ? `<p class="studio-reel"><button type="button" class="play-btn" data-embed="${esc(reel)}" data-title="Showreel">${PLAY} Ver showreel</button></p>` : "") + onward([["/trabalho/", "Ver todo o trabalho"], ["/contacto/", "Pedir orçamento"]]))}
   </section>`,
     current: "estudio",
