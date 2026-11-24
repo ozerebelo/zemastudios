@@ -38,6 +38,17 @@
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   color-scheme: dark;
 }
+/* Light trial (owner, 2026-11-24), built with TEMA=claro: the logo's colours. Ground a light off-white drawn from the
+   logo's cream (#E6E3D4); text in the logo's dark blue (#102C51, 12.4:1); greys tinted blue (5.2:1 and 4.7:1); the red
+   (#E35442) stays an accent for dots and the logo's mark, never text. Letterbox bars take the ground colour (a frame
+   is never cropped; on a light ground black bars read as a border); the
+   lightbox stays dark, so graded images are still judged on black. */
+:root[data-tema="claro"] {
+  --bg: #F3F1EA; --line: #DAD6CA; --pill: #AEB6C3; --frame: #F3F1EA;
+  --text: #102C51; --soft: #1F3B62; --muted: #56667D; --dim: #5E6D83;
+  color-scheme: light;
+}
+:root[data-tema="claro"] .lightbox { color: #ecebe7; }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scrollbar-color: var(--pill) var(--bg); scroll-padding-top: calc(var(--mast) + 12px); }

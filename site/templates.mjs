@@ -161,9 +161,11 @@ function layout(ctx, { title, description, path, image, body, head = "", bodyCla
   const canonical = site.url + path;
   const og = image ? site.url + image : "";
   const c = site.contacto || {};
+  // The light trial uses the logo in its own blue; the dark site keeps the cream logo.
+  const logo = ctx.tema === "claro" ? "/logo-azul.svg" : "/logo.svg";
   const morada = addressLines(c.morada);
   return `<!doctype html>
-<html lang="pt-PT">
+<html lang="pt-PT"${ctx.tema ? ` data-tema="${esc(ctx.tema)}"` : ""}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -176,7 +178,7 @@ function layout(ctx, { title, description, path, image, body, head = "", bodyCla
 <meta property="og:description" content="${esc(description || site.descricao)}">
 <meta property="og:url" content="${esc(canonical)}">
 ${og ? `<meta property="og:image" content="${esc(og)}">\n<meta name="twitter:card" content="summary_large_image">` : ""}
-<meta name="theme-color" content="#0b0b0b">
+<meta name="theme-color" content="${ctx.tema === "claro" ? "#F3F1EA" : "#0b0b0b"}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/host-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${esc(ctx.assets?.css || "/site.css")}">
@@ -185,7 +187,7 @@ ${head}
 <body${bodyClass ? ` class="${bodyClass}"` : ""}>
 <a class="skip" href="#conteudo">Saltar para o conteúdo</a>
 <header class="mast" id="topo">
-  <a class="brand" href="/"><img src="/logo.svg" alt="${esc(site.nome)}" width="104" height="48"></a>
+  <a class="brand" href="/"><img src="${logo}" alt="${esc(site.nome)}" width="104" height="48"></a>
   <nav aria-label="Principal">
     ${[["trabalho", "trabalho"], ["estudio", "estúdio"], ["contacto", "contacto"]]
       .map(([id, label]) => {
@@ -202,7 +204,7 @@ ${body}
 </main>
 <footer class="foot">
   <div class="foot-top">
-    <a class="foot-brand" href="/" aria-label="${esc(site.nome)}, início"><img src="/logo.svg" alt="" width="104" height="48"></a>
+    <a class="foot-brand" href="/" aria-label="${esc(site.nome)}, início"><img src="${logo}" alt="" width="104" height="48"></a>
     <div class="foot-cols">
       <nav class="foot-col" aria-label="Contacto">
         <p class="foot-h">Contacto</p>
