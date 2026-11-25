@@ -241,4 +241,21 @@
         .then(function () { submit.disabled = false; });
     });
   }
+
+  // ---------------------------------------------------------- editorial index: a row calls up its cover by the pointer
+  var peek = document.querySelector(".e-peek");
+  if (peek && window.matchMedia("(hover: hover)").matches) {
+    var pim = peek.querySelector("img"), px = 0, py = 0, tx = 0, ty = 0, raf = 0;
+    var follow = function () { px += (tx - px) * (reduceMotion ? 1 : 0.18); py += (ty - py) * (reduceMotion ? 1 : 0.18);
+      peek.style.left = px + "px"; peek.style.top = py + "px"; raf = Math.abs(tx - px) + Math.abs(ty - py) > 0.5 ? requestAnimationFrame(follow) : 0; };
+    document.querySelectorAll(".e-row[data-src]").forEach(function (row) {
+      row.addEventListener("mouseenter", function (e) {
+        pim.srcset = row.dataset.srcset; pim.sizes = "420px"; pim.src = row.dataset.src;
+        if (!peek.classList.contains("on")) { px = tx = e.clientX + 160; py = ty = e.clientY; }
+        peek.classList.add("on");
+      });
+      row.addEventListener("mouseleave", function () { peek.classList.remove("on"); });
+      row.addEventListener("mousemove", function (e) { tx = e.clientX + 160; ty = e.clientY; if (!raf) raf = requestAnimationFrame(follow); });
+    });
+  }
 })();

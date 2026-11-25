@@ -165,10 +165,11 @@ function layout(ctx, { title, description, path, image, body, head = "", bodyCla
   const og = image ? site.url + image : "";
   const c = site.contacto || {};
   // The light trial uses the logo in its own blue; the dark site keeps the cream logo.
-  const logo = ctx.tema === "claro" ? "/logo-azul.svg" : "/logo.svg";
+  const ed = ctx.versao === "editorial";
+  const logo = ed ? "/logo-tinta.svg" : ctx.tema === "claro" ? "/logo-azul.svg" : "/logo.svg";
   const morada = addressLines(c.morada);
   return `<!doctype html>
-<html lang="pt-PT"${ctx.tema ? ` data-tema="${esc(ctx.tema)}"` : ""}>
+<html lang="pt-PT"${ctx.tema && !ed ? ` data-tema="${esc(ctx.tema)}"` : ""}${ed ? ' data-versao="editorial"' : ""}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -183,7 +184,7 @@ function layout(ctx, { title, description, path, image, body, head = "", bodyCla
 ${og ? `<meta property="og:image" content="${esc(og)}">\n<meta name="twitter:card" content="summary_large_image">` : ""}
 <meta name="theme-color" content="${ctx.tema === "claro" ? "#F2EEE4" : ctx.tema === "azul" ? "#0F2645" : "#0b0b0b"}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="/fonts/host-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/host-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>${ed ? '\n<link rel="preload" href="/fonts/instrument-serif-latin.woff2" as="font" type="font/woff2" crossorigin>' : ""}
 <link rel="stylesheet" href="${esc(ctx.assets?.css || "/site.css")}">
 ${head}
 </head>
@@ -205,7 +206,7 @@ ${head}
 <main id="conteudo">
 ${body}
 </main>
-<footer class="foot">
+${ed ? colophon(ctx, { c, morada, logo }) : `<footer class="foot">
   <div class="foot-top">
     <a class="foot-brand" href="/" aria-label="${esc(site.nome)}, início"><img src="${logo}" alt="" width="104" height="48"></a>
     <div class="foot-cols">
@@ -241,7 +242,7 @@ ${body}
     <p>© ${new Date().getFullYear()} ${esc(site.nome)} · color grading</p>
     <a class="foot-top-link" href="#topo">Voltar ao topo <svg class="ico ico-up" viewBox="0 0 12 24" aria-hidden="true"><path d="M1 7l5-5 5 5M6 2v21"/></svg></a>
   </div>
-</footer>
+</footer>`}
 <script src="${esc(ctx.assets?.js || "/site.js")}" defer></script>
 </body>
 </html>
@@ -417,6 +418,7 @@ function contact(ctx) {
 
 export function renderHome(ctx) {
   const { site, projects, redirects } = ctx;
+  if (ctx.versao === "editorial") return renderHomeEditorial(ctx);
   const reel = embedUrl(site.showreel);
   const firstFeatured = projects.find((p) => p.destaque) || projects[0];
   // Older versions lived on one page: #project/<slug>, #work and the section anchors now go to their own pages.
@@ -453,6 +455,99 @@ export function renderWork(ctx) {
     current: "trabalho",
     bodyClass: "page-work",
   });
+}
+
+// ---------------------------------------------------------------- editorial version (VERSAO=editorial, 2026-11-25)
+// A film catalogue in print: paper and ink, a serif display face, the latest work as the issue's cover with a
+// caption, the studio text set as a lead with a drop cap, the whole body of work as an index whose rows call up their
+// cover, two recent projects as spreads with their credits set like a film's, and a colophon for a footer.
+// Frames stay whole: at their own ratio, never cropped, filtered or written over.
+
+const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+
+function renderHomeEditorial(ctx) {
+  const { site, projects, img } = ctx;
+  const recent = projects.filter((p) => p.destaque);
+  const cover = recent[0] || projects[0];
+  const coverIm = cover ? img(cover.capa) : null;
+  const d = new Date();
+  const people = (p) => [p.realizacao && `realização de ${esc(p.realizacao)}`, p.fotografia && `fotografia de ${esc(p.fotografia)}`].filter(Boolean).join(", ");
+
+  const head = `<section class="e-cover" aria-labelledby="h-e">
+    <h1 id="h-e" class="e-h">Fazemos a <em>cor</em> de séries, filmes e publicidade<span class="stop">.</span></h1>
+    ${coverIm ? `<figure class="e-cover-fig">
+      <a href="/trabalho/${esc(cover.slug)}/">${picture(coverIm, { alt: `${fullTitle(cover)}, fotograma`, sizes: "100vw", eager: true })}</a>
+      <figcaption><span><em>Na capa:</em> ${keep(fullTitle(cover))} (${esc([cover.formato, cover.ano].filter(Boolean).join(", "))})${people(cover) ? `, ${people(cover)}` : ""}.</span><span>Lisboa, ${MESES[d.getMonth()]} de ${d.getFullYear()}</span></figcaption>
+    </figure>` : ""}
+  </section>`;
+
+  const texto = String(site.sobre?.texto || "").split(/\n\s*\n/).map((t) => t.trim()).filter(Boolean);
+  const lead = `<section class="e-lead" aria-labelledby="h-e-lead">
+    <h2 id="h-e-lead" class="e-h2">${stopped(site.sobre?.titulo || "")}</h2>
+    <div class="e-lead-text">${texto.map((t, i) => `<p${i ? "" : ' class="e-drop"'}>${esc(t)}</p>`).join("")}</div>
+  </section>`;
+
+  const rows = projects.map((p, i) => {
+    const im = img(p.capa);
+    return `<li><a class="e-row" href="/trabalho/${esc(p.slug)}/"${im ? ` data-src="${esc(im.src)}" data-srcset="${esc(im.srcset || "")}"` : ""}>
+        <span class="e-n">${pad2(i + 1)}</span>
+        <span class="e-t">${keep(p.titulo)}${p.subtitulo ? ` <em>${esc(p.subtitulo)}</em>` : ""}</span>
+        <span class="e-f">${esc(p.formato || "")}</span>
+        <span class="e-y">${p.ano}</span>
+        ${im ? `<span class="e-thumb" aria-hidden="true">${picture(im, { alt: "", sizes: "120px", fade: true })}</span>` : ""}
+      </a></li>`;
+  }).join("\n      ");
+  const index = `<section class="e-index" aria-labelledby="h-e-index">
+    <div class="e-index-head"><h2 id="h-e-index" class="e-h2">Índice<sup>${projects.length}</sup></h2><a class="e-more" href="/trabalho/">Ver em grelha</a></div>
+    <ol class="e-rows">${rows}</ol>
+    <div class="e-peek" aria-hidden="true"><img alt=""></div>
+  </section>`;
+
+  const credits = (p) => [["Realização", p.realizacao], ["Direção de fotografia", p.fotografia], ["Produção", p.producao], ["Cliente", p.cliente]].filter(([, v]) => v);
+  const spreads = recent.slice(1, 3).map((p, k) => {
+    const fr = frames(p, img);
+    const big = fr[0], small = fr.slice(1, 3);
+    return `<article class="e-spread${k % 2 ? " flip" : ""}">
+      <figure class="e-sp-big"><a href="/trabalho/${esc(p.slug)}/">${picture(big, { alt: `${fullTitle(p)}, fotograma`, sizes: "(max-width: 960px) 100vw, 60vw", fade: true })}</a></figure>
+      <div class="e-sp-text">
+        <h3 class="e-sp-t"><a href="/trabalho/${esc(p.slug)}/">${keep(p.titulo)}</a></h3>
+        <p class="e-sp-f">${esc([p.formato, p.ano].filter(Boolean).join(", "))}</p>
+        <dl class="e-credits">${credits(p).map(([r, v]) => `<div><dt>${esc(r)}</dt><dd>${esc(v)}</dd></div>`).join("")}<div><dt>Cor</dt><dd>zema studios</dd></div></dl>
+        <div class="e-sp-small">${small.map((im) => `<figure>${picture(im, { alt: "", sizes: "(max-width: 960px) 50vw, 18vw", fade: true })}</figure>`).join("")}</div>
+      </div>
+    </article>`;
+  }).join("");
+  const detail = spreads ? `<section class="e-detail" aria-labelledby="h-e-detail"><h2 id="h-e-detail" class="e-h2">Em pormenor</h2>${spreads}</section>` : "";
+
+  return layout(ctx, {
+    title: "",
+    description: site.descricao,
+    path: "/",
+    image: coverIm ? coverIm.src : "",
+    body: head + lead + index + detail,
+    bodyClass: "home e-home",
+  });
+}
+
+/** The footer as a magazine's colophon: who, how, where, and the email set large. */
+function colophon(ctx, { c, morada, logo }) {
+  const { site } = ctx;
+  const tech = (site.tecnico || []).filter((t) => t?.rotulo && t?.valor);
+  return `<footer class="e-foot">
+  <p class="e-foot-ask">Tem um projeto? Escreva-nos.</p>
+  ${c.email ? `<p class="e-foot-mail"><a href="mailto:${esc(c.email)}">${esc(c.email).replace("@", '<span class="stop">@</span><wbr>')}</a></p>` : ""}
+  <div class="e-colo">
+    <div><h2>Colofão</h2><a class="e-foot-brand" href="/" aria-label="${esc(site.nome)}, início"><img src="${logo}" alt="" width="104" height="48"></a></div>
+    <dl>${tech.map((t) => `<div><dt>${esc(t.rotulo)}</dt><dd>${esc(t.valor)}</dd></div>`).join("")}</dl>
+    <dl>
+      ${c.telefone ? `<div><dt>Telefone</dt><dd><a href="${esc(telHref(c.telefone))}">${esc(c.telefone)}</a></dd></div>` : ""}
+      ${morada.length ? `<div><dt>Morada</dt><dd><a href="${esc(mapHref(c))}" rel="noopener" target="_blank">${morada.map(esc).join("<br>")}</a></dd></div>` : ""}
+      ${c.instagram ? `<div><dt>Instagram</dt><dd><a href="${esc(c.instagram)}" rel="me">${esc(c.instagram.replace(/^https?:\/\/(www\.)?instagram\.com\//, "@").replace(/\/$/, ""))}</a></dd></div>` : ""}
+    </dl>
+    <nav aria-label="Páginas"><ul><li><a href="/trabalho/">Trabalho</a></li><li><a href="/estudio/">Estúdio</a></li><li><a href="/contacto/">Contacto</a></li><li><a href="#topo">Voltar ao topo</a></li></ul></nav>
+  </div>
+  <p class="e-foot-base">© ${new Date().getFullYear()} ${esc(site.nome)}, color grading, Lisboa</p>
+</footer>`;
 }
 
 export function renderStudio(ctx) {

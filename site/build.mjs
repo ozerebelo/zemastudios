@@ -167,7 +167,7 @@ async function build() {
   const v = async (f) => createHash("sha1").update(await readFile(path.join(ROOT, "static", f))).digest("hex").slice(0, 10);
   const assets = { css: `/site.css?v=${await v("site.css")}`, js: `/site.js?v=${await v("site.js")}` };
   // The site is built in the logo's colours (cream ground, blue text, orange accents) since 2026-11-24; TEMA=preto builds the old black site, TEMA=azul the navy trial.
-  const ctx = { site, projects, img, redirects, assets, tema: process.env.TEMA === "preto" ? "" : process.env.TEMA || "claro" };
+  const ctx = { site, projects, img, redirects, assets, tema: process.env.TEMA === "preto" ? "" : process.env.TEMA || "claro", versao: process.env.VERSAO || "" };
   await write("index.html", renderHome(ctx));
   await write("trabalho/index.html", renderWork(ctx));
   await write("estudio/index.html", renderStudio(ctx));

@@ -307,3 +307,7 @@ One ease for drawn and spatial movement, cubic-bezier(0.16, 1, 0.3, 1); plain ea
 - **Don't** introduce a second typeface or uppercase letterspaced labels.
 - **Don't** autoplay video or use video loops; stills only, embeds load on click.
 - **Don't** hide credits behind hover.
+
+## Editorial version (trial, 2026-11-25)
+
+Built with `VERSAO=editorial` from site/ (draft deploys only; the default build is unchanged). Researched direction: a film catalogue in print. Paper (#F5F3EE) and ink (#161513), Instrument Serif (OFL, self-hosted) for every display line with Host Grotesk for small text, the logo's orange as the only colour outside the frames (the italic "cor" in the headline, the drop cap, full stops, link rules). Home: the headline across the page; the latest project as the issue's cover, full width at its own ratio, with a caption ("Na capa: …", credits, "Lisboa, <month> de <year>"); the studio text as a lead in two columns with an orange drop cap; an index of every project (number, serif title with its series in italic, format, year) where pointing at a row dims the others and calls up its cover beside the pointer (phones show a small thumbnail in the row instead); two recent projects as spreads with their credits centred like a film's; a colophon footer (the email set large, technical sheet, telephone, address, Instagram, pages). Frames whole: never cropped, filtered or written over.
